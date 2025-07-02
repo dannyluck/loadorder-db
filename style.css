@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #2c3e50; /* Dark background */
+    color: #ecf0f1; /* Light text */
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #34495e; /* Slightly lighter dark background */
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #ecf0f1;
+    margin-bottom: 30px;
+}
+
+.version-selector {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.version-selector label {
+    font-size: 1.1em;
+    margin-right: 10px;
+}
+
+.version-selector select {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #5d6d7e;
+    background-color: #4a6078;
+    color: #ecf0f1;
+    font-size: 1em;
+    cursor: pointer;
+    appearance: none; /* Removes default select arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.version-selector select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
+}
+
+.mod-list {
+    background-color: #212f3d; /* Even darker for the list area */
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.mod-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #4a6078;
+}
+
+.mod-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.mod-name {
+    flex-basis: 60%; /* Take 60% width */
+    font-weight: bold;
+    color: #a2d2ff;
+    margin-right: 10px; /* Space between name and button */
+}
+
+.mod-link {
+    flex-basis: auto; /* Allow button to take natural width */
+    margin-right: 10px; /* Space between button and version */
+}
+
+.mod-link button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.mod-link button:hover {
+    background-color: #2980b9;
+}
+
+.mod-version {
+    flex-basis: auto; /* Allow version to take natural width */
+    font-style: italic;
+    color: #b0c4de;
+    white-space: nowrap; /* Prevent version from wrapping if short */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .mod-item {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start;
+    }
+
+    .mod-name, .mod-link, .mod-version {
+        flex-basis: 100%; /* Full width for each part */
+        margin-right: 0;
+        margin-bottom: 5px; /* Add some space between stacked elements */
+    }
+
+    .mod-link button {
+        width: 100%; /* Make button full width */
+    }
+}
