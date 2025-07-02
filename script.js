@@ -19,47 +19,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             note: ''
         };
 
-        // Trim the line to remove leading/trailing whitespace
         const trimmedLine = line.trim();
+        if (!trimmedLine) return null; // Skip empty lines
 
-        // 1. Check for unavailable mods first (~~Mod Name~~ (unavailable))
-        const unavailableMatch = trimmedLine.match(/^~~(.*?)(\s*\[.*?\])?~~(?:\s*\((unavailable.*)\))?$/);
-        if (unavailableMatch) {
+        // --- Rule 1: Check for UNAVAILABLE mods first (~~Mod Name~~ (unavailable...)) ---
+        // This regex captures the strikethrough content and the optional unavailable note
+        const unavailablePattern = /^~~(.*?)~~(?:\s*\((unavailable.*)\))?$/;
+        let match = trimmedLine.match(unavailablePattern);
+        if (match) {
             mod.unavailable = true;
-            mod.name = unavailableMatch[1].trim();
-            if (unavailableMatch[3]) { // Check if the full note like "unavailable - unofficial..." exists
-                mod.note = 'unavailable ' + unavailableMatch[3].trim();
-            } else if (unavailableMatch[2]) { // If only "[Version]" was part of the strikethrough, it's just unavailable
-                mod.note = 'unavailable';
-            } else {
-                mod.note = 'unavailable'; // Default unavailable note
-            }
+            let contentInsideStrikethrough = match[1].trim();
+            mod.note = match[2] ? `unavailable (${match[2].trim()})` : 'unavailable';
 
-            // Attempt to extract version if it's within the strikethrough text, e.g., "~~Mod Name [Version]~~"
-            const versionInStrikethrough = mod.name.match(/^(.*?)\s*\[([^\]]+)\]$/);
+            // Try to extract version from the strikethrough content itself
+            const versionInStrikethrough = contentInsideStrikethrough.match(/^(.*?)\s*\[([^\]]+)\]$/);
             if (versionInStrikethrough) {
                 mod.name = versionInStrikethrough[1].trim();
                 mod.version = versionInStrikethrough[2].trim();
+            } else {
+                mod.name = contentInsideStrikethrough;
             }
             return mod;
         }
 
-        // Define common optional suffixes to simplify regexes
-        // These need to be non-greedy and match from the end of the line
-        const aioSuffix = '(?:\s*\\(\\[AIO\\]\\((https?://[^\\s)]+)\\)\\))?';
-        const infoSuffix = '(?:\s*\\(\\[INFO\\/README\\]\\((https?://[^\\s)]+)\\)\\))?';
-        const noteSuffix = '(?:\\s*\\(([^)]+)\\))?'; // Captures any text in parentheses at the end
-
-        // Combine suffixes for convenience, order matters for parsing
-        const allSuffixes = `${aioSuffix}${infoSuffix}${noteSuffix}`;
-
-
-        // 2. Pattern: [Mod Name](PrimaryLink) [Version] [Suffixes]
-        // Example: [FLD Patch](https://truckymods.io/euro-truck-simulator-2/map-patches/fld-patch) [1.54-1.1.2]
+        // --- Rule 2: Lines that start with '[' and end with ']' (Standard format with primary link) ---
+        // Example: [Kovylkino Map](https://mods.to/CAbx685861824e875) [0.]
         // Example: [BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0] ([INFO/README](https://pastebin.com/raw/tv9QXiTF))
-        let match = trimmedLine.match(
-            new RegExp(`^\\[([^\\]]+)\\]\\((https?://[^\\s)]+)\\)\\s*\\[([^\\]]+)\\]${aioSuffix}${infoSuffix}${noteSuffix}$`)
-        );
+        // Example: [KirovMap 1.7.1(1.54)](https://app.lava.top/products/8ad3e8ec-8fcd-401a-877b-4bd22cada769) [1.54]
+        // This pattern needs to be flexible for optional AIO/INFO/Note suffixes.
+        const fullLinkPattern = /^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(([^)]+)\))?$/;
+        match = trimmedLine.match(fullLinkPattern);
         if (match) {
             mod.name = match[1].trim();
             mod.primaryLink = match[2];
@@ -70,30 +59,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             return mod;
         }
 
-        // 3. Pattern: Mod Name [Version] [Suffixes] (NO primary link, name is not in brackets)
+        // --- Rule 3: Lines that start with a letter and contain AIO (No primary link, but AIO link) ---
         // Example: Heart of Africa [0.2] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/heart-of-africa))
-        // Example: Heart of Africa Assets [0.2]
-        // The key is to ensure the name part does not greedily consume the AIO/INFO/Note parts.
-        match = trimmedLine.match(
-            new RegExp(`^(.*?)\\s*\\[([^\\]]+)\\]${aioSuffix}${infoSuffix}${noteSuffix}$`)
-        );
+        // Example: RIW 2.0 [2.0] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/road-into-wilderness))
+        // Example: Road to Arkhangelsk VK RusMap Patch [1.2] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/road-to-arkhangelsk))
+        const aioOnlyPattern = /^(.*?)\s*\[([^\]]+)\]\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\)\)(?:\s*\(([^)]+)\))?$/;
+        match = trimmedLine.match(aioOnlyPattern);
         if (match) {
             mod.name = match[1].trim();
             mod.version = match[2].trim();
-            mod.aioLink = match[3] || '';
-            mod.infoLink = match[4] || '';
-            mod.note = match[5] ? match[5].trim() : '';
+            mod.aioLink = match[3];
+            mod.note = match[4] ? match[4].trim() : '';
             return mod;
         }
 
-        // 4. Fallback: Simple Mod Name (if no version or links)
-        // Example: Mod Name Only (unlikely based on your file, but good for robustness)
+        // --- Rule 4: Lines that start with a letter and end with ']' (No buttons) ---
+        // Example: M12_vostok_V.2.1 [2.1]
+        // Example: Heart of Africa Assets [0.2]
+        // Example: Project Russia Models 5.6.2a [5.6.2a]
+        const noLinkPattern = /^(.*?)\s*\[([^\]]+)\](?:\s*\(([^)]+)\))?$/; // Optional note at the end
+        match = trimmedLine.match(noLinkPattern);
+        if (match) {
+            mod.name = match[1].trim();
+            mod.version = match[2].trim();
+            mod.note = match[3] ? match[3].trim() : '';
+            return mod;
+        }
+
+        // --- Fallback: Simple Mod Name (if no other pattern matches, e.g., "Kalybay - a lost Road to Aral city") ---
+        // This should be the last resort.
         if (trimmedLine !== '') {
             mod.name = trimmedLine;
             return mod;
         }
 
-        return null; // If no pattern matches, return null
+        return null; // If nothing matches
     }
 
     // Function to format the version number for display
@@ -108,10 +108,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                  // Insert a dot before the last two characters (e.g., "154" becomes "1.54")
                 if (formatted.length > 2) {
                     formatted = formatted.slice(0, -2) + '.' + formatted.slice(-2);
-                } else if (formatted.length === 2) { // e.g. "02" to "0.2" -> assumes 0.X
+                } else if (formatted.length === 2) { // e.g. "02" to "0.2"
                     formatted = '0.' + formatted;
-                } else if (formatted.length === 1) { // e.g. "1" to "1.00" or "0.1" (less likely for game versions)
-                    formatted = formatted + '.00'; // Default to X.00 if single digit, or adjust as needed
                 }
             }
         }
@@ -156,16 +154,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     modNameSpan.classList.add('mod-name');
                     modNameSpan.textContent = mod.name;
 
-                    if (mod.note) {
-                         // Only append note if it's not simply "unavailable" (as that's handled by strikethrough)
-                         if (mod.note !== 'unavailable') {
-                            modNameSpan.textContent += ` (${mod.note})`;
-                         }
+                    if (mod.note && mod.note !== 'unavailable') { // Only append note if it's not simply "unavailable"
+                         modNameSpan.textContent += ` (${mod.note})`;
                     }
 
                     if (mod.unavailable) {
                         modItem.classList.add('mod-unavailable');
-                        // Strikethrough is handled by CSS class, no need for inline style here.
                     }
                     modItem.appendChild(modNameSpan);
 
@@ -210,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: ${mod.version}`;
                         modItem.appendChild(modVersionSpan);
-                    } else if (!mod.unavailable) {
+                    } else if (!mod.unavailable) { // If no version found but not unavailable, show placeholder
                         const modVersionSpan = document.createElement('span');
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: N/A`;
