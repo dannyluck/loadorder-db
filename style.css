@@ -136,24 +136,6 @@ h1 {
     color: #a2d2ff; /* Softer blue */
     font-size: 1.05em;
     margin-right: 15px; /* Space between name and button */
-    display: flex; /* Use flexbox for mod-name content */
-    align-items: center; /* Vertically align items within mod-name */
-    flex-wrap: wrap; /* Allow wrapping if name is very long */
-}
-
-/* AIO Indicator for Mod Name */
-.aio-indicator {
-    display: inline-block;
-    background-color: #27ae60; /* A green similar to your AIO button */
-    color: white;
-    font-size: 0.7em; /* Smaller text */
-    font-weight: 700;
-    padding: 3px 6px;
-    border-radius: 4px;
-    margin-left: 10px; /* Space from the mod name */
-    vertical-align: middle; /* Align with text vertically */
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
 }
 
 .mod-links-container {
@@ -281,11 +263,6 @@ h1 {
     .mod-link-button {
         width: 100%; /* Full width buttons */
         padding: 10px 15px; /* Adjust padding */
-    }
-
-    /* Adjust AIO indicator spacing on smaller screens */
-    .aio-indicator {
-        margin-left: 5px; /* Reduce margin on smaller screens */
     }
 }
 
