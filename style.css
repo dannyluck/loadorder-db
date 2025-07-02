@@ -1,29 +1,31 @@
-/* General Body Styles */
+/* General Body Styles - Modern Beige Background */
 body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Modern font stack */
+    font-family: 'Poppins', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Modern font, Poppins is good if linked */
     margin: 0;
-    padding: 0; /* Full control over padding */
-    background: linear-gradient(to right bottom, #1a2a3a, #101a24); /* Dark subtle gradient background */
-    color: #e0e6f1; /* Soft light text color */
+    padding: 0;
+    background-color: #f8f0e3; /* Soft light beige */
+    color: #362e2c; /* Dark brown/black text */
     line-height: 1.6;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align content to top */
-    min-height: 100vh; /* Full viewport height */
-    padding-top: 40px; /* Space from top */
-    box-sizing: border-box; /* Include padding in element's total width and height */
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 50px; /* More space from top */
+    box-sizing: border-box;
 }
 
-/* Main Container */
+/* Main Container - Glass Effect */
 .container {
-    width: 90%; /* Responsive width */
-    max-width: 960px; /* Max width for large screens */
-    background-color: #2b3a4a; /* Slightly lighter base for content */
-    padding: 35px;
-    border-radius: 12px; /* More rounded corners */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Deeper shadow for depth */
-    border: 1px solid rgba(70, 90, 110, 0.3); /* Subtle border */
-    animation: fadeIn 0.8s ease-out; /* Fade in animation */
+    width: 90%;
+    max-width: 960px;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+    padding: 40px;
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); /* Stronger, diffused shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle, light border for glass effect */
+    backdrop-filter: blur(10px); /* The magic glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+    animation: fadeIn 0.8s ease-out;
 }
 
 /* Animations */
@@ -38,231 +40,267 @@ body {
     }
 }
 
-/* Heading */
+/* Heading - Bright Brown */
 h1 {
     text-align: center;
-    color: #72efdd; /* Vibrant accent color */
-    font-size: 2.5em; /* Larger heading */
-    margin-bottom: 40px;
-    text-shadow: 0 2px 8px rgba(114, 239, 221, 0.2); /* Soft text shadow */
+    color: #8B4513; /* Saddle Brown - a bright brown */
+    font-size: 2.8em; /* Larger heading */
+    margin-bottom: 45px;
+    font-weight: 700; /* Bolder */
+    letter-spacing: 1px;
 }
 
 /* Version Selector Section */
 .version-selector {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 
 .version-selector label {
-    font-size: 1.15em;
+    font-size: 1.2em;
     margin-right: 15px;
-    color: #c2d4e7; /* Slightly distinct label color */
+    color: #5a4b46; /* Slightly lighter dark brown */
     font-weight: 500;
 }
 
 .version-selector select {
-    padding: 12px 20px;
-    border-radius: 8px; /* Consistent rounded corners */
-    border: 1px solid #4a6078; /* Darker border */
-    background-color: #3f546a; /* Darker background for select */
-    color: #e0e6f1;
-    font-size: 1em;
+    padding: 14px 25px;
+    border-radius: 10px; /* Consistent rounded corners */
+    border: 1px solid rgba(139, 69, 19, 0.5); /* Brownish border */
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparent white */
+    color: #362e2c; /* Dark text */
+    font-size: 1.05em;
     cursor: pointer;
-    appearance: none; /* Removes default select arrow */
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    /* Custom SVG arrow (pointing up for this design) */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23e0e6f1%22%20d%3D%22M287%20176.7L146.2%2036.9a8.9%208.9%200%2000-12.6%200L5.4%20176.7c-4.5%204.5-4.5%2011.7%200%2016.2s11.7%204.5%2016.2%200l124.9-124.9L270.8%20192.9c4.5%204.5%2011.7%204.5%2016.2%200s4.5-11.7%200-16.2z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23362e2c%22%20d%3D%22M287%20176.7L146.2%2036.9a8.9%208.9%200%2000-12.6%200L5.4%20176.7c-4.5%204.5-4.5%2011.7%200%2016.2s11.7%204.5%2016.2%200l124.9-124.9L270.8%20192.9c4.5%204.5%2011.7%204.5%2016.2%200s4.5-11.7%200-16.2z%22%2F%3E%3C%2Fsvg%3E'); /* Darker arrow */
     background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 12px;
-    min-width: 150px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
-    transition: all 0.3s ease; /* Smooth transitions */
+    background-position: right 18px center;
+    background-size: 14px;
+    min-width: 180px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .version-selector select:hover {
-    border-color: #72efdd; /* Accent color on hover */
-    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(114, 239, 221, 0.3);
+    border-color: #A0522D; /* Sienna brown on hover */
+    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.15), 0 0 12px rgba(139, 69, 19, 0.2);
 }
 
 .version-selector select:focus {
     outline: none;
-    border-color: #72efdd;
-    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.5), 0 0 12px rgba(114, 239, 221, 0.5);
+    border-color: #8B4513;
+    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2), 0 0 15px rgba(139, 69, 19, 0.4);
 }
 
 /* Mod List Area */
 .mod-list {
-    background-color: #212f3d; /* Darker background for the list itself */
-    padding: 25px;
-    border-radius: 10px;
-    border: 1px solid rgba(60, 80, 100, 0.2);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle inner shadow */
+    background-color: rgba(255, 255, 255, 0.05); /* Very transparent white */
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .mod-list p {
     text-align: center;
-    color: #aebacd;
+    color: #5a4b46;
     font-style: italic;
 }
 
-/* Individual Mod Item */
+/* Individual Mod Item - Better Separation */
 .mod-item {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px dashed rgba(74, 96, 120, 0.4); /* Lighter, more subtle dashed line */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
-    padding: 15px 0; /* Add vertical padding */
+    margin-bottom: 20px; /* More space between items */
+    padding: 18px 25px; /* More internal padding */
+    background-color: rgba(255, 255, 255, 0.08); /* Slightly visible background for each item */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Very subtle internal border */
+}
+
+/* Alternating background for better visual separation */
+.mod-item:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .mod-item:hover {
-    background-color: rgba(63, 84, 106, 0.1); /* Slight highlight on hover */
-    transform: translateY(-2px); /* Subtle lift effect */
+    background-color: rgba(255, 255, 255, 0.15); /* More prominent on hover */
+    transform: translateY(-3px); /* Noticeable lift */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .mod-item:last-child {
-    border-bottom: none;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: 18px; /* Maintain padding at the bottom for the last item */
 }
 
 .mod-name {
-    flex: 1 1 55%; /* Flexible basis, takes more space */
-    font-weight: 600; /* Slightly bolder */
-    color: #a2d2ff; /* Softer blue */
-    font-size: 1.05em;
-    margin-right: 15px; /* Space between name and button */
+    flex: 1 1 55%;
+    font-weight: 600;
+    color: #8B4513; /* Bright brown for mod names */
+    font-size: 1.1em;
+    margin-right: 15px;
+    display: flex; /* For AIO indicator alignment */
+    align-items: center;
 }
+
+/* AIO Indicator Styles - Subtle and integrated */
+.aio-indicator {
+    background-color: #CD853F; /* Peru (brown-orange) */
+    color: white;
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-left: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
 
 .mod-links-container {
     display: flex;
-    flex-wrap: wrap; /* Allows buttons to wrap if too many */
-    gap: 10px; /* Space between buttons */
-    margin-right: 15px; /* Space between links container and version */
-    flex: 0 0 auto; /* Don't grow, take natural width */
+    flex-wrap: wrap;
+    gap: 12px; /* More space between buttons */
+    margin-right: 20px;
+    flex: 0 0 auto;
 }
 
 .mod-link-button {
-    /* Base styles for all new buttons (Primary, AIO, Info) */
-    background: linear-gradient(to right, #3498db, #2980b9); /* Blue gradient */
+    background: #A0522D; /* Sienna brown for primary button */
     color: white;
     border: none;
-    padding: 8px 15px; /* Slightly smaller padding than original 'View Mod' */
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 8px; /* More rounded */
     cursor: pointer;
-    font-size: 0.85em; /* Slightly smaller font */
+    font-size: 0.9em;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    letter-spacing: 0.4px;
-    text-transform: uppercase; /* Make text uppercase for a modern feel */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    min-width: 120px; /* Ensure consistent button size */
 }
 
 .mod-link-button:hover {
-    background: linear-gradient(to right, #2980b9, #206ba7); /* Darker gradient on hover */
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
+    background: #8B4513; /* Darker brown on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 .mod-link-button:active {
     transform: translateY(0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Specific styles for AIO button */
 .aio-button {
-    background: linear-gradient(to right, #27ae60, #229954); /* Green gradient */
+    background: #CD853F; /* Peru (brown-orange) */
 }
 
 .aio-button:hover {
-    background: linear-gradient(to right, #229954, #1e8449);
+    background: #D2691E; /* Chocolate (darker orange) */
 }
 
 /* Specific styles for Info/README button */
 .info-button {
-    background: linear-gradient(to right, #e67e22, #d35400); /* Orange gradient */
+    background: #5a4b46; /* Darker brown */
+    color: #f8f0e3; /* Light text for dark button */
 }
 
 .info-button:hover {
-    background: linear-gradient(to right, #d35400, #b94500);
+    background: #362e2c; /* Even darker brown */
 }
 
-/* Style for unavailable mods (these lines are skipped in JS now, but keeping the class for reference or if logic changes) */
+/* Style for unavailable mods */
 .mod-unavailable .mod-name {
-    text-decoration: line-through; /* Strikethrough the name */
-    color: #a0a0a0; /* Grey out the text */
+    text-decoration: line-through;
+    color: #9a8c88; /* Greyed out brown */
     font-style: italic;
 }
 
 .mod-unavailable .mod-link-button {
     opacity: 0.6;
     cursor: not-allowed;
-    pointer-events: none; /* Prevent clicks */
+    pointer-events: none;
     box-shadow: none;
 }
 
 .mod-version {
-    flex: 0 0 auto; /* No flex grow/shrink */
+    flex: 0 0 auto;
     font-style: italic;
-    color: #b0c4de;
-    font-size: 0.9em;
-    white-space: nowrap; /* Prevent version from wrapping */
+    color: #5a4b46; /* Slightly lighter dark brown */
+    font-size: 0.95em;
+    white-space: nowrap;
+    margin-left: auto; /* Push version to the right */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     body {
-        padding: 20px 10px; /* Reduce overall padding */
+        padding: 30px 15px;
     }
 
     .container {
-        padding: 25px;
-        width: 95%; /* Wider on smaller screens */
+        padding: 30px;
+        width: 95%;
     }
 
     h1 {
-        font-size: 2em; /* Smaller heading */
-        margin-bottom: 30px;
+        font-size: 2.2em;
+        margin-bottom: 35px;
     }
 
     .version-selector label {
-        display: block; /* Stack label and select */
-        margin-bottom: 10px;
+        display: block;
+        margin-bottom: 12px;
         margin-right: 0;
     }
 
     .version-selector select {
-        width: 100%; /* Full width select */
+        width: 100%;
         min-width: unset;
+        padding: 12px 20px;
     }
 
     .mod-item {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align stacked items to the left */
-        padding: 10px 0; /* Adjust padding */
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+        margin-bottom: 15px;
     }
 
-    .mod-name, .mod-version {
-        flex-basis: 100%; /* Each takes full width */
+    .mod-name {
+        flex-basis: 100%;
         margin-right: 0;
-        margin-bottom: 8px; /* Space between stacked elements */
+        margin-bottom: 10px;
+        font-size: 1em; /* Adjust font size */
     }
     
     .mod-links-container {
-        flex-direction: column; /* Stack buttons vertically */
-        width: 100%; /* Take full width */
-        gap: 8px; /* Slightly smaller gap when stacked */
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
         margin-right: 0;
-        margin-bottom: 8px; /* Space below button stack */
+        margin-bottom: 10px;
     }
 
     .mod-link-button {
-        width: 100%; /* Full width buttons */
-        padding: 10px 15px; /* Adjust padding */
+        width: 100%;
+        padding: 12px 18px;
+    }
+
+    .mod-version {
+        flex-basis: 100%;
+        text-align: left;
+        margin-left: 0; /* Align version to the left when stacked */
+        font-size: 0.9em;
     }
 }
 
@@ -272,10 +310,11 @@ h1 {
     }
 
     h1 {
-        font-size: 1.6em;
+        font-size: 1.8em;
     }
 
     .mod-item {
-        font-size: 0.9em; /* Slightly smaller text for mod items */
+        padding: 12px 15px;
+        font-size: 0.95em;
     }
 }
