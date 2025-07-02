@@ -160,14 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     modNameSpan.classList.add('mod-name');
                     modNameSpan.textContent = mod.name;
 
-                    // --- NEW: Add AIO indicator ---
-                    if (mod.aioLink) {
-                        const aioIndicator = document.createElement('span');
-                        aioIndicator.classList.add('aio-indicator');
-                        aioIndicator.textContent = '[AIO]'; // Or '📦 AIO' etc.
-                        modNameSpan.appendChild(aioIndicator);
-                    }
-
+                    // --- REMOVED: AIO indicator text here ---
+                    // The AIO button already provides sufficient indication.
 
                     if (mod.note) { // Append note if it exists (and it won't be "unavailable" due to the skip above)
                          modNameSpan.textContent += ` (${mod.note})`;
