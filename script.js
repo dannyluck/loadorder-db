@@ -16,62 +16,81 @@ document.addEventListener('DOMContentLoaded', async () => {
             aioLink: '',
             infoLink: '',
             unavailable: false,
-            note: '' // For "paid mod" or "unofficial reuploads" notes
+            note: ''
         };
 
-        // Check for unavailable mods first (~~Mod Name~~ (unavailable))
-        const unavailableMatch = line.match(/^~~(.*?)(\s*\[.*?\])?~~(\s*\((unavailable.*)\))?$/);
+        // Trim the line to remove leading/trailing whitespace
+        const trimmedLine = line.trim();
+
+        // 1. Check for unavailable mods first (~~Mod Name~~ (unavailable))
+        const unavailableMatch = trimmedLine.match(/^~~(.*?)(\s*\[.*?\])?~~(?:\s*\((unavailable.*)\))?$/);
         if (unavailableMatch) {
-            mod.name = unavailableMatch[1].trim();
             mod.unavailable = true;
-            if (unavailableMatch[4]) {
-                mod.note = unavailableMatch[4]; // Capture the "unavailable - unofficial reuploads can be found" part
-            } else if (unavailableMatch[3]) {
+            mod.name = unavailableMatch[1].trim();
+            if (unavailableMatch[3]) { // Check if the full note like "unavailable - unofficial..." exists
+                mod.note = 'unavailable ' + unavailableMatch[3].trim();
+            } else if (unavailableMatch[2]) { // If only "[Version]" was part of the strikethrough, it's just unavailable
                 mod.note = 'unavailable';
+            } else {
+                mod.note = 'unavailable'; // Default unavailable note
             }
-            // Try to extract version even if unavailable
-            const versionInNameMatch = mod.name.match(/^(.*?)(\s*\[(.*?)\])$/);
-            if (versionInNameMatch) {
-                mod.name = versionInNameMatch[1].trim();
-                mod.version = versionInNameMatch[3].trim();
+
+            // Attempt to extract version if it's within the strikethrough text, e.g., "~~Mod Name [Version]~~"
+            const versionInStrikethrough = mod.name.match(/^(.*?)\s*\[([^\]]+)\]$/);
+            if (versionInStrikethrough) {
+                mod.name = versionInStrikethrough[1].trim();
+                mod.version = versionInStrikethrough[2].trim();
             }
             return mod;
         }
 
-        // Regex for the most complex line: [Name](PrimaryLink) [Version] ([AIO](AIO Link)) ([INFO/README](Info Link)) (Note)
-        // This is tricky because the order of (AIO) and (INFO/README) or (Note) can vary,
-        // and some parts might be missing. We'll try to capture main parts, then additional.
+        // Define common optional suffixes to simplify regexes
+        // These need to be non-greedy and match from the end of the line
+        const aioSuffix = '(?:\s*\\(\\[AIO\\]\\((https?://[^\\s)]+)\\)\\))?';
+        const infoSuffix = '(?:\s*\\(\\[INFO\\/README\\]\\((https?://[^\\s)]+)\\)\\))?';
+        const noteSuffix = '(?:\\s*\\(([^)]+)\\))?'; // Captures any text in parentheses at the end
 
-        // Pattern 1: [Name](Link) [Version] (with optional AIO/INFO/Note)
-        let match = line.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\((.*)\))?$/);
+        // Combine suffixes for convenience, order matters for parsing
+        const allSuffixes = `${aioSuffix}${infoSuffix}${noteSuffix}`;
+
+
+        // 2. Pattern: [Mod Name](PrimaryLink) [Version] [Suffixes]
+        // Example: [FLD Patch](https://truckymods.io/euro-truck-simulator-2/map-patches/fld-patch) [1.54-1.1.2]
+        // Example: [BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0] ([INFO/README](https://pastebin.com/raw/tv9QXiTF))
+        let match = trimmedLine.match(
+            new RegExp(`^\\[([^\\]]+)\\]\\((https?://[^\\s)]+)\\)\\s*\\[([^\\]]+)\\]${aioSuffix}${infoSuffix}${noteSuffix}$`)
+        );
         if (match) {
             mod.name = match[1].trim();
             mod.primaryLink = match[2];
             mod.version = match[3].trim();
-            if (match[4]) mod.aioLink = match[4];
-            if (match[5]) mod.infoLink = match[5];
-            if (match[6]) mod.note = match[6].trim();
+            mod.aioLink = match[4] || '';
+            mod.infoLink = match[5] || '';
+            mod.note = match[6] ? match[6].trim() : '';
             return mod;
         }
 
-        // Pattern 2: Name [Version] (with optional AIO/INFO/Note, no primary link)
-        match = line.match(/^(.*?)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\((.*)\))?$/);
+        // 3. Pattern: Mod Name [Version] [Suffixes] (NO primary link, name is not in brackets)
+        // Example: Heart of Africa [0.2] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/heart-of-africa))
+        // Example: Heart of Africa Assets [0.2]
+        // The key is to ensure the name part does not greedily consume the AIO/INFO/Note parts.
+        match = trimmedLine.match(
+            new RegExp(`^(.*?)\\s*\\[([^\\]]+)\\]${aioSuffix}${infoSuffix}${noteSuffix}$`)
+        );
         if (match) {
             mod.name = match[1].trim();
             mod.version = match[2].trim();
-            if (match[3]) mod.aioLink = match[3];
-            if (match[4]) mod.infoLink = match[4];
-            if (match[5]) mod.note = match[5].trim();
+            mod.aioLink = match[3] || '';
+            mod.infoLink = match[4] || '';
+            mod.note = match[5] ? match[5].trim() : '';
             return mod;
         }
-        
-        // Pattern 3: Name (No version, no link, often for "assets" type mods if they ever exist like this)
-        // This is less common based on your file, but good for robustness.
-        // Example: Heart of Africa Assets [0.2] is caught by Pattern 2.
-        // If there was "Mod Name" only, it would get caught here.
-        if (line.trim() !== '') {
-             mod.name = line.trim();
-             return mod;
+
+        // 4. Fallback: Simple Mod Name (if no version or links)
+        // Example: Mod Name Only (unlikely based on your file, but good for robustness)
+        if (trimmedLine !== '') {
+            mod.name = trimmedLine;
+            return mod;
         }
 
         return null; // If no pattern matches, return null
@@ -89,8 +108,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                  // Insert a dot before the last two characters (e.g., "154" becomes "1.54")
                 if (formatted.length > 2) {
                     formatted = formatted.slice(0, -2) + '.' + formatted.slice(-2);
-                } else if (formatted.length === 2) { // e.g. "02" to "0.2"
+                } else if (formatted.length === 2) { // e.g. "02" to "0.2" -> assumes 0.X
                     formatted = '0.' + formatted;
+                } else if (formatted.length === 1) { // e.g. "1" to "1.00" or "0.1" (less likely for game versions)
+                    formatted = formatted + '.00'; // Default to X.00 if single digit, or adjust as needed
                 }
             }
         }
@@ -105,7 +126,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         modListDiv.innerHTML = '<p>Loading mods...</p>';
         try {
-            // Use the raw.githubusercontent.com path
             const response = await fetch(`https://raw.githubusercontent.com/${githubUser}/${githubRepo}/${githubBranch}/${loadordersPath}/loadorder${version}.txt`);
             
             if (!response.ok) {
@@ -128,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             lines.forEach(line => {
                 const mod = parseModLine(line);
-                if (mod) {
+                if (mod && mod.name) { // Ensure mod object is valid and has a name
                     const modItem = document.createElement('div');
                     modItem.classList.add('mod-item');
 
@@ -136,23 +156,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                     modNameSpan.classList.add('mod-name');
                     modNameSpan.textContent = mod.name;
 
-                    if (mod.note) { // Append any notes like "paid mod" or "unavailable"
-                         modNameSpan.textContent += ` (${mod.note})`;
+                    if (mod.note) {
+                         // Only append note if it's not simply "unavailable" (as that's handled by strikethrough)
+                         if (mod.note !== 'unavailable') {
+                            modNameSpan.textContent += ` (${mod.note})`;
+                         }
                     }
+
                     if (mod.unavailable) {
-                        modItem.classList.add('mod-unavailable'); // Add a class for unavailable styling
-                        modNameSpan.style.textDecoration = 'line-through'; // Strikethrough for unavailable
+                        modItem.classList.add('mod-unavailable');
+                        // Strikethrough is handled by CSS class, no need for inline style here.
                     }
                     modItem.appendChild(modNameSpan);
 
-                    const modLinksDiv = document.createElement('div'); // Container for all links/buttons
+                    const modLinksDiv = document.createElement('div');
                     modLinksDiv.classList.add('mod-links-container');
 
 
                     // Primary Link Button
                     if (mod.primaryLink) {
                         const linkButton = document.createElement('button');
-                        linkButton.classList.add('mod-link-button'); // New class for buttons
+                        linkButton.classList.add('mod-link-button');
                         linkButton.textContent = 'View Mod';
                         linkButton.onclick = () => window.open(mod.primaryLink, '_blank');
                         modLinksDiv.appendChild(linkButton);
@@ -161,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // AIO Link Button
                     if (mod.aioLink) {
                         const aioButton = document.createElement('button');
-                        aioButton.classList.add('mod-link-button', 'aio-button'); // Add aio-button class for distinct styling
+                        aioButton.classList.add('mod-link-button', 'aio-button');
                         aioButton.textContent = 'AIO Download';
                         aioButton.onclick = () => window.open(mod.aioLink, '_blank');
                         modLinksDiv.appendChild(aioButton);
@@ -170,13 +194,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // INFO/README Link Button
                     if (mod.infoLink) {
                         const infoButton = document.createElement('button');
-                        infoButton.classList.add('mod-link-button', 'info-button'); // Add info-button class for distinct styling
+                        infoButton.classList.add('mod-link-button', 'info-button');
                         infoButton.textContent = 'Info/README';
                         infoButton.onclick = () => window.open(mod.infoLink, '_blank');
                         modLinksDiv.appendChild(infoButton);
                     }
                     
-                    if (modLinksDiv.children.length > 0) { // Only append if there are buttons
+                    if (modLinksDiv.children.length > 0) {
                         modItem.appendChild(modLinksDiv);
                     }
 
@@ -186,17 +210,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: ${mod.version}`;
                         modItem.appendChild(modVersionSpan);
-                    } else if (!mod.unavailable) { // If no version found but not unavailable, show placeholder
+                    } else if (!mod.unavailable) {
                         const modVersionSpan = document.createElement('span');
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: N/A`;
                         modItem.appendChild(modVersionSpan);
                     }
 
-
                     modListDiv.appendChild(modItem);
                 } else {
-                    console.warn(`Skipping malformed line: ${line}`);
+                    console.warn(`Skipping malformed line: "${line}"`);
                 }
             });
         } catch (error) {
@@ -216,18 +239,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             const files = await response.json();
 
-            // Filter for .txt files and extract version numbers (e.g., "154")
             const rawVersions = files
                 .filter(file => file.type === 'file' && file.name.startsWith('loadorder') && file.name.endsWith('.txt'))
                 .map(file => file.name.replace('loadorder', '').replace('.txt', ''))
                 .sort((a, b) => {
-                    // Custom sort for version strings like "154" vs "1_50" (convert to float for comparison)
                     const numA = parseFloat(a.replace(/_/g, '.'));
                     const numB = parseFloat(b.replace(/_/g, '.'));
                     return numA - numB;
                 });
             
-            gameVersionSelect.innerHTML = ''; // Clear existing options
+            gameVersionSelect.innerHTML = '';
 
             if (rawVersions.length === 0) {
                 const option = document.createElement('option');
@@ -240,8 +261,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             rawVersions.forEach(version => {
                 const option = document.createElement('option');
-                option.value = version; // The value remains "154" for file fetching
-                option.textContent = formatVersionForDisplay(version); // Display "1.54"
+                option.value = version;
+                option.textContent = formatVersionForDisplay(version);
                 gameVersionSelect.appendChild(option);
             });
 
