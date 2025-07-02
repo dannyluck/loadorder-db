@@ -9,23 +9,24 @@
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hi sora's loadorder db</title>
+    <title>ETS2 Load Order</title>
     <link rel="stylesheet" href="style.css">
-</head>
+    </head>
 <body>
+    <button id="darkModeToggle" class="dark-mode-toggle">
+        <span class="icon">☀️</span> <span class="text">Light Mode</span>
+    </button>
+
     <div class="container">
-        <h1>hi sora's load-order database</h1>
+        <h1>ETS2 Mod Load Order</h1>
 
         <div class="version-selector">
-            <div class="version-selector">
-                <label for="gameVersion">Select Game Version:</label>
-                <select id="gameVersion">
-                </select>
-            </div>
+            <label for="gameVersion">Select Game Version:</label>
+            <select id="gameVersion"></select>
         </div>
 
         <div id="modList" class="mod-list">
-            <p>Please select a game version to display the load order</p>
+            <p>Select a version to display the load order.</p>
         </div>
     </div>
 
