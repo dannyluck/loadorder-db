@@ -26,7 +26,7 @@ Heart of Africa Assets [0.2]
 [West Africa](https://truckymods.io/euro-truck-simulator-2/maps/west-africa) [0.03]
 [BXP Tunisia - Egyptian-Libyan Gateway FIX](https://sharemods.com/jr5j1sv9qf4v/BXP_Tunisia_-_Egyptian-Libyian_Gateway_FIX.scs.html) [1.0]
 [BXP Tunisia & Libya RC](https://mods.to/ulja6802a9041b9f1) [154.0]
-[BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0] ([INFO/README](https://pastebin.com/raw/tv9QXiTF))
+[BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0]
 [El Enclaves - RIW RC](https://truckymods.io/euro-truck-simulator-2/map-patches/el-enclaves-riw-rc-496682) [1.1]
 [RIW to Beyond RC](https://truckymods.io/euro-truck-simulator-2/maps/road-into-wilderness-road-to-africa-road-connection) [1.9]
 [RIW to Horn of Africa](https://truckymods.io/euro-truck-simulator-2/maps/road-into-wilderness-horn-of-africa-road-connection) [2.0]
@@ -75,7 +75,7 @@ Ukraine Expansion FIX [1.1]
 [Fix for Roextended Premium | ProMods RusMap Roextended Connector (ProMods priority version)](https://truckymods.io/euro-truck-simulator-2/map-patches/fix-for-roextended-premium-promods-rusmap-roextended-connector-promods-priority-version-495136) [1.0]
 [KOLA RM RC 1.54](https://truckymods.io/euro-truck-simulator-2/maps/cola-for-ruamapvk-rc-promods-559398) [1.54]
 [ProMods RusMap Roextended Connector (ProMods priority version)](https://truckymods.io/euro-truck-simulator-2/map-patches/promods-rusmap-roextended-connector-promods-priority-version-880092) [1.54]
-46FRoex2 [4.6] ([AIO, includes 46FRoex1](https://roextended.ro/forum/viewtopic.php?f=16&t=2740))
+46FRoex2 [4.6] ([AIO](https://roextended.ro/forum/viewtopic.php?f=16&t=2740))
 46FRoex3 [4.6]
 46FRoex4 [4.6]
 [Road to Caucasus - RusMap RC](https://truckymods.io/euro-truck-simulator-2/maps/road-to-caucasus-rusmap-road-connector) [Beta 1.6]
@@ -107,7 +107,6 @@ ScandinaviaMod Map Package [0.4.1]
 [Rröfte Kosova - West Balkans Improvements](https://truckymods.io/euro-truck-simulator-2/maps/rrofte-kosova-west-balkans-improvements) [0.3.2]
 [Senj Map Add-on](https://truckymods.io/euro-truck-simulator-2/maps/senj-west-balkans-map-add-on) [1.2]
 [Großwilfersdorf Map Add-On](https://truckymods.io/euro-truck-simulator-2/maps/grosswilfersdorf-map-add-on-for-promods) [1.0]
-~~Sylt - a ProMods addon [1.0]~~ (unavailable)
 [E60 Extended - ProMods Addon](https://truckymods.io/euro-truck-simulator-2/maps/e60-extended-promods-addon-768660) [1.0]
 [ProMods Addon - Emden (V7)](https://truckymods.io/euro-truck-simulator-2/maps/promods-addon-emden) [7]
 [SFIGC - Promods Addon](https://truckymods.io/euro-truck-simulator-2/maps/sfigc) [0.6.2.1]
@@ -122,7 +121,6 @@ ScandinaviaMod Map Package [0.4.1]
 [Isle Of Colonsay V2.0](https://truckymods.io/euro-truck-simulator-2/maps/isle-of-colonsay) [2.0]
 [Road to Caucasus - Promods RC](https://truckymods.io/euro-truck-simulator-2/maps/road-to-caucasus-promods-road-connector) [Beta 1.2]
 [Northern Cyprus Add-on](https://sharemods.com/j1fudff8t6bg/Northern_Cyprus_Addon.scs.html) [1.0]
-~~Syria - a ProMods Addon [1.0]~~ unavailable
 [Egyptian-Libyan Gateway](https://truckymods.io/euro-truck-simulator-2/maps/egyptian-libyan-gateway-843003) [1.0]
 [Red Sea Map + Beyond PMME RC + Beyond PM Fix](https://truckymods.io/euro-truck-simulator-2/map-patches/red-sea-map-beyond-pmme-rc-beyond-pm-fix) [1.54-1.1.0]
 [Project Palestine - ProMods Middle East Add-on](https://truckymods.io/euro-truck-simulator-2/maps/palestine-add-on-for-promods-middle-east-v10-beta) [1.6]
@@ -133,7 +131,7 @@ ProMods Middle-East Add-on (Assets Package) [2.74]
 donbass_map 1 54 [1.54] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/donbass-map-461295))
 db_model 1.54 [1.54]
 [ROEX46SR13.1 RC v2](https://roextended.ro/forum/viewtopic.php?f=16&t=2741) [4.6]
-46CoreM0 [4.6] (optional - premium roex)
+46CoreM0 [4.6]
 46FRoex1 [4.6]
 [Чукотский Автономный Округ Add-on](https://truckymods.io/euro-truck-simulator-2/maps/cukotskii-avtonomnyi-okrug-add-on) [Alpha 3]
 [FER - TsT-OTGR-RC RC](https://truckymods.io/euro-truck-simulator-2/map-patches/far-east-russia-tst-otgr-rc-rc-616434) [Alpha]
@@ -179,10 +177,8 @@ Horn of Africa - Assets/Models 2 [1.0]
 [Road to Aral Reworked](https://truckymods.io/euro-truck-simulator-2/maps/road-to-aral-revamped-10-927504)
 [Republic of Kazakhstan - ProMods The Great Steppe FIX](https://truckymods.io/euro-truck-simulator-2/map-patches/map-of-the-republic-of-kazakhstan-promods-the-great-steppe-fix) [1.2]
 [Wakkanai - The Gateway to Japan](https://truckymods.io/euro-truck-simulator-2/maps/wakkanai-the-gateway-to-japan-625895) [1.0]
-~~Maldives Map 0.1 [0.11]~~ (unavailable - unofficial reuploads can be found)
 [Nauru Map](https://truckymods.io/euro-truck-simulator-2/maps/nauru-map) [1.0]
 [Project Cuba](https://truckymods.io/euro-truck-simulator-2/maps/project-cuba-614926) [1.0]
-~~ProAustralia [1.1]~~ (unavailable - unofficial reuploads can be found)
 Antarctica Map 0.8 DEF [0.8] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/antarctica-map))
 Antarctica Map 0.8 MAP [0.8]
 [Truck Dream Road FIX](https://truckymods.io/euro-truck-simulator-2/map-patches/truck-dream-road-fix-890381) [1.0]
