@@ -48,7 +48,7 @@ More Russia Map NNMap RC [1.1] ([AIO](https://truckymods.io/euro-truck-simulator
 More Russia Map [4.1.54]
 [NNMap - ProMods Fix 1.54-1.0](https://truckymods.io/euro-truck-simulator-2/map-patches/nnmap-promods-fix) [1.54-1.0]
 [NNmap 1.2.0](https://truckymods.io/euro-truck-simulator-2/maps/nnmap) [1.2.0]
-[KirovMap 1.7.1(1.54)](https://app.lava.top/products/8ad3e8ec-8fcd-401a-877b-4bd22cada769) [1.54] (paid mod, free version can be used but you would have to use a different RC for Kirov - NOS)
+[KirovMap 1.7.1(1.54)](https://app.lava.top/products/8ad3e8ec-8fcd-401a-877b-4bd22cada769) [1.54]
 [Project Russia FIX for 5.6.2a](https://truckymods.io/euro-truck-simulator-2/map-patches/project-russia-fix) [1.1.1]
 Project Russia Def 5.6.2a [5.6.2a] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/project-russia))
 Project Russia Models 5.6.2a [5.6.2a]
