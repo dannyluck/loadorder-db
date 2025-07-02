@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Example: [BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0] ([INFO/README](https://pastebin.com/raw/tv9QXiTF))
         // Example: [KirovMap 1.7.1(1.54)](https://app.lava.top/products/8ad3e8ec-8fcd-401a-877b-4bd22cada769) [1.54]
         // This pattern needs to be flexible for optional AIO/INFO/Note suffixes.
-        const fullLinkPattern = /^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(([^)]+)\))?$/;
+        const fullLinkPattern = /^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:(?:\s*-\s*)?\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(([^)]+)\))?$/;
         match = trimmedLine.match(fullLinkPattern);
         if (match) {
             mod.name = match[1].trim();
@@ -146,6 +146,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             lines.forEach(line => {
                 const mod = parseModLine(line);
+                
+                // --- Skip unavailable mods ---
+                if (mod && mod.unavailable) {
+                    return; // Skip to the next line in the loop
+                }
+
                 if (mod && mod.name) { // Ensure mod object is valid and has a name
                     const modItem = document.createElement('div');
                     modItem.classList.add('mod-item');
@@ -154,13 +160,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     modNameSpan.classList.add('mod-name');
                     modNameSpan.textContent = mod.name;
 
-                    if (mod.note && mod.note !== 'unavailable') { // Only append note if it's not simply "unavailable"
-                         modNameSpan.textContent += ` (${mod.note})`;
+                    // --- NEW: Add AIO indicator ---
+                    if (mod.aioLink) {
+                        const aioIndicator = document.createElement('span');
+                        aioIndicator.classList.add('aio-indicator');
+                        aioIndicator.textContent = '[AIO]'; // Or '📦 AIO' etc.
+                        modNameSpan.appendChild(aioIndicator);
                     }
 
-                    if (mod.unavailable) {
-                        modItem.classList.add('mod-unavailable');
+
+                    if (mod.note) { // Append note if it exists (and it won't be "unavailable" due to the skip above)
+                         modNameSpan.textContent += ` (${mod.note})`;
                     }
+                    
                     modItem.appendChild(modNameSpan);
 
                     const modLinksDiv = document.createElement('div');
@@ -204,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: ${mod.version}`;
                         modItem.appendChild(modVersionSpan);
-                    } else if (!mod.unavailable) { // If no version found but not unavailable, show placeholder
+                    } else { // If no version found and not unavailable, show placeholder
                         const modVersionSpan = document.createElement('span');
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: N/A`;
