@@ -173,8 +173,8 @@ Horn of Africa - Assets/Models 2 [1.0]
 [ProMods The Great Steppe - SibirMap FIX](https://truckymods.io/euro-truck-simulator-2/map-patches/154-promods-the-great-steppe-sibirmap-fix) [1.0]
 [Alekseevskoye - Almetyevsk Highway Addon](https://truckymods.io/euro-truck-simulator-2/maps/alekseevskoye-almetyevsk-highway-addon-779599) [1.0]
 [SibirMap 2.10.1](https://modsfire.com/QzKbDtSE50XJUJQ) [2.10.1]
-[Kalybay - a lost Road to Aral city](https://truckymods.io/euro-truck-simulator-2/maps/kalybay-a-lost-road-to-arals-city-332612)
-[Road to Aral Reworked](https://truckymods.io/euro-truck-simulator-2/maps/road-to-aral-revamped-10-927504)
+[Kalybay - a lost Road to Aral city](https://truckymods.io/euro-truck-simulator-2/maps/kalybay-a-lost-road-to-arals-city-332612) [1.0]
+[Road to Aral Reworked](https://truckymods.io/euro-truck-simulator-2/maps/road-to-aral-revamped-10-927504) [1.0]
 [Republic of Kazakhstan - ProMods The Great Steppe FIX](https://truckymods.io/euro-truck-simulator-2/map-patches/map-of-the-republic-of-kazakhstan-promods-the-great-steppe-fix) [1.2]
 [Wakkanai - The Gateway to Japan](https://truckymods.io/euro-truck-simulator-2/maps/wakkanai-the-gateway-to-japan-625895) [1.0]
 [Nauru Map](https://truckymods.io/euro-truck-simulator-2/maps/nauru-map) [1.0]
