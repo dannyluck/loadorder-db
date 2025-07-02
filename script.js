@@ -1,11 +1,47 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const gameVersionSelect = document.getElementById('gameVersion');
     const modListDiv = document.getElementById('modList');
+    const darkModeToggle = document.getElementById('darkModeToggle'); // Get the toggle button
 
     const githubUser = 'dannyluck';
     const githubRepo = 'loadorder-db';
     const loadordersPath = 'loadorders';
     const githubBranch = 'main'; // Or 'master' if that's your default branch
+
+    // --- Dark Mode Logic ---
+    const applyDarkMode = (isDarkMode) => {
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.querySelector('.icon').textContent = '🌙';
+            darkModeToggle.querySelector('.text').textContent = 'Dark Mode';
+        } else {
+            document.body.classList.remove('dark-mode');
+            darkModeToggle.querySelector('.icon').textContent = '☀️';
+            darkModeToggle.querySelector('.text').textContent = 'Light Mode';
+        }
+    };
+
+    // Load dark mode preference from localStorage
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'enabled') {
+        applyDarkMode(true);
+    } else {
+        applyDarkMode(false); // Ensure light mode is applied if no preference or disabled
+    }
+
+    // Toggle dark mode on button click
+    darkModeToggle.addEventListener('click', () => {
+        const isCurrentlyDarkMode = document.body.classList.contains('dark-mode');
+        if (isCurrentlyDarkMode) {
+            applyDarkMode(false);
+            localStorage.setItem('darkMode', 'disabled');
+        } else {
+            applyDarkMode(true);
+            localStorage.setItem('darkMode', 'enabled');
+        }
+    });
+    // --- End Dark Mode Logic ---
+
 
     // Function to parse a single mod line
     function parseModLine(line) {
@@ -23,72 +59,64 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!trimmedLine) return null; // Skip empty lines
 
         // --- Rule 1: Check for UNAVAILABLE mods first (~~Mod Name~~ (unavailable...)) ---
-        // This regex captures the strikethrough content and the optional unavailable note
-        const unavailablePattern = /^~~(.*?)~~(?:\s*\((unavailable.*)\))?$/;
+        // Using named capture groups
+        const unavailablePattern = /^~~(?<name>.*?)~~(?:\s*\((?<note>unavailable.*)\))?$/;
         let match = trimmedLine.match(unavailablePattern);
         if (match) {
             mod.unavailable = true;
-            let contentInsideStrikethrough = match[1].trim();
-            mod.note = match[2] ? `unavailable (${match[2].trim()})` : 'unavailable';
+            let contentInsideStrikethrough = match.groups.name.trim();
+            mod.note = match.groups.note ? `unavailable (${match.groups.note.trim()})` : 'unavailable';
 
             // Try to extract version from the strikethrough content itself
-            const versionInStrikethrough = contentInsideStrikethrough.match(/^(.*?)\s*\[([^\]]+)\]$/);
+            const versionInStrikethrough = contentInsideStrikethrough.match(/^(?<tempName>.*?)\s*\[(?<tempVersion>[^\]]+)\]$/);
             if (versionInStrikethrough) {
-                mod.name = versionInStrikethrough[1].trim();
-                mod.version = versionInStrikethrough[2].trim();
+                mod.name = versionInStrikethrough.groups.tempName.trim();
+                mod.version = versionInStrikethrough.groups.tempVersion.trim();
             } else {
                 mod.name = contentInsideStrikethrough;
             }
             return mod;
         }
 
-        // --- Rule 2: Lines that start with '[' and end with ']' (Standard format with primary link) ---
-        // Example: [Kovylkino Map](https://mods.to/CAbx685861824e875) [0.]
-        // Example: [BXP RIW Tunisia](https://mods.to/IP3B67eea9f139b48) [154.0] ([INFO/README](https://pastebin.com/raw/tv9QXiTF))
-        // Example: [KirovMap 1.7.1(1.54)](https://app.lava.top/products/8ad3e8ec-8fcd-401a-877b-4bd22cada769) [1.54]
-        // This pattern needs to be flexible for optional AIO/INFO/Note suffixes.
-        // **CRITICAL FIX HERE: Added \s* after the first ] to allow space before the link parenthesis.**
-        const fullLinkPattern = /^\[([^\]]+)\]\s*\((https?:\/\/[^\s)]+)\)\s*\[([^\]]+)\](?:\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\))?(?:(?:\s*-\s*)?\(\[INFO\/README\]\((https?:\/\/[^\s)]+)\))?(?:\s*\(([^)]+)\))?$/;
+        // --- Rule 2: Lines with primary link (standard format with primary link) ---
+        // Made version, AIO, INFO, Note optional and used named capture groups
+        const fullLinkPattern = /^\[(?<name>[^\]]+)\]\s*\((?<primaryLink>https?:\/\/[^\s)]+)\)(?:\s*\[(?<version>[^\]]+)\])?(?:\s*\(\[AIO\]\((?<aioLink>https?:\/\/[^\s)]+)\))?(?:(?:\s*-\s*)?\(\[INFO\/README\]\((?<infoLink>https?:\/\/[^\s)]+)\))?(?:\s*\((?<note>[^)]+)\))?$/;
         match = trimmedLine.match(fullLinkPattern);
         if (match) {
-            mod.name = match[1].trim();
-            mod.primaryLink = match[2];
-            mod.version = match[3].trim();
-            mod.aioLink = match[4] || '';
-            mod.infoLink = match[5] || '';
-            mod.note = match[6] ? match[6].trim() : '';
+            mod.name = match.groups.name.trim();
+            mod.primaryLink = match.groups.primaryLink;
+            // Use optional chaining or direct assignment from groups, which will be undefined if not matched
+            mod.version = match.groups.version || '';
+            mod.aioLink = match.groups.aioLink || '';
+            mod.infoLink = match.groups.infoLink || '';
+            mod.note = match.groups.note ? match.groups.note.trim() : '';
             return mod;
         }
 
         // --- Rule 3: Lines that start with a letter and contain AIO (No primary link, but AIO link) ---
-        // Example: Heart of Africa [0.2] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/heart-of-africa))
-        // Example: RIW 2.0 [2.0] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/road-into-wilderness))
-        // Example: Road to Arkhangelsk VK RusMap Patch [1.2] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/road-to-arkhangelsk))
-        const aioOnlyPattern = /^(.*?)\s*\[([^\]]+)\]\s*\(\[AIO\]\((https?:\/\/[^\s)]+)\)\)(?:\s*\(([^)]+)\))?$/;
+        // Using named capture groups for consistency
+        const aioOnlyPattern = /^(?<name>.*?)\s*\[(?<version>[^\]]+)\]\s*\(\[AIO\]\((?<aioLink>https?:\/\/[^\s)]+)\)\)(?:\s*\((?<note>[^)]+)\))?$/;
         match = trimmedLine.match(aioOnlyPattern);
         if (match) {
-            mod.name = match[1].trim();
-            mod.version = match[2].trim();
-            mod.aioLink = match[3];
-            mod.note = match[4] ? match[4].trim() : '';
+            mod.name = match.groups.name.trim();
+            mod.version = match.groups.version.trim();
+            mod.aioLink = match.groups.aioLink;
+            mod.note = match.groups.note ? match.groups.note.trim() : '';
             return mod;
         }
 
         // --- Rule 4: Lines that start with a letter and end with ']' (No buttons) ---
-        // Example: M12_vostok_V.2.1 [2.1]
-        // Example: Heart of Africa Assets [0.2]
-        // Example: Project Russia Models 5.6.2a [5.6.2a]
-        const noLinkPattern = /^(.*?)\s*\[([^\]]+)\](?:\s*\(([^)]+)\))?$/; // Optional note at the end
+        // Using named capture groups for consistency
+        const noLinkPattern = /^(?<name>.*?)\s*\[(?<version>[^\]]+)\](?:\s*\((?<note>[^)]+)\))?$/; // Optional note at the end
         match = trimmedLine.match(noLinkPattern);
         if (match) {
-            mod.name = match[1].trim();
-            mod.version = match[2].trim();
-            mod.note = match[3] ? match[3].trim() : '';
+            mod.name = match.groups.name.trim();
+            mod.version = match.groups.version.trim();
+            mod.note = match.groups.note ? match.groups.note.trim() : '';
             return mod;
         }
 
-        // --- Fallback: Simple Mod Name (if no other pattern matches, e.g., "Kalybay - a lost Road to Aral city") ---
-        // This should be the last resort.
+        // --- Fallback: Simple Mod Name (if no other pattern matches) ---
         if (trimmedLine !== '') {
             mod.name = trimmedLine;
             return mod;
@@ -161,14 +189,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     modNameSpan.classList.add('mod-name');
                     modNameSpan.textContent = mod.name;
 
-                    // --- Add AIO indicator ---
+                    // --- Removed AIO indicator creation per request ---
+                    /*
                     if (mod.aioLink) {
                         const aioIndicator = document.createElement('span');
                         aioIndicator.classList.add('aio-indicator');
-                        aioIndicator.textContent = '[AIO]'; // Or '📦 AIO' etc.
+                        aioIndicator.textContent = '[AIO]';
                         modNameSpan.appendChild(aioIndicator);
                     }
-
+                    */
 
                     if (mod.note) { // Append note if it exists (and it won't be "unavailable" due to the skip above)
                          modNameSpan.textContent += ` (${mod.note})`;
@@ -217,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: ${mod.version}`;
                         modItem.appendChild(modVersionSpan);
-                    } else { // If no version found and not unavailable, show placeholder
+                    } else if (mod.primaryLink || mod.aioLink || mod.infoLink) { // Only show N/A if it has a link but no explicit version
                         const modVersionSpan = document.createElement('span');
                         modVersionSpan.classList.add('mod-version');
                         modVersionSpan.textContent = `Version: N/A`;
