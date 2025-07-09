@@ -126,6 +126,15 @@ ScandinaviaMod Map Package [0.4.1]
 [Project Palestine - ProMods Middle East Add-on](https://truckymods.io/euro-truck-simulator-2/maps/palestine-add-on-for-promods-middle-east-v10-beta) [1.6]
 ProMods Middle-East Add-on (Def & Map Package) [2.74] ([AIO](https://promods.net/setup.php?game=me))
 ProMods Middle-East Add-on (Assets Package) [2.74]
+[DE City Definition for Promods](https://truckymods.io/euro-truck-simulator-2/maps/bremerhaven-add-on) [4.6]
+ProMods Definition Package [2.74] ([AIO](https://promods.net/setup.php?game=ets))
+ProMods Map Package [2.74]
+ProMods Assets Package [2.74]
+ProMods Models Package 1 [2.74]
+ProMods Models Package 2 [2.74]
+ProMods Models Package 3 [2.74]
+ProMods Media Package [2.74]
+ProMods DLC Support Package [2.74]
 [Gukovo (Donbass Version)](https://truckymods.io/euro-truck-simulator-2/maps/gukovo-map) [1.2.2]
 [db_SRfix_154](https://truckymods.io/euro-truck-simulator-2/map-patches/donbass-map-southern-region-fix-260276) [1.54]
 donbass_map 1 54 [1.54] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/donbass-map-461295))
