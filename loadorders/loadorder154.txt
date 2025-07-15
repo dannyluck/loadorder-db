@@ -188,14 +188,14 @@ Horn of Africa - Assets/Models 2 [1.0]
 ProMods The Great Steppe (Def & Map Package) [1.3.0] ([AIO](https://promods.net/setup.php?game=tgs))
 ProMods The Great Steppe (Assets Package) [1.3.0]
 [Republic of Kazakhstan FIX](https://truckymods.io/euro-truck-simulator-2/map-patches/map-of-the-republic-of-kazakhstan-fix) [1.3]
-Republic of Kazakhstan def [] ([AIO](https://sharemods.com/gmrogvge2nby/Map_of_the_Republic_of_Kazakhstan_v_0.8.7z.html))
-Republic of Kazakhstan model []
+Republic of Kazakhstan def [beta] ([AIO](https://sharemods.com/gmrogvge2nby/Map_of_the_Republic_of_Kazakhstan_v_0.8.7z.html))
+Republic of Kazakhstan model [beta]
 [Java Road Revolution - Southeast Asia Map RC](https://truckymods.io/euro-truck-simulator-2/map-patches/java-road-revolution-southeast-asia-rc) [1.2]
 Java road revolution (JRR) Def & Map [0.85a] ([AIO](https://truckymods.io/euro-truck-simulator-2/maps/jrr-java-road-revolution-indonesia-addon-map))
 Java road revolution (JRR) Assets & Models [0.85a]
 Java road revolution (JRR) Assets & Models [0.85a]
 [Southeast Asia FIX](https://truckymods.io/euro-truck-simulator-2/map-assets/southeast-asia-fix#nav-builds) [1.2]
-[Southeast Asia Map](about:blank) [0.2.5.3 1.54]
+[Southeast Asia Map](https://sharemods.com/rundf43yz8qv/Southeast_Asia_Map_Ver0.2.5.3_1.54.scs.html) [0.2.5.3 1.54]
 [Africa Extended](https://truckymods.io/euro-truck-simulator-2/maps/africa-extended) [1.3]
 [Wakkanai - The Gateway to Japan](https://truckymods.io/euro-truck-simulator-2/maps/wakkanai-the-gateway-to-japan-625895) [1.0]
 [Nauru Map](https://truckymods.io/euro-truck-simulator-2/maps/nauru-map) [1.0]
