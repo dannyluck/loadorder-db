@@ -786,7 +786,7 @@ input, select, button {
   <div id="ex-start-screen">
     <div class="section-head">
       <h2>Test <em>ćwiczeniowy</em></h2>
-      <p>Losowo generowane zadania z całego słownictwa · 20 punktów</p>
+      <p>Losowo generowane zadania z całego słownictwa · 30 punktów</p>
     </div>
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px">
       <div class="mode-card selected" id="extype-mix" onclick="selectExType('mix')" style="flex:1;min-width:160px">
@@ -812,7 +812,7 @@ input, select, button {
         <div style="font-size:12px;color:var(--muted);margin-top:2px">Wypełnij wszystkie zadania, potem kliknij Sprawdź</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <div style="font-family:var(--mono);font-size:12px;color:var(--accent2)" id="ex-pts-badge">__ / 20 pkt</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--accent2)" id="ex-pts-badge">__ / 30 pkt</div>
         <button class="check-ex-btn" onclick="rerollTest()" style="background:var(--surface);color:var(--text);border:1px solid var(--border)">↺ Nowe zadania</button>
         <button class="check-ex-btn" id="ex-check-btn" onclick="checkFullTest()">✓ Sprawdź</button>
       </div>
@@ -826,7 +826,7 @@ input, select, button {
 
     <div id="ex-result-panel" style="display:none;margin-top:28px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px 32px;text-align:center">
       <div style="font-family:var(--display);font-size:64px;font-weight:900;letter-spacing:-2px;color:var(--accent)" id="ex-final-score">0</div>
-      <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:6px 0 16px">punktów na 20</div>
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:6px 0 16px">punktów na 30</div>
       <div style="font-size:20px;margin-bottom:20px" id="ex-final-grade"></div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <button class="start-btn" onclick="rerollTest()">↺ Nowe zadania</button>
@@ -1146,11 +1146,11 @@ const EX_POOL_F = [
 const EX_POOL_G = [
   {
     sentences: [
-      { before: 'Die', bracket: 'prowadzenie konta', after: 'ist für Schüler und Studenten kostenlos.', ans: 'kontoführung', acceptedAns: ['kontoführung'] },
+      { before: 'Die', bracket: 'prowadzenie konta', after: 'ist für Schüler und Studenten kostenlos.', ans: 'kontoführung', acceptedAns: ['kontoführung','kontofuhrung','kontoführung'] },
       { before: 'Haben Sie es vielleicht', bracket: 'odliczoną kwotę', after: '?', ans: 'abgezählt', acceptedAns: ['abgezählt','passend'] },
-      { before: 'Den Fernseher kannst du', bracket: 'na raty', after: 'kaufen.', ans: 'auf raten', acceptedAns: ['auf raten','in raten'] },
+      { before: 'Den Fernseher kannst du', bracket: 'na raty', after: 'kaufen.', ans: 'auf raten', acceptedAns: ['auf raten','in raten','auf rate'] },
       { before: 'Es ist viel bequemer,', bracket: 'zbliżeniowo', after: 'zu zahlen.', ans: 'kontaktlos', acceptedAns: ['kontaktlos'] },
-      { before: 'Es lohnt sich, ein Konto', bracket: 'otworzyć', after: '.', ans: 'eröffnen', acceptedAns: ['eröffnen','zu eröffnen'] },
+      { before: 'Es lohnt sich, ein Konto', bracket: 'otworzyć', after: '.', ans: 'eröffnen', acceptedAns: ['eröffnen','zu eröffnen','eroffnen','offnen','öffnen'] },
     ]
   },
   {
@@ -1450,7 +1450,13 @@ function clearExSent2(sentId, tokId) {
   document.querySelectorAll(`#${tokId} .token-ex`).forEach(t => t.classList.remove('used'));
 }
 
-function normEx(s) { return (s||'').toLowerCase().trim().replace(/\s+/g,' ').replace(/[.,?!]/g,''); }
+function normEx(s) {
+  return (s||'').toLowerCase().trim()
+    .replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss')
+    .replace(/ę/g,'e').replace(/ó/g,'o').replace(/ą/g,'a').replace(/ś/g,'s')
+    .replace(/ł/g,'l').replace(/ż/g,'z').replace(/ź/g,'z').replace(/ć/g,'c').replace(/ń/g,'n')
+    .replace(/\s+/g,' ').replace(/[.,?!]/g,'');
+}
 
 function startExTest() {
   exTasks = buildExTasks();
@@ -1458,7 +1464,7 @@ function startExTest() {
   document.getElementById('ex-start-screen').style.display = 'none';
   document.getElementById('ex-test-screen').style.display = 'block';
   document.getElementById('ex-result-panel').style.display = 'none';
-  document.getElementById('ex-pts-badge').textContent = '__ / 20 pkt';
+  document.getElementById('ex-pts-badge').textContent = '__ / 30 pkt';
   document.getElementById('ex-check-btn').textContent = '✓ Sprawdź';
   document.getElementById('ex-progress').style.width = '0%';
 
@@ -1515,7 +1521,13 @@ function selectExChoice(el) {
   updateExProgress();
 }
 
-function normEx(s) { return (s||'').toLowerCase().trim().replace(/\s+/g,' ').replace(/[.,?!]/g,''); }
+function normEx(s) {
+  return (s||'').toLowerCase().trim()
+    .replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss')
+    .replace(/ę/g,'e').replace(/ó/g,'o').replace(/ą/g,'a').replace(/ś/g,'s')
+    .replace(/ł/g,'l').replace(/ż/g,'z').replace(/ź/g,'z').replace(/ć/g,'c').replace(/ń/g,'n')
+    .replace(/\s+/g,' ').replace(/[.,?!]/g,'');
+}
 
 function checkFullTest() {
   let total = 0;
@@ -1625,7 +1637,7 @@ function checkFullTest() {
         if (!el) return;
         const val = normEx(el.value);
         const accepted = JSON.parse(el.dataset.ans || '[]');
-        const ok = accepted.some(a => val.includes(normEx(a)));
+        const ok = accepted.some(a => { const na = normEx(a); return val === na || val.includes(na) || na.includes(val); });
         el.classList.remove('correct','wrong');
         if (el.value) el.classList.add(ok ? 'correct' : 'wrong');
         if (ok) pts++;
@@ -1639,7 +1651,7 @@ function checkFullTest() {
         if (!el) return;
         const val = normEx(el.value);
         const accepted = JSON.parse(el.dataset.ans || '[]');
-        const ok = accepted.some(a => val.includes(normEx(a)));
+        const ok = accepted.some(a => { const na = normEx(a); return val === na || val.includes(na) || na.includes(val); });
         el.classList.remove('correct','wrong');
         if (el.value) el.classList.add(ok ? 'correct' : 'wrong');
         if (ok) pts++;
@@ -1663,17 +1675,17 @@ function checkFullTest() {
     }
   });
 
-  const finalScore = Math.min(20, Math.round(total * 2) / 2);
-  document.getElementById('ex-pts-badge').textContent = `${finalScore} / 20 pkt`;
+  const finalScore = Math.round(total * 2) / 2;
+  document.getElementById('ex-pts-badge').textContent = `${finalScore} / 30 pkt`;
   document.getElementById('ex-progress').style.width = '100%';
 
   const panel = document.getElementById('ex-result-panel');
   panel.style.display = 'block';
   document.getElementById('ex-final-score').textContent = finalScore;
-  const grade = finalScore >= 18 ? '🏆 Bardzo dobrze!' :
-                finalScore >= 14 ? '✨ Dobrze!' :
-                finalScore >= 10 ? '👍 Dostatecznie' :
-                finalScore >= 6  ? '📝 Dopuszczający' : '📚 Niedostatecznie';
+  const grade = finalScore >= 27 ? '🏆 Bardzo dobrze!' :
+                finalScore >= 22 ? '✨ Dobrze!' :
+                finalScore >= 15 ? '👍 Dostatecznie' :
+                finalScore >= 10 ? '📝 Dopuszczający' : '📚 Niedostatecznie';
   document.getElementById('ex-final-grade').textContent = grade;
   exChecked = true;
   document.getElementById('ex-check-btn').textContent = '✓ Sprawdzono';
