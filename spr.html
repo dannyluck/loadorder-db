@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontrollarbeit K2 – Pearson 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --paper: #fffef9;
+    --ink: #1a1612;
+    --muted: #6b6355;
+    --accent: #c84b2f;
+    --accent2: #2563a8;
+    --line: #d4cfc4;
+    --correct: #2d7a4f;
+    --wrong: #c84b2f;
+    --highlight: #fff3cd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 4px 4px 0 #c8c0b0, 8px 8px 0 #ddd8cc;
+    padding: 48px 52px;
+    position: relative;
+  }
+
+
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+  }
+
+  .header-left h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .header-left p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .score-badge {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    letter-spacing: 1px;
+  }
+
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .section-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  .pts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Section A – radio choices */
+  .dialogue-item {
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+
+  .dialogue-line {
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .choice-group {
+    display: inline-flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .choice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .choice-label:hover { border-color: var(--accent2); background: #eef4ff; }
+  .choice-label input { display: none; }
+  .choice-label.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .choice-label.correct-ans { background: #d4f5e2; border-color: var(--correct); color: var(--correct); font-weight: 600; }
+  .choice-label.wrong-ans { background: #fde8e4; border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+
+  /* Section B – text inputs */
+  .question-row {
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .question-row .q-num {
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .text-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 4px 2px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .text-input:focus { border-color: var(--accent2); }
+  .text-input.correct { border-color: var(--correct); background: #d4f5e2; }
+  .text-input.wrong { border-color: var(--wrong); background: #fde8e4; }
+
+  /* Section C – matching */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .match-col { }
+
+  .match-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .match-num {
+    font-weight: 700;
+    min-width: 18px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .match-select {
+    border: 1.5px solid var(--line);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    padding: 3px 6px;
+    outline: none;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .match-select:focus { border-color: var(--accent2); }
+  .match-select.correct { border-color: var(--correct); background: #d4f5e2; }
+  .match-select.wrong { border-color: var(--wrong); background: #fde8e4; }
+
+  .match-answers-col {
+    padding-top: 4px;
+  }
+
+  .match-answer-item {
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: var(--muted);
+    padding-left: 4px;
+  }
+
+  /* Section D – inline fill */
+  .fill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+
+  .fill-item {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fill-item .fill-label {
+    min-width: 20px;
+    font-weight: 600;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .wordbank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: #f0ece3;
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* Section E – select dropdown */
+  .wh-select {
+    border: 1.5px solid var(--line);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    padding: 3px 6px;
+    outline: none;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.2s;
+    margin-right: 4px;
+  }
+
+  .wh-select:focus { border-color: var(--accent2); }
+  .wh-select.correct { border-color: var(--correct); background: #d4f5e2; }
+  .wh-select.wrong { border-color: var(--wrong); background: #fde8e4; }
+
+  .e-line {
+    font-size: 13px;
+    margin-bottom: 8px;
+    line-height: 1.8;
+  }
+
+  /* Sentence builder */
+  .sentence-builder {
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .word-tokens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .token {
+    padding: 4px 10px;
+    border: 1.5px solid var(--line);
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+    user-select: none;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .token:hover { border-color: var(--accent2); background: #eef4ff; }
+  .token.used { opacity: 0.3; pointer-events: none; }
+  .token.selected-token { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .sentence-output {
+    min-height: 28px;
+    border-bottom: 1.5px solid var(--line);
+    font-size: 13px;
+    padding: 3px 2px;
+    color: var(--ink);
+    font-style: italic;
+    cursor: pointer;
+  }
+
+  /* Check button */
+  .check-btn {
+    display: block;
+    margin: 40px auto 0;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 14px 48px;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+    transition: transform 0.1s;
+    box-shadow: 3px 3px 0 var(--accent);
+  }
+
+  .check-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--accent); }
+  .check-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--accent); }
+
+  /* Result panel */
+  .result-panel {
+    display: none;
+    margin-top: 28px;
+    border: 2px solid var(--ink);
+    padding: 20px 28px;
+    background: var(--paper);
+    text-align: center;
+  }
+
+  .result-panel.show { display: block; animation: slideIn 0.3s ease; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .result-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .result-grade {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .section-scores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .sec-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    background: #f0ece3;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--line);
+    margin: 24px 0;
+  }
+
+  .section-label-letter {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 6px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .feedback-msg {
+    display: none;
+    font-size: 11px;
+    margin-top: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .feedback-msg.show { display: block; }
+  .feedback-msg.ok { color: var(--correct); }
+  .feedback-msg.nope { color: var(--wrong); }
+
+  .inline-fill-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 2;
+  }
+
+  .short-input {
+    width: 160px;
+    border: none;
+    border-bottom: 1.5px solid var(--line);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 2px 4px;
+    outline: none;
+  }
+
+  .short-input:focus { border-color: var(--accent2); }
+  .short-input.correct { border-color: var(--correct); background: #d4f5e2; }
+  .short-input.wrong { border-color: var(--wrong); background: #fde8e4; }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Pearson 3 &nbsp;·&nbsp; Kontrollarbeit K2</h1>
+      <p>Vorname u. Name: _________________ &nbsp; Klasse: _____ &nbsp; Datum: _________</p>
+    </div>
+    <div class="score-badge">__ / 30</div>
+  </div>
+
+  <!-- SECTION A -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">A</span> Was passt hier? Markiere.</span>
+      <span class="pts">__ / 3</span>
+    </div>
+    <p class="section-subtitle">Zaznacz właściwy wyraz.</p>
+
+    <!-- Dialog 1 -->
+    <div class="dialogue-item">
+      <div class="dialogue-line">● Geht das mit
+        <span class="choice-group" id="a1">
+          <label class="choice-label" data-val="Bargeld" onclick="selectChoice(this,'a1')"><input type="radio">Bargeld</label>
+          <label class="choice-label" data-val="Karte" onclick="selectChoice(this,'a1')"><input type="radio">Karte</label>
+        </span> ?
+      </div>
+      <div class="dialogue-line">● Bei uns kann man leider nur
+        <span class="choice-group" id="a2">
+          <label class="choice-label" data-val="klein" onclick="selectChoice(this,'a2')"><input type="radio">klein</label>
+          <label class="choice-label" data-val="bar" onclick="selectChoice(this,'a2')"><input type="radio">bar</label>
+        </span> zahlen.
+      </div>
+    </div>
+
+    <!-- Dialog 2 -->
+    <div class="dialogue-item">
+      <div class="dialogue-line">● Soll ich meine Karte an das Lesegerät
+        <span class="choice-group" id="a3">
+          <label class="choice-label" data-val="halten" onclick="selectChoice(this,'a3')"><input type="radio">halten</label>
+          <label class="choice-label" data-val="schieben" onclick="selectChoice(this,'a3')"><input type="radio">in das Lesegerät schieben</label>
+        </span> ?
+      </div>
+      <div class="dialogue-line">● Ja, bitte. Und geben Sie bitte auch die
+        <span class="choice-group" id="a4">
+          <label class="choice-label" data-val="Bestätigung" onclick="selectChoice(this,'a4')"><input type="radio">Bestätigung</label>
+          <label class="choice-label" data-val="PIN-Nummer" onclick="selectChoice(this,'a4')"><input type="radio">PIN-Nummer</label>
+        </span> an.
+      </div>
+    </div>
+
+    <!-- Dialog 3 -->
+    <div class="dialogue-item">
+      <div class="dialogue-line">● Haben Sie vielleicht
+        <span class="choice-group" id="a5">
+          <label class="choice-label" data-val="passend" onclick="selectChoice(this,'a5')"><input type="radio">passend</label>
+          <label class="choice-label" data-val="Rückgeld" onclick="selectChoice(this,'a5')"><input type="radio">Rückgeld</label>
+        </span> ?
+      </div>
+      <div class="dialogue-line">● Ja, ich glaube schon. Was macht das bitte?</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION B -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">B</span> Das erste Konto. Bilde Fragen an den Bankangestellten.</span>
+      <span class="pts">__ / 4</span>
+    </div>
+    <p class="section-subtitle">Sformułuj pytania do pracownika banku.</p>
+
+    <div class="question-row">
+      <span class="q-num">1. Czy mogę otworzyć konto dla uczniów?</span>
+      <input type="text" class="text-input" id="b1" placeholder="">
+    </div>
+    <div class="question-row">
+      <span class="q-num">2. Czy prowadzenie konta jest bezpłatne?</span>
+      <input type="text" class="text-input" id="b2" placeholder="">
+    </div>
+    <div class="question-row">
+      <span class="q-num">3. Czy otrzymam kartę płatniczą?</span>
+      <input type="text" class="text-input" id="b3" placeholder="">
+    </div>
+    <div class="question-row">
+      <span class="q-num">4. Czy otrzymam dostęp do bankowości elektronicznej?</span>
+      <input type="text" class="text-input" id="b4" placeholder="">
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION C -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">C</span> Verbinde die Wörter / Vendungen in Paaren.</span>
+      <span class="pts">__ / 2</span>
+    </div>
+    <p class="section-subtitle">Połącz słownictwo w pary.</p>
+
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-item">
+          <span class="match-num">1</span> Geheimnummer
+          <select class="match-select" id="c1">
+            <option value="">–</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <span class="match-num">2</span> Scheinen und Münzen
+          <select class="match-select" id="c2">
+            <option value="">–</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <span class="match-num">3</span> der Personalausweis
+          <select class="match-select" id="c3">
+            <option value="">–</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <span class="match-num">4</span> die grüne Taste drücken
+          <select class="match-select" id="c4">
+            <option value="">–</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+      </div>
+      <div class="match-answers-col">
+        <div class="match-answer-item"><strong>A</strong> – bestätigen</div>
+        <div class="match-answer-item"><strong>B</strong> – das Dokument mit dem Passfoto</div>
+        <div class="match-answer-item"><strong>C</strong> – PIN</div>
+        <div class="match-answer-item"><strong>D</strong> – Bargeld</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION D -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">D</span> Ergänze die Verben.</span>
+      <span class="pts">__ / 2</span>
+    </div>
+    <p class="section-subtitle">Uzupełnij czasowniki.</p>
+
+    <div class="wordbank">einführen &bull; bestätigen &bull; eingeben &bull; haben</div>
+
+    <div class="fill-grid">
+      <div class="fill-item">
+        <span class="fill-label">1.</span> Karte
+        <input type="text" class="text-input" id="d1" placeholder="" style="width:130px">
+      </div>
+      <div class="fill-item">
+        <span class="fill-label">2.</span> den Betrag
+        <input type="text" class="text-input" id="d2" placeholder="" style="width:130px">
+      </div>
+      <div class="fill-item">
+        <span class="fill-label">3.</span> Geheimzahl
+        <input type="text" class="text-input" id="d3" placeholder="" style="width:130px">
+      </div>
+      <div class="fill-item">
+        <span class="fill-label">4.</span> Schulden
+        <input type="text" class="text-input" id="d4" placeholder="" style="width:130px">
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION E -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">E</span> Ergänze die Fragen an Jugendliche.</span>
+      <span class="pts">__ / 4</span>
+    </div>
+    <p class="section-subtitle">Uzupełnij pytania zaimkami pytającymi.</p>
+
+    <div class="wordbank">Wofür &bull; Wie &bull; Wie viel &bull; Wer</div>
+
+    <div class="e-line">
+      1. <select class="wh-select" id="e1">
+        <option value="">–</option>
+        <option value="Wofür">Wofür</option>
+        <option value="Wie">Wie</option>
+        <option value="Wie viel">Wie viel</option>
+        <option value="Wer">Wer</option>
+      </select> Taschengeld bekommt normalerweise ein Jugendlicher?
+    </div>
+    <div class="e-line">
+      2. <select class="wh-select" id="e2">
+        <option value="">–</option>
+        <option value="Wofür">Wofür</option>
+        <option value="Wie">Wie</option>
+        <option value="Wie viel">Wie viel</option>
+        <option value="Wer">Wer</option>
+      </select> von deinen Freunden hat ein Sparkonto?
+    </div>
+    <div class="e-line">
+      3. <select class="wh-select" id="e3">
+        <option value="">–</option>
+        <option value="Wofür">Wofür</option>
+        <option value="Wie">Wie</option>
+        <option value="Wie viel">Wie viel</option>
+        <option value="Wer">Wer</option>
+      </select> gibst du dein Taschengeld aus?
+    </div>
+    <div class="e-line">
+      4. <select class="wh-select" id="e4">
+        <option value="">–</option>
+        <option value="Wofür">Wofür</option>
+        <option value="Wie">Wie</option>
+        <option value="Wie viel">Wie viel</option>
+        <option value="Wer">Wer</option>
+      </select> können junge Leute ihr Geld verdienen?
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION F -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">F</span> Was antwortet Thomas in der Umfrage? Bilde Sätze.</span>
+      <span class="pts">__ / 3</span>
+    </div>
+    <p class="section-subtitle">Ułóż odpowiedzi Tiny na pytania w ankiecie.</p>
+
+    <div class="question-row">
+      <span class="q-num">1. Sparst du für etwas Bestimmtes? — Ja, ...</span>
+      <input type="text" class="text-input" id="f1" placeholder="">
+    </div>
+    <div class="question-row">
+      <span class="q-num">2. Verdienst du dein eigenes Geld? — Ja, ...</span>
+      <input type="text" class="text-input" id="f2" placeholder="">
+    </div>
+    <div class="question-row">
+      <span class="q-num">3. Kannst du gut mit Geld umgehen? — Nein, ...</span>
+      <input type="text" class="text-input" id="f3" placeholder="">
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION G -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">G</span> Übersetze die Satzteile.</span>
+      <span class="pts">__ / 5</span>
+    </div>
+    <p class="section-subtitle">Przetłumacz fragmenty zdań w nawiasach i uzupełnij zdania.</p>
+
+    <div class="inline-fill-wrap">
+      <span>1. Die</span>
+      <input type="text" class="short-input" id="g1" placeholder="(prowadzenie konta)">
+      <span>ist für Schüler und Studenten kostenlos.</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>2. Haben Sie es vielleicht</span>
+      <input type="text" class="short-input" id="g2" placeholder="(odliczoną kwotę)">
+      <span>?</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>3. Den Fernseher kannst du</span>
+      <input type="text" class="short-input" id="g3" placeholder="(na raty)">
+      <span>kaufen.</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>4. Es ist viel bequemer,</span>
+      <input type="text" class="short-input" id="g4" placeholder="(zbliżeniowo)">
+      <span>zu zahlen.</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>5. Es lohnt sich, ein</span>
+      <input type="text" class="short-input" id="g5a" placeholder="" style="width:100px">
+      <span>zu</span>
+      <input type="text" class="short-input" id="g5b" placeholder="(otworzyć konto)" style="width:120px">
+      <span>.</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION H -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">H</span> „StartKonto" – das neue Girokonto für Jugendliche.</span>
+      <span class="pts">__ / 4</span>
+    </div>
+    <p class="section-subtitle">Przetłumacz wyrazy z nawiasów.</p>
+
+    <div class="inline-fill-wrap">
+      <span>• Kontoführung für Schüler und Studenten</span>
+      <input type="text" class="short-input" id="h1" placeholder="(bezpłatny)">
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>•</span>
+      <input type="text" class="short-input" id="h2" placeholder="(bezgotówkowo)">
+      <span>zahlen mit der Bankkarte</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>• bequemer</span>
+      <input type="text" class="short-input" id="h3" placeholder="(dostęp)">
+      <span>zum Online-Banking</span>
+    </div>
+
+    <div class="inline-fill-wrap">
+      <span>•</span>
+      <input type="text" class="short-input" id="h4" placeholder="(doładowanie)">
+      <span>des Prepaid-Guthabens am Geldautomaten</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION I -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title"><span class="section-label-letter">I</span> Bilde Sätze.</span>
+      <span class="pts">__ / 3</span>
+    </div>
+    <p class="section-subtitle">Ułóż zdania.</p>
+
+    <div class="sentence-builder">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">1. sparen / der Führerschein / für / fast alle / .</p>
+      <div class="word-tokens" id="tokens_i1">
+        <span class="token" onclick="addToken(this,'i1')">sparen</span>
+        <span class="token" onclick="addToken(this,'i1')">den Führerschein</span>
+        <span class="token" onclick="addToken(this,'i1')">Fast alle</span>
+        <span class="token" onclick="addToken(this,'i1')">für</span>
+      </div>
+      <div class="sentence-output" id="i1" onclick="clearSentence('i1')" title="Kliknij aby wyczyścić"></div>
+    </div>
+
+    <div class="sentence-builder">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">2. ein Sommerjob / haben / einige / ?</p>
+      <div class="word-tokens" id="tokens_i2">
+        <span class="token" onclick="addToken(this,'i2')">einige</span>
+        <span class="token" onclick="addToken(this,'i2')">Haben</span>
+        <span class="token" onclick="addToken(this,'i2')">einen Sommerjob</span>
+      </div>
+      <div class="sentence-output" id="i2" onclick="clearSentence('i2')" title="Kliknij aby wyczyścić"></div>
+    </div>
+
+    <div class="sentence-builder">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">3. Taschengeld / bekommen / fast jeder / .</p>
+      <div class="word-tokens" id="tokens_i3">
+        <span class="token" onclick="addToken(this,'i3')">fast jeder</span>
+        <span class="token" onclick="addToken(this,'i3')">Taschengeld</span>
+        <span class="token" onclick="addToken(this,'i3')">bekommt</span>
+      </div>
+      <div class="sentence-output" id="i3" onclick="clearSentence('i3')" title="Kliknij aby wyczyścić"></div>
+    </div>
+  </div>
+
+  <!-- CHECK BUTTON -->
+  <div style="display:flex;gap:16px;justify-content:center;margin-top:40px">
+    <button class="check-btn" id="checkBtn" onclick="checkAll()" style="margin-top:0">✓ Sprawdź odpowiedzi</button>
+    <button class="check-btn" id="resetBtn" onclick="resetCheck()" style="margin-top:0;display:none;background:var(--muted);box-shadow:3px 3px 0 #999">↺ Odznacz</button>
+  </div>
+
+  <!-- RESULT PANEL -->
+  <div class="result-panel" id="resultPanel">
+    <div class="result-score" id="resultScore">0 / 30</div>
+    <div class="result-label">Twój wynik</div>
+    <div class="result-grade" id="resultGrade"></div>
+    <div class="section-scores" id="sectionScores"></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:16px;font-family:'JetBrains Mono',monospace">Przewiń w górę aby zobaczyć poprawione odpowiedzi</p>
+  </div>
+
+</div>
+
+<script>
+// ─── CHOICE SELECTION (Section A) ─────────────────────────────────
+function selectChoice(el, group) {
+  document.querySelectorAll(`#${group} .choice-label`).forEach(l => l.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ─── SENTENCE BUILDER (Section I) ─────────────────────────────────
+const sentenceData = { i1: [], i2: [], i3: [] };
+
+function addToken(el, id) {
+  if (el.classList.contains('used')) return;
+  el.classList.add('used');
+  sentenceData[id].push(el.textContent);
+  document.getElementById(id).textContent = sentenceData[id].join(' ');
+}
+
+function clearSentence(id) {
+  sentenceData[id] = [];
+  document.getElementById(id).textContent = '';
+  document.querySelectorAll(`#tokens_${id} .token`).forEach(t => t.classList.remove('used', 'selected-token'));
+}
+
+// ─── ANSWER KEYS ──────────────────────────────────────────────────
+const answers = {
+  // Section A – correct choices
+  a1: 'Karte',
+  a2: 'bar',
+  a3: 'halten',
+  a4: 'PIN-Nummer',
+  a5: 'passend',
+
+  // Section C – matching
+  c1: 'C',   // Geheimnummer → PIN
+  c2: 'D',   // Scheinen und Münzen → Bargeld
+  c3: 'B',   // Personalausweis → Passfoto
+  c4: 'A',   // grüne Taste → bestätigen
+
+  // Section D – verbs
+  d1: 'einführen',
+  d2: 'eingeben',
+  d3: 'eingeben',
+  d4: 'haben',
+
+  // Section E – question words
+  e1: 'Wie viel',
+  e2: 'Wer',
+  e3: 'Wofür',
+  e4: 'Wie',
+
+  // Section G
+  g1: 'Kontoführung',
+  g2: 'abgezählt',
+  g3: 'auf Raten',
+  g4: 'kontaktlos',
+  g5a: 'Konto',
+  g5b: 'eröffnen',
+
+  // Section H
+  h1: 'kostenlos',
+  h2: 'Bargeldlos',
+  h3: 'Zugang',
+  h4: 'Aufladen',
+
+  // Section I – expected sentences (normalized)
+  i1: 'fast alle sparen für den führerschein',
+  i2: 'haben einige einen sommerjob',
+  i3: 'taschengeld bekommt fast jeder',
+};
+
+// ─── SCORING ──────────────────────────────────────────────────────
+function normalize(s) {
+  return s.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,?!]/g, '');
+}
+
+function checkAll() {
+  let total = 0;
+  const sectionPts = { A:0, B:0, C:0, D:0, E:0, F:0, G:0, H:0, I:0 };
+
+  // ── A (3 pts – 5 choices, each worth 0.6pt rounded → we give 1pt per dialogue group)
+  // Dialogue 1: a1=Karte, a2=bar
+  // Dialogue 2: a3=halten, a4=PIN-Nummer
+  // Dialogue 3: a5=passend
+  const a_checks = [
+    ['a1', 'Karte'],
+    ['a2', 'bar'],
+    ['a3', 'halten'],
+    ['a4', 'PIN-Nummer'],
+    ['a5', 'passend'],
+  ];
+  let aCorrect = 0;
+  a_checks.forEach(([id, correct]) => {
+    const selected = document.querySelector(`#${id} .selected`);
+    const val = selected ? selected.dataset.val : '';
+    const ok = val === correct;
+    if (ok) aCorrect++;
+    if (selected) {
+      selected.classList.remove('correct-ans','wrong-ans');
+      selected.classList.add(ok ? 'correct-ans' : 'wrong-ans');
+    }
+    if (!ok) {
+      document.querySelectorAll(`#${id} .choice-label`).forEach(l => {
+        if (l.dataset.val === correct) l.classList.add('correct-ans');
+      });
+    }
+  });
+  // Award points: 5 choices → 3 pts total (0.6 each, round to nearest 0.5)
+  const aPts = Math.round((aCorrect * 3 / 5) * 2) / 2;
+  sectionPts.A = aPts;
+  total += aPts;
+
+  // ── B (4 pts – open answers, check length & basic German keywords)
+  const bKeys = {
+    b1: ['kann ich', 'konto', 'schüler', 'eröffnen', 'öffnen'],
+    b2: ['kontoführung', 'kostenlos', 'gratis', 'gebührenfrei'],
+    b3: ['karte', 'zahlungskarte', 'ec-karte', 'girokarte'],
+    b4: ['online-banking', 'zugang', 'elektronisch'],
+  };
+  ['b1','b2','b3','b4'].forEach(id => {
+    const val = normalize(document.getElementById(id).value);
+    const keys = bKeys[id];
+    const ok = val.length > 5 && keys.some(k => val.includes(k));
+    document.getElementById(id).className = 'text-input ' + (val.length > 3 ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.B++; total++; }
+  });
+
+  // ── C (2 pts – each pair 0.5pt, so 4 = 2pts)
+  const cAns = { c1:'C', c2:'D', c3:'B', c4:'A' };
+  ['c1','c2','c3','c4'].forEach(id => {
+    const el = document.getElementById(id);
+    const ok = el.value === cAns[id];
+    el.className = 'match-select ' + (el.value ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.C += 0.5; total += 0.5; }
+  });
+
+  // ── D (2 pts)
+  const dAns = { d1:'einführen', d2:'eingeben', d3:'eingeben', d4:'haben' };
+  ['d1','d2','d3','d4'].forEach(id => {
+    const val = normalize(document.getElementById(id).value);
+    const ok = val === dAns[id];
+    document.getElementById(id).className = 'text-input ' + (val ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.D += 0.5; total += 0.5; }
+  });
+
+  // ── E (4 pts)
+  const eAns = { e1:'Wie viel', e2:'Wer', e3:'Wofür', e4:'Wie' };
+  ['e1','e2','e3','e4'].forEach(id => {
+    const el = document.getElementById(id);
+    const ok = el.value === eAns[id];
+    el.className = 'wh-select ' + (el.value ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.E++; total++; }
+  });
+
+  // ── F (3 pts – open, check starts with Ja/Nein + some German)
+  const fChecks = [
+    { id:'f1', start:'ja', minLen:10 },
+    { id:'f2', start:'ja', minLen:10 },
+    { id:'f3', start:'nein', minLen:10 },
+  ];
+  fChecks.forEach(({ id, start, minLen }) => {
+    const val = normalize(document.getElementById(id).value);
+    const ok = val.startsWith(start) && val.length >= minLen;
+    document.getElementById(id).className = 'text-input ' + (val.length > 3 ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.F++; total++; }
+  });
+
+  // ── G (5 pts)
+  const gAns = {
+    g1: ['kontoführung', 'kontoführung'],
+    g2: ['abgezählt', 'passend', 'abgezählten betrag'],
+    g3: ['auf raten', 'in raten'],
+    g4: ['kontaktlos', 'kontaktlos'],
+    g5a: ['konto'],
+    g5b: ['eröffnen', 'öffnen'],
+  };
+  Object.entries(gAns).forEach(([id, variants]) => {
+    const val = normalize(document.getElementById(id).value);
+    const ok = variants.some(v => val.includes(v));
+    document.getElementById(id).className = 'short-input ' + (val ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.G++; total++; }
+  });
+  // cap G at 5
+  if (sectionPts.G > 5) sectionPts.G = 5;
+  if (total > (sectionPts.A + sectionPts.B + sectionPts.C + sectionPts.D + sectionPts.E + sectionPts.F + 5)) {
+    // adjust
+  }
+
+  // ── H (4 pts)
+  const hAns = {
+    h1: ['kostenlos', 'gratis', 'gebührenfrei'],
+    h2: ['bargeldlos', 'kontaktlos', 'ohne bargeld'],
+    h3: ['zugang', 'zugriff'],
+    h4: ['aufladen', 'aufladung', 'aufladen'],
+  };
+  ['h1','h2','h3','h4'].forEach(id => {
+    const val = normalize(document.getElementById(id).value);
+    const ok = hAns[id].some(v => val.includes(v));
+    document.getElementById(id).className = 'short-input ' + (val ? (ok ? 'correct' : 'wrong') : '');
+    if (ok) { sectionPts.H++; total++; }
+  });
+
+  // ── I (3 pts)
+  const iAns = {
+    i1: 'fast alle sparen für den führerschein',
+    i2: 'haben einige einen sommerjob',
+    i3: 'taschengeld bekommt fast jeder',
+  };
+  ['i1','i2','i3'].forEach(id => {
+    const val = normalize(document.getElementById(id).textContent);
+    const ok = val === iAns[id] || iAns[id].split(' ').filter(w => val.includes(w)).length >= iAns[id].split(' ').length - 1;
+    const el = document.getElementById(id);
+    el.style.borderColor = val.length > 3 ? (ok ? 'var(--correct)' : 'var(--wrong)') : 'var(--line)';
+    el.style.background = val.length > 3 ? (ok ? '#d4f5e2' : '#fde8e4') : 'transparent';
+    if (ok) { sectionPts.I++; total++; }
+  });
+
+  // Round total
+  total = Math.round(total * 2) / 2;
+
+  // Show result
+  const panel = document.getElementById('resultPanel');
+  panel.classList.add('show');
+  document.getElementById('resultScore').textContent = `${total} / 30`;
+
+  const grade = total >= 27 ? '🏆 Bardzo dobrze! (6)' :
+                total >= 23 ? '✨ Dobrze (5)' :
+                total >= 18 ? '👍 Dostatecznie (4)' :
+                total >= 13 ? '📝 Dopuszczający (3)' : '📚 Niedostatecznie (1–2)';
+  document.getElementById('resultGrade').textContent = grade;
+
+  const secEl = document.getElementById('sectionScores');
+  secEl.innerHTML = Object.entries(sectionPts).map(([s, p]) =>
+    `<span class="sec-score">${s}: ${p}</span>`
+  ).join('');
+
+  panel.scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('resetBtn').style.display = 'block';
+}
+
+function resetCheck() {
+  document.querySelectorAll('.choice-label').forEach(l => {
+    l.classList.remove('correct-ans', 'wrong-ans');
+  });
+  document.querySelectorAll('.text-input, .short-input').forEach(el => {
+    el.classList.remove('correct', 'wrong');
+  });
+  document.querySelectorAll('.match-select, .wh-select').forEach(el => {
+    el.classList.remove('correct', 'wrong');
+  });
+  ['i1','i2','i3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'var(--line)';
+    el.style.background = 'transparent';
+  });
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('resetBtn').style.display = 'none';
+}
+</script>
+</body>
+</html>
