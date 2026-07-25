@@ -82,41 +82,17 @@ body{
   border-radius:18px;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-}
-
-.stat-card{
-  min-height:76px;
-  padding:12px 14px;
-  border-radius:15px;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012)),
-    rgba(8,8,8,.34);
-  border:1px solid rgba(255,255,255,.09);
-  -webkit-backdrop-filter:blur(16px);
-  backdrop-filter:blur(16px);
-}
-
-.num{
-  font:700 26px/1 "Space Grotesk",sans-serif;
-  letter-spacing:-.04em;
-}
-
-.lbl{
-  margin-top:6px;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.055em;
+.progress-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .progress-wrap{
-  height:10px;
-  margin-top:11px;
+  position:relative;
+  flex:1 1 auto;
+  min-width:0;
+  height:22px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.08);
   border-radius:999px;
@@ -129,6 +105,30 @@ body{
   border-radius:inherit;
   background:linear-gradient(90deg,rgba(255,255,255,.20),rgba(255,255,255,.65),rgba(255,255,255,.28));
   transition:width .22s ease;
+}
+
+
+.owned-count{
+  flex:0 0 auto;
+  min-width:64px;
+  color:rgba(255,255,255,.78);
+  font:700 12px/1 "Space Grotesk",sans-serif;
+  letter-spacing:-.01em;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.progress-percent{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  color:#f5f5f5;
+  font:700 10px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.02em;
+  text-shadow:0 1px 5px rgba(0,0,0,.85);
+  pointer-events:none;
 }
 
 .controls{
@@ -255,9 +255,10 @@ button:hover{
 }
 
 .cat-progress{
-  color:color-mix(in srgb,var(--cat) 70%,#fff);
-  font-size:12px;
-  font-weight:700;
+  color:rgba(255,255,255,.58);
+  font:600 12px/1 "Manrope",system-ui,sans-serif;
+  letter-spacing:.015em;
+  font-variant-numeric:tabular-nums;
 }
 
 .chev{
@@ -290,142 +291,168 @@ button:hover{
 
 .item-card{
   position:relative;
-  min-height:235px;
-  padding:18px 14px 15px;
+  min-height:244px;
+  padding:18px 16px 15px;
   overflow:hidden;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:12px;
+  justify-content:flex-start;
+  gap:9px;
   text-align:center;
-  border-radius:18px;
+  border-radius:16px;
   background:
-    radial-gradient(circle at 50% -8%, color-mix(in srgb,var(--cat-light) 34%, transparent), transparent 54%),
-    linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.016)),
-    linear-gradient(160deg,
-      color-mix(in srgb,var(--cat) 16%, rgba(10,10,10,.78)) 0%,
-      rgba(7,7,7,.32) 42%,
-      color-mix(in srgb,var(--cat-deep) 22%, rgba(4,4,4,.56)) 100%
-    );
-  border:1px solid color-mix(in srgb,var(--cat) 42%,rgba(255,255,255,.10));
+    linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.012)),
+    rgba(7,7,7,.40);
+  border:1px solid rgba(255,255,255,.085);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 14px 34px rgba(0,0,0,.22),
-    0 0 22px color-mix(in srgb,var(--cat) 8%, transparent);
-  -webkit-backdrop-filter:blur(18px) saturate(120%);
-  backdrop-filter:blur(18px) saturate(120%);
-  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 12px 30px rgba(0,0,0,.20);
+  -webkit-backdrop-filter:blur(16px) saturate(115%);
+  backdrop-filter:blur(16px) saturate(115%);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+
+.item-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 5%,color-mix(in srgb,var(--cat) 10%,transparent),transparent 48%);
+  opacity:.75;
 }
 
 .item-card:hover{
   transform:translateY(-3px);
-  border-color:color-mix(in srgb,var(--cat) 62%,#fff 6%);
+  border-color:color-mix(in srgb,var(--cat) 30%,rgba(255,255,255,.18));
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),
+    rgba(9,9,9,.48);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 18px 40px rgba(0,0,0,.26),
-    0 0 24px color-mix(in srgb,var(--cat) 10%,transparent);
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 18px 38px rgba(0,0,0,.25),
+    0 0 26px color-mix(in srgb,var(--cat) 6%,transparent);
 }
 
 .card-accent{
   position:absolute;
   top:0;
-  left:15%;
-  right:15%;
-  height:3px;
-  background:linear-gradient(90deg,var(--cat-light),var(--cat),var(--cat-deep));
-  box-shadow:0 0 14px color-mix(in srgb,var(--cat) 70%,transparent);
+  left:22%;
+  right:22%;
+  height:2px;
+  border-radius:0 0 999px 999px;
+  background:linear-gradient(90deg,transparent,var(--cat),transparent);
+  box-shadow:0 0 14px color-mix(in srgb,var(--cat) 42%,transparent);
+  opacity:.82;
 }
 
 .item-card.owned{
-  border-color:rgba(108,255,157,.48);
+  border-color:rgba(108,255,157,.34);
+  background:
+    linear-gradient(180deg,rgba(108,255,157,.025),rgba(255,255,255,.012)),
+    rgba(7,7,7,.42);
 }
 
 .item-card.owned::after{
   content:"✓";
   position:absolute;
-  top:11px;
-  right:11px;
-  width:25px;
-  height:25px;
+  top:10px;
+  right:10px;
+  width:23px;
+  height:23px;
   display:grid;
   place-items:center;
   border-radius:50%;
-  background:var(--green);
-  color:#000;
-  font-size:12px;
-  font-weight:900;
+  background:rgba(108,255,157,.94);
+  box-shadow:0 5px 14px rgba(0,0,0,.28);
+  color:#050505;
+  font:800 11px/1 "Manrope",sans-serif;
 }
 
 .item-media{
   position:relative;
-  width:122px;
-  height:122px;
+  z-index:1;
+  width:100%;
+  height:144px;
   display:grid;
   place-items:center;
-  border-radius:18px;
-  overflow:hidden;
-  isolation:isolate;
-  background:
-    radial-gradient(circle at 50% 32%, rgba(255,255,255,.08), rgba(255,255,255,.025) 42%, transparent 70%),
-    radial-gradient(circle at 50% 110%, color-mix(in srgb,var(--cat) 24%, transparent), transparent 58%);
+  overflow:visible;
+  background:none !important;
+  border:0;
+  border-radius:0;
 }
 
-.item-media::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border-radius:16px;
-  background:
-    radial-gradient(circle at 50% 25%, color-mix(in srgb,var(--cat-light) 26%, transparent), transparent 44%),
-    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,0));
-  filter:blur(10px);
-  opacity:.85;
-  pointer-events:none;
+.item-media::before,
+.item-media::after{
+  content:none !important;
+  display:none !important;
 }
 
 .item-card img{
   position:relative;
   z-index:1;
-  width:108px;
-  height:108px;
+  width:136px;
+  height:136px;
   object-fit:contain;
-  background:transparent !important;
-  mix-blend-mode:screen;
-  filter:
-    drop-shadow(0 14px 18px rgba(0,0,0,.35))
-    saturate(1.05)
-    contrast(1.04);
+  background:none !important;
+  mix-blend-mode:normal;
+  filter:drop-shadow(0 15px 15px rgba(0,0,0,.42));
+  transition:transform .18s ease,filter .18s ease;
+}
+
+.item-card:hover img{
+  transform:translateY(-2px) scale(1.025);
+  filter:drop-shadow(0 17px 17px rgba(0,0,0,.46));
 }
 
 .item-card img.placeholder-image{
-  border-radius:14px;
-  opacity:.72;
+  width:112px;
+  height:112px;
+  border-radius:12px;
+  opacity:.55;
   mix-blend-mode:normal;
   filter:none;
 }
 
 .item-card .name{
+  position:relative;
+  z-index:1;
   min-height:34px;
   display:flex;
   align-items:center;
-  font:650 13px/1.35 "Space Grotesk",sans-serif;
-  letter-spacing:-.018em;
+  justify-content:center;
+  color:rgba(255,255,255,.92);
+  font:650 13px/1.35 "Manrope",system-ui,sans-serif;
+  letter-spacing:-.012em;
 }
 
 .chk{
+  position:relative;
+  z-index:1;
+  min-height:27px;
+  padding:4px 9px 4px 6px;
   display:flex;
   align-items:center;
-  gap:7px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:600;
+  gap:6px;
+  color:rgba(255,255,255,.48);
+  font:600 10px/1 "Manrope",system-ui,sans-serif;
   cursor:pointer;
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:999px;
+  background:rgba(255,255,255,.025);
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+
+.chk:hover{
+  color:rgba(255,255,255,.72);
+  border-color:rgba(255,255,255,.11);
+  background:rgba(255,255,255,.045);
 }
 
 .chk input{
-  width:16px;
-  height:16px;
+  width:15px;
+  height:15px;
+  margin:0;
   accent-color:var(--green);
 }
 
@@ -439,6 +466,61 @@ button:hover{
   color:#bbb;
   font-size:13px;
   line-height:1.6;
+}
+
+
+/* Category completion celebration */
+.category-header.category-complete-pop{
+  animation:categoryCompletePop .72s cubic-bezier(.2,.85,.25,1);
+}
+
+@keyframes categoryCompletePop{
+  0%{transform:scale(1);filter:brightness(1)}
+  35%{transform:scale(1.012);filter:brightness(1.22)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+.category-complete-toast{
+  position:fixed;
+  left:50%;
+  top:28px;
+  z-index:10002;
+  transform:translate(-50%,-14px) scale(.96);
+  opacity:0;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--toast-cat,#fff) 48%,rgba(255,255,255,.12));
+  background:rgba(8,8,8,.72);
+  color:#fff;
+  box-shadow:0 12px 34px rgba(0,0,0,.34),0 0 24px color-mix(in srgb,var(--toast-cat,#fff) 18%,transparent);
+  -webkit-backdrop-filter:blur(18px) saturate(130%);
+  backdrop-filter:blur(18px) saturate(130%);
+  font:650 12px/1 "Manrope",system-ui,sans-serif;
+  letter-spacing:.01em;
+  pointer-events:none;
+  animation:categoryToast 1.75s ease forwards;
+}
+
+@keyframes categoryToast{
+  0%{opacity:0;transform:translate(-50%,-14px) scale(.96)}
+  14%,72%{opacity:1;transform:translate(-50%,0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-8px) scale(.98)}
+}
+
+.confetti-piece{
+  position:fixed;
+  z-index:10001;
+  width:7px;
+  height:12px;
+  border-radius:2px;
+  pointer-events:none;
+  will-change:transform,opacity;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .category-header.category-complete-pop,
+  .category-complete-toast{animation:none}
+  .confetti-piece{display:none}
 }
 
 @media(max-width:720px){
@@ -456,15 +538,10 @@ button:hover{
     gap:9px;
     padding:9px;
   }
-  .item-card{min-height:195px}
-  .item-media{
-    width:98px;
-    height:98px;
-  }
-  .item-card img{
-    width:82px;
-    height:82px;
-  }
+  .item-card{min-height:206px;padding:13px 10px 12px}
+  .item-media{width:100%;height:112px}
+  .item-card img{width:106px;height:106px}
+  .item-card .name{font-size:12px;min-height:32px}
 }
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
@@ -614,6 +691,92 @@ body.is-loading .page-shell{
   to{transform:rotate(360deg);}
 }
 
+
+
+/* Performance pass */
+.category{
+  content-visibility:auto;
+  contain-intrinsic-size:720px;
+}
+
+.items-grid{
+  contain:layout paint style;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  background:rgba(6,6,6,.54);
+}
+
+.item-card{
+  contain:layout paint style;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  transform:translateZ(0);
+}
+
+.item-card img{
+  content-visibility:auto;
+}
+
+@media (hover:none){
+  .item-card:hover{transform:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 12px 30px rgba(0,0,0,.20)}
+  .item-card:hover img{transform:none;filter:drop-shadow(0 15px 15px rgba(0,0,0,.42))}
+}
+
+/* Reworked loading screen: lightweight, no full-screen backdrop blur */
+.loading-overlay{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  background:rgba(0,0,0,.94);
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+
+.loading-overlay::before{
+  width:240px;
+  background:radial-gradient(circle,rgba(255,255,255,.045),transparent 68%);
+  filter:none;
+}
+
+.loading-spinner{
+  width:52px;
+  height:52px;
+  border:0;
+  background:
+    conic-gradient(from 0deg,rgba(255,255,255,.95),rgba(255,255,255,.18) 34%,rgba(255,255,255,.05) 58%,rgba(255,255,255,.95));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0);
+  mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0);
+  box-shadow:none;
+  animation:mm2-spin .82s linear infinite;
+}
+
+.loading-spinner::after{display:none}
+
+.loading-text{
+  position:static;
+  max-width:min(78vw,520px);
+  color:rgba(255,255,255,.58);
+  font:600 12px/1.35 "Manrope",sans-serif;
+  letter-spacing:.01em;
+  text-shadow:none;
+}
+
+.loading-text::before{
+  content:"MM2 COLLECTION";
+  display:block;
+  margin-bottom:7px;
+  color:rgba(255,255,255,.94);
+  font:700 14px/1 "Manrope",sans-serif;
+  letter-spacing:.12em;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .loading-spinner{animation-duration:1.8s}
+  .item-card,.item-card img{transition:none}
+}
+
 </style>
 </head>
 
@@ -626,26 +789,12 @@ body.is-loading .page-shell{
 
 <div class="page-shell">
   <section class="dashboard glass">
-    <div class="stats">
-      <div class="stat-card">
-        <div class="num" id="statTotal">0</div>
-        <div class="lbl">All</div>
+    <div class="progress-row">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-percent" id="progressPercent">0%</div>
       </div>
-      <div class="stat-card">
-        <div class="num" id="statOwned">0</div>
-        <div class="lbl">Owned</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="statMissing">0</div>
-        <div class="lbl">Missing</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="statPercent">0%</div>
-        <div class="lbl">Progress</div>
-      </div>
-    </div>
-    <div class="progress-wrap">
-      <div class="progress-bar" id="progressBar"></div>
+      <div class="owned-count" id="statOwned">0/0</div>
     </div>
   </section>
 <section class="controls glass">
@@ -673,7 +822,7 @@ if (host) {
       powerPreference:'high-performance'
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.15));
     renderer.setClearColor(0x000000,1);
     host.replaceChildren(renderer.domElement);
 
@@ -776,10 +925,19 @@ if (host) {
     const timer=new THREE.Timer();
     timer.connect(document);
 
-    renderer.setAnimationLoop((timestamp)=>{
+    let bgRunning=true;
+    function renderBackground(timestamp){
+      if(!bgRunning) return;
       timer.update(timestamp);
       material.uniforms.uTime.value=timer.getElapsed();
       renderer.render(scene,camera);
+    }
+    renderer.setAnimationLoop(renderBackground);
+
+    document.addEventListener('visibilitychange',()=>{
+      bgRunning=!document.hidden;
+      if(bgRunning) renderer.setAnimationLoop(renderBackground);
+      else renderer.setAnimationLoop(null);
     });
   } catch(error){
     console.error('Three.js background:',error);
@@ -788,785 +946,579 @@ if (host) {
 </script>
 
 <script>
-const DB_STORAGE_KEY='mm2checkerDatabaseV20';
-const ALL_ITEMS_CACHE_KEY='mm2checkerAllItemsV1';
+const DB_STORAGE_KEY='mm2fandomDatabaseV4';
+const RAW_CACHE_KEY='mm2fandomRawPagesV4';
 const UI_STATE_KEY='mm2checkerUiStateV1';
 const OWNED_STORAGE_KEY='mm2checkerOwnedV1';
 const DB_MAX_AGE=1000*60*60*12;
 
-const ALL_ITEMS_SOURCE='allitems.html';
-const EXPECTED_ITEM_COUNT=896;
+const FANDOM_API='https://murder-mystery-2.fandom.com/api.php';
+const FANDOM_WIKI='https://murder-mystery-2.fandom.com/wiki/';
+const MM2VALUES_MISC='https://www.mm2values.com/?p=misc';
+const MM2VALUES_MISC_READER='https://r.jina.ai/https://www.mm2values.com/?p=misc';
 
-const CATEGORY_SOURCES={
-  "Ancients":"ancients.html",
-  "Vintages":"vintages.html",
-  "Godlies":"godlies.html",
-  "Legendaries":"legendaries.html",
-  "Rares":"rares.html",
-  "Uncommons":"uncommons.html",
-  "Commons":"commons.html",
-  "Pets":"pets.html",
-  "Other":"other.html"
-};
-
-const ALL_ITEMS_CATEGORY_BOUNDARIES=[
-  {category:"Other",       first:"Corrupt"},
-  {category:"Ancients",    first:"Nik's Scythe"},
-  {category:"Vintages",    first:"Ghost"},
-  {category:"Godlies",     first:"C. Traveler's Gun"},
-  {category:"Legendaries", first:"JD"},
-  {category:"Rares",       first:"Cane Knife (2018)"},
-  {category:"Uncommons",   first:"Bones (Knife)"},
-  {category:"Commons",     first:"Glitch1"},
-  {category:"Other",       first:"Mystery Key"},
-  {category:"Pets",        first:"Zombie Dog"}
+const CATEGORY_ORDER=[
+  'Unique','EVO','Ancients','Vintages','Godlies',
+  'Legendaries','Rares','Uncommons','Commons','Pets','Misc'
 ];
 
-function classifyAllItemsByOrder(items){
-  const data={};
-
-  for(const category of Object.keys(CATEGORY_SOURCES)){
-    data[category]=[];
-  }
-
-  let boundaryIndex=0;
-  let currentCategory=ALL_ITEMS_CATEGORY_BOUNDARIES[0].category;
-
-  for(let i=0;i<items.length;i++){
-    const item=items[i];
-    const nextBoundary=ALL_ITEMS_CATEGORY_BOUNDARIES[boundaryIndex+1];
-
-    if(
-      nextBoundary &&
-      normalizeKey(item.name)===normalizeKey(nextBoundary.first)
-    ){
-      boundaryIndex++;
-      currentCategory=nextBoundary.category;
-    }
-
-    data[currentCategory].push({
-      id:item.href || item.id || `${currentCategory}:${i}:${normalizeKey(item.name)}`,
-      href:item.href||'',
-      name:item.name,
-      img:item.img||''
-    });
-  }
-
-  return data;
-}
-
-function validateAllItemOrder(items){
-  let from=0;
-
-  for(const boundary of ALL_ITEMS_CATEGORY_BOUNDARIES){
-    let found=-1;
-
-    for(let i=from;i<items.length;i++){
-      if(normalizeKey(items[i].name)===normalizeKey(boundary.first)){
-        found=i;
-        break;
-      }
-    }
-
-    if(found<0){
-      console.warn(
-        `Nie znaleziono granicy ${boundary.category}: ${boundary.first}`
-      );
-      return false;
-    }
-
-    from=found+1;
-  }
-
-  return true;
-}
-
-
 const CATEGORY_THEMES={
-  "Ancients":{
-    base:"#6615FD",
-    light:"#7B36FF",
-    deep:"#4610AD",
-    glow:"rgba(102,21,253,.30)"
-  },
-  "Vintages":{
-    base:"#E5C715",
-    light:"#F3D936",
-    deep:"#9D8810",
-    glow:"rgba(229,199,21,.28)"
-  },
-  "Godlies":{
-    base:"#FF0AB1",
-    light:"#FF43C4",
-    deep:"#A90076",
-    glow:"rgba(255,10,177,.30)"
-  },
-  "Legendaries":{
-    base:"#DB0206",
-    light:"#F3272B",
-    deep:"#8E0104",
-    glow:"rgba(219,2,6,.30)"
-  },
-  "Rares":{
-    base:"#00C715",
-    light:"#29E63B",
-    deep:"#007C0D",
-    glow:"rgba(0,199,21,.28)"
-  },
-  "Uncommons":{
-    base:"#00FFFF",
-    light:"#47FFFF",
-    deep:"#00A5A5",
-    glow:"rgba(0,255,255,.27)"
-  },
-  "Commons":{
-    base:"#696969",
-    light:"#8A8A8A",
-    deep:"#454545",
-    glow:"rgba(105,105,105,.22)"
-  },
-  "Pets":{
-    base:"#d95db7",
-    light:"#ff9ce1",
-    deep:"#7d2b66",
-    glow:"rgba(217,93,183,.28)"
-  },
-  "Other":{
-    base:"#c89a67",
-    light:"#f5cd9e",
-    deep:"#705032",
-    glow:"rgba(200,154,103,.24)"
-  }
+  "Unique":{base:"#E68A00",light:"#FFA31A",deep:"#9A5A0A",glow:"rgba(230,138,0,.28)"},
+  "EVO":{base:"#9a5cff",light:"#c09aff",deep:"#5830a8",glow:"rgba(154,92,255,.30)"},
+  "Ancients":{base:"#6615FD",light:"#7B36FF",deep:"#4610AD",glow:"rgba(102,21,253,.30)"},
+  "Vintages":{base:"#E5C715",light:"#F3D936",deep:"#9D8810",glow:"rgba(229,199,21,.28)"},
+  "Godlies":{base:"#FF0AB1",light:"#FF43C4",deep:"#A90076",glow:"rgba(255,10,177,.30)"},
+  "Legendaries":{base:"#DB0206",light:"#F3272B",deep:"#8E0104",glow:"rgba(219,2,6,.30)"},
+  "Rares":{base:"#00C715",light:"#29E63B",deep:"#007C0D",glow:"rgba(0,199,21,.28)"},
+  "Uncommons":{base:"#00FFFF",light:"#47FFFF",deep:"#00A5A5",glow:"rgba(0,255,255,.27)"},
+  "Commons":{base:"#696969",light:"#8A8A8A",deep:"#454545",glow:"rgba(105,105,105,.22)"},
+  "Pets":{base:"#d95db7",light:"#ff9ce1",deep:"#7d2b66",glow:"rgba(217,93,183,.28)"},
+  "Misc":{base:"#c89a67",light:"#f5cd9e",deep:"#705032",glow:"rgba(200,154,103,.24)"}
 };
 
 let DATA={};
 let owned=loadJson(OWNED_STORAGE_KEY,{});
 
-const savedUiState=loadJson(UI_STATE_KEY,{
-  filter:'all',
-  search:'',
-  collapsed:{}
-});
-
-let currentFilter=['all','owned','missing'].includes(savedUiState.filter)
-  ? savedUiState.filter
-  : 'all';
-
+const savedUiState=loadJson(UI_STATE_KEY,{filter:'all',search:'',collapsed:{}});
+let currentFilter=['all','owned','missing'].includes(savedUiState.filter)?savedUiState.filter:'all';
 let searchTerm=String(savedUiState.search||'').toLowerCase();
-
-let collapsedCategories={
-  ...(savedUiState.collapsed||{})
-};
-
-function setLoading(active,text='Pobieranie danych z MM2 Checker…'){
-  const overlay=document.getElementById('loadingOverlay');
-  const subtitle=document.getElementById('loadingSubtitle');
-
-  if(subtitle) subtitle.textContent=text;
-
-  document.body.classList.toggle('is-loading',active);
-
-  if(overlay){
-    overlay.classList.toggle('hidden',!active);
-    overlay.setAttribute('aria-busy',active?'true':'false');
-  }
-}
+let collapsedCategories={...(savedUiState.collapsed||{})};
 
 function loadJson(key,fallback){
   try{
     const raw=localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  }catch{
-    return fallback;
-  }
+    return raw?JSON.parse(raw):fallback;
+  }catch{return fallback;}
 }
 
-function saveOwned(){
-  localStorage.setItem(OWNED_STORAGE_KEY,JSON.stringify(owned));
-}
-
+function saveOwned(){localStorage.setItem(OWNED_STORAGE_KEY,JSON.stringify(owned));}
 function saveUiState(){
-  localStorage.setItem(UI_STATE_KEY,JSON.stringify({
-    filter:currentFilter,
-    search:searchTerm,
-    collapsed:collapsedCategories
-  }));
+  localStorage.setItem(UI_STATE_KEY,JSON.stringify({filter:currentFilter,search:searchTerm,collapsed:collapsedCategories}));
 }
-
-function saveAllItemsCache(items){
-  try{
-    localStorage.setItem(ALL_ITEMS_CACHE_KEY,JSON.stringify({
-      savedAt:Date.now(),
-      items
-    }));
-  }catch(error){
-    console.warn('All Items cache write failed:',error);
-  }
+function saveRawCache(records){
+  try{localStorage.setItem(RAW_CACHE_KEY,JSON.stringify({savedAt:Date.now(),records}));}
+  catch(error){console.warn('Fandom raw cache write failed:',error);}
 }
-
-function getAllItemsCache(){
-  const cache=loadJson(ALL_ITEMS_CACHE_KEY,null);
-
-  if(
-    !cache ||
-    !Array.isArray(cache.items) ||
-    !cache.items.length
-  ){
-    return null;
-  }
-
-  return cache;
+function getRawCache(){
+  const cache=loadJson(RAW_CACHE_KEY,null);
+  return cache&&Array.isArray(cache.records)&&cache.records.length?cache:null;
 }
-
 function saveDatabase(data){
-  localStorage.setItem(DB_STORAGE_KEY,JSON.stringify({
-    savedAt:Date.now(),
-    data
-  }));
+  try{localStorage.setItem(DB_STORAGE_KEY,JSON.stringify({savedAt:Date.now(),data}));}
+  catch(error){console.warn('Database cache write failed:',error);}
 }
-
 function getCachedDatabase(){
   const cache=loadJson(DB_STORAGE_KEY,null);
-
-  if(
-    !cache ||
-    !cache.data ||
-    typeof cache.savedAt!=='number'
-  ) return null;
-
+  if(!cache||!cache.data||typeof cache.savedAt!=='number') return null;
   return cache;
 }
+function normalizeName(value){return String(value||'').replace(/\s+/g,' ').trim();}
+function normalizeKey(value){return normalizeName(value).toLowerCase().replace(/[’']/g,'').trim();}
+function placeholderUrl(){return 'https://placehold.co/220x220/0b0b0b/666666?text=No+Image';}
+function itemKey(category,item){return item.href||item.id||`${category}::${item.name}`;}
 
-function normalizeName(value){
-  return String(value||'')
-    .replace(/\s+/g,' ')
-    .trim();
+function wikiUrl(title){
+  return `${FANDOM_WIKI}${encodeURIComponent(String(title||'').replace(/ /g,'_')).replace(/%2F/g,'/')}`;
 }
 
-function normalizeKey(value){
-  return normalizeName(value)
-    .toLowerCase()
-    .replace(/[’']/g,'')
-    .trim();
-}
-
-function absoluteUrl(value,base){
-  try{
-    return new URL(value,base).href;
-  }catch{
-    return value||'';
+function setLoader(show,text='Loading collection…'){
+  const overlay=document.getElementById('loadingOverlay');
+  const label=document.getElementById('loadingText');
+  if(label) label.textContent=text;
+  document.body.classList.toggle('is-loading',show);
+  if(overlay){
+    overlay.classList.toggle('hidden',!show);
+    overlay.setAttribute('aria-busy',show?'true':'false');
   }
 }
 
-function placeholderUrl(){
-  return 'https://placehold.co/220x220/0b0b0b/666666?text=No+Image';
-}
-
-function itemKey(category,item){
-  return item.href || item.id || `${category}::${item.name}`;
-}
-
-
-async function fetchText(url,timeout=12000){
+async function fetchJson(url,timeout=20000){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),timeout);
+  try{
+    const response=await fetch(url,{signal:controller.signal,cache:'no-store',mode:'cors',credentials:'omit'});
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  }finally{clearTimeout(timer);}
+}
 
+async function fetchText(url,timeout=20000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
   try{
     const response=await fetch(url,{
       signal:controller.signal,
       cache:'no-store',
-      headers:{
-        'Accept':'text/plain,text/markdown;q=0.9,*/*;q=0.8'
-      }
+      mode:'cors',
+      credentials:'omit',
+      headers:{'Accept':'text/plain,text/markdown;q=0.9,*/*;q=0.8'}
     });
-
-    if(!response.ok){
-      throw new Error(`HTTP ${response.status}`);
-    }
-
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.text();
-  }finally{
-    clearTimeout(timer);
-  }
+  }finally{clearTimeout(timer);}
 }
 
-const NAV_LABELS=new Set([
-  'home','trade checker','all items','updates','guide',
-  'ancients','vintages','godlies','legendaries','rares',
-  'uncommons','commons','pets','other','safe trading',
-  'faq','privacy policy','discord','roblox'
-]);
+function absoluteUrl(value,base){
+  try{return new URL(value,base).href;}
+  catch{return value||'';}
+}
 
-function cleanMarkdownLabel(value){
+function cleanMarkdownText(value){
   return String(value||'')
     .replace(/!\[[^\]]*\]\([^)]*\)/g,' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g,'$1')
     .replace(/<[^>]+>/g,' ')
-    .replace(/[*_`#]/g,' ')
-    .replace(/^\s*Image\s*\d+\s*:\s*/i,'')
-    .replace(/^\s*Image\s*:\s*/i,'')
-    .replace(/^\s*Image\s*\d+\s*$/i,'')
-    .replace(/^\s*Image\s*$/i,'')
+    .replace(/[*_`#>|]/g,' ')
     .replace(/\s+/g,' ')
     .trim();
 }
 
-function validItemName(name){
-  if(!name || name.length>90) return false;
-  if(/^image(?:\s*\d+)?$/i.test(name.trim())) return false;
-
-  const key=normalizeKey(name);
-
-  if(!key || NAV_LABELS.has(key)) return false;
-
-  if(
-    /^(main pages|items|extras|search items|site created|copyright)$/i.test(name) ||
-    /mm2 checker/i.test(name)
-  ) return false;
-
-  return true;
-}
-
-function parseCategoryMarkdown(text,sourceUrl,category){
-  const items=[];
+function parseMM2ValuesMisc(text){
+  const records=[];
   const seen=new Set();
+  const source=String(text||'');
+  if(!source) return records;
 
-  function add(rawName,img=''){
-    const name=cleanMarkdownLabel(rawName)
-      .replace(/^Image(?:\s*\d+)?\s*:\s*/i,'')
-      .replace(/\s+/g,' ')
-      .trim();
-    const key=normalizeKey(name);
-
-    if(
-      !key ||
-      !validItemName(name) ||
-      seen.has(key) ||
-      key===normalizeKey(category) ||
-      /^tier(?:\s*\d+)?$/i.test(name) ||
-      /^chroma tier$/i.test(name)
-    ) return;
-
-    seen.add(key);
-    items.push({
-      name,
-      img:img ? absoluteUrl(img,sourceUrl) : ''
-    });
-  }
-
-  if(/<html|<!doctype/i.test(text)){
-    const doc=new DOMParser().parseFromString(text,'text/html');
-
-    for(const node of doc.querySelectorAll('div,li,article,tr')){
-      const value=(node.textContent||'').replace(/\s+/g,' ').trim();
-      const match=value.match(/\|\s*(.{1,100}?)\s+Value\s*-/i);
-
-      if(!match) continue;
-
-      const image=node.querySelector('img');
-      const img=image
-        ? (
-            image.getAttribute('src') ||
-            image.getAttribute('data-src') ||
-            image.getAttribute('data-lazy-src') ||
-            ''
-          )
-        : '';
-
-      add(match[1],img);
-    }
-
-    if(items.length) return items;
-  }
-
-  const imageMap=new Map();
+  const lower=source.toLowerCase();
+  const start=Math.max(0,lower.indexOf('misc items'));
+  const endPos=lower.indexOf('© mm2values',start);
+  const region=source.slice(start,endPos>start?endPos:source.length);
+  const valueRe=/\bValue\s*:/gi;
   let match;
-  const imageRe=/!\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/gi;
+  let previousBoundary=0;
 
-  while((match=imageRe.exec(text))){
-    const name=cleanMarkdownLabel(match[1])
-      .replace(/^Image(?:\s*\d+)?\s*:\s*/i,'')
-      .trim();
+  while((match=valueRe.exec(region))){
+    const before=region.slice(previousBoundary,match.index);
+    previousBoundary=match.index+match[0].length;
 
-    if(name) imageMap.set(normalizeKey(name),match[2]);
-  }
-
-  const valueRe=/\|\s*([^\n\r|]{1,100}?)\s+Value\s*-/gi;
-
-  while((match=valueRe.exec(text))){
-    const name=cleanMarkdownLabel(match[1]).trim();
-    add(name,imageMap.get(normalizeKey(name))||'');
-  }
-
-  return items;
-}
-
-function parseAllItemsMarkdown(text,sourceUrl){
-  const items=[];
-  const seenHref=new Set();
-  let fallbackId=0;
-
-  function absoluteHref(value){
-    try{
-      return new URL(value,sourceUrl).href;
-    }catch{
-      return value||'';
-    }
-  }
-
-  function add(rawName,href='',img=''){
-    const name=cleanMarkdownLabel(rawName);
-
-    if(!validItemName(name)) return;
-
-    if(
-      /^image(?:\s*\d+)?$/i.test(name) ||
-      /^(home|trade checker|all items|updates|guide|ancients|vintages|godlies|legendaries|rares|uncommons|commons|pets|other|safe trading|faq|privacy policy)$/i.test(name)
-    ) return;
-
-    const itemHref=href ? absoluteHref(href) : '';
-
-    if(itemHref){
-      if(seenHref.has(itemHref)) return;
-      seenHref.add(itemHref);
-    }
-
-    items.push({
-      id:itemHref || `fallback:${fallbackId++}`,
-      name,
-      href:itemHref,
-      img:img ? absoluteUrl(img,sourceUrl) : ''
-    });
-  }
-
-  /*
-   * RAW HTML path
-   */
-  if(/<html|<!doctype/i.test(text)){
-    const doc=new DOMParser().parseFromString(text,'text/html');
-    const links=[...doc.querySelectorAll('a')];
-
-    const start=links.findIndex(a=>normalizeKey(a.textContent)==='corrupt');
-
-    let end=-1;
-    for(let i=links.length-1;i>=0;i--){
-      if(normalizeKey(links[i].textContent)==='pumpkin (2021)'){
-        end=i;
+    // Prefer the final MM2Values image in this item block.
+    const imageMatches=[...before.matchAll(/!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/gi)];
+    let img='';
+    for(let i=imageMatches.length-1;i>=0;i--){
+      const candidate=imageMatches[i][1];
+      if(/mm2values\.com\/img\//i.test(candidate)){
+        img=candidate;
         break;
       }
     }
 
-    if(start>=0 && end>=start){
-      for(let i=start;i<=end;i++){
-        const a=links[i];
-        const name=normalizeName(a.textContent);
+    const lines=before.split(/\r?\n/)
+      .map(line=>cleanMarkdownText(line))
+      .filter(Boolean)
+      .filter(line=>{
+        const key=normalizeKey(line);
+        return !(
+          /^tier\s*\d+/i.test(line) ||
+          key==='misc items' ||
+          /^working on updating images/i.test(line) ||
+          /^sort by/i.test(line) ||
+          /^display/i.test(line) ||
+          /^navigation$/i.test(line) ||
+          /^image(?:\s*\d+)?$/i.test(line)
+        );
+      });
 
-        const imgEl=
-          a.querySelector('img') ||
-          a.closest('div,li,article')?.querySelector('img');
-
-        const img=imgEl
-          ? (
-              imgEl.getAttribute('src') ||
-              imgEl.getAttribute('data-src') ||
-              imgEl.getAttribute('data-lazy-src') ||
-              ''
-            )
-          : '';
-
-        add(name,a.getAttribute('href')||'',img);
-      }
-
-      return items;
+    let name='';
+    for(let i=lines.length-1;i>=0;i--){
+      const candidate=lines[i]
+        .replace(/^Image(?:\s*\d+)?\s*:\s*/i,'')
+        .trim();
+      if(!candidate || candidate.length>80) continue;
+      if(/^(wiki|range|demand|rarity|stability|stable)$/i.test(candidate)) continue;
+      name=candidate;
+      break;
     }
-  }
 
-  /*
-   * Jina Markdown path.
-   * Important: preserve duplicate NAMES. Only duplicate HREFs are collapsed.
-   */
-  const lower=text.toLowerCase();
+    if(!name) continue;
+    const key=normalizeKey(name);
+    if(!key || seen.has(key)) continue;
+    seen.add(key);
 
-  // Do not require exact formatting around boundary items.
-  let startIndex=lower.indexOf('corrupt');
-  let endStart=lower.lastIndexOf('pumpkin (2021)');
-
-  if(startIndex<0 || endStart<0 || endStart<=startIndex){
-    // If Reader format changes, parse the whole response but still rely on href identity.
-    startIndex=0;
-    endStart=text.length-'pumpkin (2021)'.length;
-  }
-
-  const region=text.slice(
-    startIndex,
-    Math.min(text.length,endStart+'pumpkin (2021)'.length)
-  );
-
-  const imageByHref=new Map();
-  const imageByName=new Map();
-
-  let match;
-
-  // [![alt](image)](item-url)
-  const imageLinkRe=/\[!\[([^\]]*)\]\(([^)\s]+)\)\]\(([^)\s]+)\)/g;
-  while((match=imageLinkRe.exec(region))){
-    const alt=cleanMarkdownLabel(match[1]);
-    const image=match[2];
-    const href=absoluteHref(match[3]);
-
-    imageByHref.set(href,image);
-
-    if(alt){
-      const key=normalizeKey(alt);
-      if(!imageByName.has(key)) imageByName.set(key,image);
-    }
-  }
-
-  // More permissive: [![alt](image) Label](item-url)
-  const linkedImageLabelRe=/\[!\[([^\]]*)\]\(([^)\s]+)\)\s*([^\]]*?)\]\(([^)\s]+)\)/g;
-  while((match=linkedImageLabelRe.exec(region))){
-    const alt=cleanMarkdownLabel(match[1]);
-    const image=match[2];
-    const label=cleanMarkdownLabel(match[3]) || alt;
-    const href=absoluteHref(match[4]);
-
-    add(label,href,image);
-  }
-
-  // Main source: every markdown link in the bounded inventory region.
-  const linkRe=/\[([^\]]+)\]\(([^)\s]+)\)/g;
-
-  while((match=linkRe.exec(region))){
-    // Skip markdown image syntax.
-    if(/^!/.test(match[1].trim())) continue;
-
-    const name=cleanMarkdownLabel(match[1]);
-    const rawHref=match[2];
-    const href=absoluteHref(rawHref);
-
-    if(
-      /(?:privacy|guide|updates|faq|trade|safe-trading|discord|roblox)/i.test(rawHref)
-    ) continue;
-
-    add(
+    records.push({
+      id:`mm2values:misc:${key}`,
       name,
-      rawHref,
-      imageByHref.get(href) ||
-      imageByName.get(normalizeKey(name)) ||
-      ''
-    );
+      href:MM2VALUES_MISC,
+      img:img?absoluteUrl(img,MM2VALUES_MISC):'',
+      category:'Misc',
+      type:'Misc'
+    });
   }
 
+  return records;
+}
+
+async function fetchMiscItems(){
+  const text=await fetchText(MM2VALUES_MISC_READER,20000);
+  if(!text || text.length<300) throw new Error('MM2Values reader returned an empty response.');
+  const items=parseMM2ValuesMisc(text);
+  if(!items.length) throw new Error('MM2Values Misc parser returned 0 items.');
+  console.info(`MM2Values Misc: ${items.length} items`);
   return items;
 }
 
-function buildVisibleData(masterItems,assignments,categoryImages){
-  const data={};
+async function fetchCategoryIndex(categoryName,onProgress){
+  const members=[];
+  let continuation='';
+  let pageNumber=0;
 
-  for(const category of Object.keys(CATEGORY_SOURCES)){
-    data[category]=[];
+  do{
+    pageNumber++;
+    const params=new URLSearchParams({
+      action:'query',
+      format:'json',
+      formatversion:'2',
+      origin:'*',
+      list:'categorymembers',
+      cmtitle:`Category:${categoryName}`,
+      cmnamespace:'0',
+      cmtype:'page',
+      cmlimit:'500'
+    });
+
+    if(continuation) params.set('cmcontinue',continuation);
+
+    const json=await fetchJson(`${FANDOM_API}?${params}`);
+    const pageMembers=Array.isArray(json?.query?.categorymembers)
+      ? json.query.categorymembers
+      : [];
+
+    members.push(...pageMembers);
+    continuation=json?.continue?.cmcontinue||'';
+
+    console.info(
+      `Fandom index ${categoryName} page ${pageNumber}: `+
+      `${pageMembers.length} returned, ${members.length} total`
+    );
+
+    if(onProgress) onProgress(members.length,pageNumber);
+  }while(continuation);
+
+  return members;
+}
+
+function memberKey(member){
+  return String(member?.pageid||'') || `title:${normalizeKey(member?.title)}`;
+}
+
+function buildMemberSet(members){
+  const ids=new Set();
+  const titles=new Set();
+
+  for(const member of members){
+    if(member?.pageid) ids.add(String(member.pageid));
+    if(member?.title) titles.add(normalizeKey(member.title));
   }
 
-  for(const item of masterItems){
-    const category=assignments.get(item.identity);
-    if(!category) continue;
+  return {ids,titles};
+}
 
-    data[category].push({
-      id:item.identity,
-      href:item.href||'',
-      name:item.name,
-      img:item.img || categoryImages.get(`${category}::${normalizeKey(item.name)}`) || ''
+function inMemberSet(page,set){
+  return set.ids.has(String(page.pageid||'')) || set.titles.has(normalizeKey(page.title));
+}
+
+function isMetaTitle(title){
+  const key=normalizeKey(title);
+  return (
+    key==='weapons' || key==='evo weapons' || key==='pets' ||
+    key==='pet box' || key==='common egg' ||
+    /^(ancient|vintage|classic|godly|legendary|rare|uncommon|common|unique|chroma) weapons$/.test(key) ||
+    /^(knives|guns|fire pets|chroma fire pets)$/.test(key)
+  );
+}
+
+async function fetchPageDetails(members,onProgress){
+  const pages=[];
+  const ids=members
+    .map(member=>member.pageid)
+    .filter(Boolean);
+
+  const chunkSize=50;
+
+  for(let offset=0;offset<ids.length;offset+=chunkSize){
+    const chunk=ids.slice(offset,offset+chunkSize);
+    const params=new URLSearchParams({
+      action:'query',
+      format:'json',
+      formatversion:'2',
+      origin:'*',
+      pageids:chunk.join('|'),
+      prop:'pageimages|info|categories',
+      piprop:'thumbnail|original',
+      pithumbsize:'300',
+      inprop:'url',
+      cllimit:'500'
     });
+
+    const json=await fetchJson(`${FANDOM_API}?${params}`);
+    const batch=Array.isArray(json?.query?.pages)?json.query.pages:[];
+    pages.push(...batch);
+
+    if(onProgress) onProgress(Math.min(offset+chunk.length,ids.length),ids.length);
+  }
+
+  return pages;
+}
+
+function pageCategoryNames(page){
+  return new Set(
+    (Array.isArray(page?.categories)?page.categories:[])
+      .map(entry=>normalizeKey(String(entry?.title||'').replace(/^Category:/i,'')))
+      .filter(Boolean)
+  );
+}
+
+function classifyWeapon(page){
+  const cats=pageCategoryNames(page);
+
+  // Evo is an item type spanning Rare → Legendary → Godly → Ancient.
+  // Keep it separate instead of classifying its current/final stage as a normal rarity.
+  if(cats.has('evo')) return 'EVO';
+  if(cats.has('unique')) return 'Unique';
+  if(cats.has('ancient')) return 'Ancients';
+  if(cats.has('vintage')) return 'Vintages';
+  if(cats.has('godly') || cats.has('chroma')) return 'Godlies';
+  if(cats.has('legendary')) return 'Legendaries';
+  if(cats.has('rare')) return 'Rares';
+  if(cats.has('uncommon')) return 'Uncommons';
+  if(cats.has('common')) return 'Commons';
+  return '';
+}
+
+function normalizeWeaponPage(page){
+  const title=normalizeName(page.title);
+  if(!title || page.ns!==0 || isMetaTitle(title)) return null;
+
+  const category=classifyWeapon(page);
+  if(!category) return null;
+
+  const cats=pageCategoryNames(page);
+  const isKnife=cats.has('knives');
+  const isGun=cats.has('guns');
+  const type=isKnife&&!isGun?'Knife':isGun&&!isKnife?'Gun':'Weapon';
+
+  return {
+    id:`fandom:${page.pageid}`,
+    pageid:page.pageid,
+    name:title,
+    href:page.fullurl||wikiUrl(title),
+    img:page.thumbnail?.source||page.original?.source||'',
+    category,
+    type
+  };
+}
+
+function normalizePetPage(page){
+  const title=normalizeName(page.title);
+  if(!title || page.ns!==0 || isMetaTitle(title)) return null;
+
+  return {
+    id:`fandom:${page.pageid}`,
+    pageid:page.pageid,
+    name:title,
+    href:page.fullurl||wikiUrl(title),
+    img:page.thumbnail?.source||page.original?.source||'',
+    category:'Pets',
+    type:'Pet'
+  };
+}
+
+async function fetchDatabase(){
+  const hasUsableData=Object.values(DATA).some(list=>Array.isArray(list)&&list.length);
+  if(!hasUsableData) setLoader(true,'Loading collection…');
+
+  try{
+    const indexNames=['Weapons','Pets'];
+
+    const indexes={};
+
+    for(let i=0;i<indexNames.length;i++){
+      const name=indexNames[i];
+      if(!hasUsableData){
+        setLoader(true,`Fetching category indexes… ${i+1}/${indexNames.length}`);
+      }
+      indexes[name]=await fetchCategoryIndex(name);
+    }
+
+
+
+    if(!hasUsableData) setLoader(true,'Loading weapon images…');
+    const weaponPages=await fetchPageDetails(indexes.Weapons,(done,total)=>{
+      if(!hasUsableData) setLoader(true,`Loading weapons… ${done}/${total}`);
+    });
+
+    if(!hasUsableData) setLoader(true,'Loading pet images…');
+    const petPages=await fetchPageDetails(indexes.Pets,(done,total)=>{
+      if(!hasUsableData) setLoader(true,`Loading pets… ${done}/${total}`);
+    });
+
+    const weapons=[];
+    const unclassified=[];
+
+    for(const page of weaponPages){
+      const item=normalizeWeaponPage(page);
+      if(item) weapons.push(item);
+      else if(page?.ns===0 && !isMetaTitle(page.title)) unclassified.push(page.title);
+    }
+
+    const pets=petPages
+      .map(normalizePetPage)
+      .filter(Boolean);
+
+    let misc=[];
+    try{
+      if(!hasUsableData) setLoader(true,'Loading misc items…');
+      misc=await fetchMiscItems();
+    }catch(error){
+      // Misc is supplemental. A temporary MM2Values/Jina failure must not break Weapons + Pets.
+      console.warn('MM2Values Misc unavailable; continuing without Misc:',error);
+    }
+
+    const records=mergeRecords([weapons,pets,misc]);
+    if(!records.length) throw new Error('Item sources returned no usable items.');
+
+    DATA=classifyRecords(records);
+    saveRawCache(records);
+    saveDatabase(DATA);
+    render();
+
+    const counts=Object.fromEntries(CATEGORY_ORDER.map(category=>[category,DATA[category].length]));
+    console.info('Fandom categories:',counts);
+    console.info('Ancients:',DATA.Ancients.map(item=>item.name));
+    console.info(`Fandom Weapons index: ${indexes.Weapons.length}`);
+    console.info(`Fandom Pets index: ${indexes.Pets.length}`);
+    console.info(`Collection total: ${records.length} items (Fandom Weapons + Pets, MM2Values Misc: ${misc.length})`);
+
+    if(unclassified.length){
+      console.warn(
+        `Fandom unclassified weapons: ${unclassified.length}`,
+        unclassified
+      );
+    }
+
+    setLoader(false);
+    return DATA;
+  }catch(error){
+    setLoader(false);
+    throw error;
+  }
+}
+
+function mergeRecords(groups){
+  const byPageId=new Map();
+  const byName=new Map();
+
+  // Weapons first, then Pets, and EVO last so EVO always overrides its evolving rarity.
+  for(const group of groups){
+    for(const item of group){
+      const id=String(item.pageid||item.id||'');
+      const nameKey=normalizeKey(item.name);
+      const existing=(id&&byPageId.get(id))||byName.get(nameKey);
+
+      if(existing){
+        if(item.category==='EVO') existing.category='EVO';
+        if(!existing.img&&item.img) existing.img=item.img;
+        if(!existing.href&&item.href) existing.href=item.href;
+        continue;
+      }
+
+      const copy={...item};
+      if(id) byPageId.set(id,copy);
+      byName.set(nameKey,copy);
+    }
+  }
+
+  return [...new Set(byName.values())];
+}
+
+function classifyRecords(records){
+  const data=Object.fromEntries(CATEGORY_ORDER.map(category=>[category,[]]));
+
+  for(const item of records){
+    if(!data[item.category]) continue;
+    data[item.category].push(item);
+  }
+
+  for(const category of CATEGORY_ORDER){
+    data[category].sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true,sensitivity:'base'}));
   }
 
   return data;
 }
 
-async function fetchAllItems(){
-  const sourceUrl=`https://mm2checker.com/${ALL_ITEMS_SOURCE}`;
 
-  const sources=[
-    {
-      name:'Jina Reader',
-      url:`https://r.jina.ai/https://mm2checker.com/${ALL_ITEMS_SOURCE}`
-    },
-    {
-      name:'AllOrigins',
-      url:`https://api.allorigins.win/raw?url=${encodeURIComponent(sourceUrl)}`
-    }
-  ];
-
-  let bestItems=[];
-  let lastError=null;
-
-  for(const source of sources){
-    try{
-      const text=await fetchText(source.url,18000);
-
-      if(!text || text.length<500){
-        throw new Error(`Odpowiedź za krótka: ${text?.length||0} B`);
-      }
-
-      const items=parseAllItemsMarkdown(text,sourceUrl);
-
-      const uniqueHrefCount=new Set(
-        items.filter(item=>item.href).map(item=>item.href)
-      ).size;
-
-      const uniqueNameCount=new Set(
-        items.map(item=>normalizeKey(item.name))
-      ).size;
-
-      console.info(
-        `${source.name}: ${items.length} rekordów, ` +
-        `${uniqueHrefCount} unikalnych URL, ` +
-        `${uniqueNameCount} unikalnych nazw`
-      );
-
-      if(items.length>bestItems.length){
-        bestItems=items;
-      }
-
-      if(items.length>=EXPECTED_ITEM_COUNT){
-        console.info(`All Items source complete: ${source.name}`);
-
-        const completeItems=items.slice(0,EXPECTED_ITEM_COUNT);
-        saveAllItemsCache(completeItems);
-
-        return completeItems;
-      }
-
-      // Partial data is acceptable now. Keep trying sources silently.
-      console.info(
-        `${source.name}: częściowa baza ${items.length}/${EXPECTED_ITEM_COUNT}`
-      );
-
-    }catch(error){
-      lastError=error;
-      console.warn(`All Items source failed: ${source.name}`,error);
-    }
+function categoryOwnedCount(category){
+  const items=DATA[category]||[];
+  let count=0;
+  for(const item of items){
+    const key=itemKey(category,item);
+    const legacyKey=`${category}::${item.name}`;
+    if(owned[key]||owned[legacyKey]) count++;
   }
-
-  if(bestItems.length){
-    console.warn(
-      `Używam częściowej listy All Items: ${bestItems.length}/${EXPECTED_ITEM_COUNT}`
-    );
-
-    saveAllItemsCache(bestItems);
-    return bestItems;
-  }
-
-  const cachedAllItems=getAllItemsCache();
-
-  if(cachedAllItems?.items?.length){
-    console.warn(
-      `Sieć nie działa — używam cache All Items: ${cachedAllItems.items.length}`
-    );
-
-    return cachedAllItems.items;
-  }
-
-  throw lastError||new Error('Żadne źródło All Items nie zadziałało');
+  return count;
 }
 
-async function fetchCategory(category,file){
-  const sourceUrl=`https://mm2checker.com/${file}`;
-  const readerUrl=`https://r.jina.ai/https://mm2checker.com/${file}`;
-
-  const text=await fetchText(readerUrl,15000);
-
-  if(!text || text.length<100){
-    throw new Error('Reader zwrócił pustą odpowiedź');
+function ownedTotalCount(){
+  let count=0;
+  for(const category of CATEGORY_ORDER){
+    count+=categoryOwnedCount(category);
   }
-
-  const items=parseCategoryMarkdown(text,sourceUrl,category);
-
-  if(items.length<2){
-    console.group(`Parser debug: ${category}`);
-    console.log(text.slice(0,5000));
-    console.groupEnd();
-    throw new Error(`Reader parser: ${items.length}`);
-  }
-
-  console.info(`${category}: ${items.length} itemów`);
-  return items;
+  return count;
 }
 
+function totalItemCount(){
+  return CATEGORY_ORDER.reduce((sum,category)=>sum+(DATA[category]?.length||0),0);
+}
 
-async function fetchDatabase(){
-  const cache=getCachedDatabase()?.data||{};
+function celebrateCategory(category){
+  if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
-  const overlay=document.getElementById('loadingOverlay');
-  const label=document.getElementById('loadingText');
+  const theme=CATEGORY_THEMES[category]||{base:'#ffffff',light:'#ffffff',deep:'#888888'};
+  const section=[...document.querySelectorAll('.category')].find(el=>el.dataset.category===category);
+  const header=section?.querySelector('.category-header');
 
-  function loader(show,text='Loading collection…'){
-    if(label) label.textContent=text;
-
-    if(overlay){
-      overlay.classList.toggle('hidden',!show);
-      overlay.setAttribute('aria-busy',show ? 'true' : 'false');
-    }
+  if(header){
+    header.classList.remove('category-complete-pop');
+    void header.offsetWidth;
+    header.classList.add('category-complete-pop');
+    setTimeout(()=>header.classList.remove('category-complete-pop'),800);
   }
 
-  const hasUsableData=Object.values(DATA)
-    .some(items=>Array.isArray(items) && items.length);
+  const toast=document.createElement('div');
+  toast.className='category-complete-toast';
+  toast.style.setProperty('--toast-cat',theme.base);
+  toast.textContent=`${category} complete ✓`;
+  document.body.append(toast);
+  setTimeout(()=>toast.remove(),1900);
 
-  if(!hasUsableData){
-    loader(true,'Fetching items…');
+  const rect=header?.getBoundingClientRect()||{left:innerWidth/2-100,right:innerWidth/2+100,top:90,bottom:140,width:200,height:50};
+  const originX=rect.left+rect.width/2;
+  const originY=rect.top+Math.min(rect.height,52)/2;
+  const palette=[theme.light,theme.base,theme.deep,'#ffffff'];
+  const count=Math.min(72,Math.max(44,Math.round(innerWidth/24)));
+
+  for(let i=0;i<count;i++){
+    const piece=document.createElement('i');
+    piece.className='confetti-piece';
+    piece.style.left=`${originX}px`;
+    piece.style.top=`${originY}px`;
+    piece.style.background=palette[i%palette.length];
+    piece.style.width=`${5+Math.random()*5}px`;
+    piece.style.height=`${7+Math.random()*8}px`;
+    document.body.append(piece);
+
+    const spread=Math.min(innerWidth*.42,420);
+    const x=(Math.random()-.5)*spread;
+    const y=110+Math.random()*280;
+    const lift=70+Math.random()*130;
+    const rotate=(Math.random()-.5)*900;
+    const duration=850+Math.random()*650;
+
+    piece.animate([
+      {transform:'translate(-50%,-50%) translate(0,0) rotate(0deg)',opacity:1},
+      {offset:.28,transform:`translate(-50%,-50%) translate(${x*.38}px,${-lift}px) rotate(${rotate*.35}deg)`,opacity:1},
+      {transform:`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${rotate}deg)`,opacity:0}
+    ],{duration,easing:'cubic-bezier(.18,.72,.24,1)',fill:'forwards'}).onfinish=()=>piece.remove();
   }
-
-  let items=[];
-
-  try{
-    items=await fetchAllItems();
-  }catch(error){
-    console.warn('All Items failed, trying cache',error);
-
-    items=Object.values(cache).flat().map(item=>({
-      id:item.id||'',
-      href:item.href||'',
-      name:item.name,
-      img:item.img||''
-    }));
-  }
-
-  if(!items.length){
-    loader(true,'Failed to load collection');
-    throw new Error('Brak All Items i brak cache.');
-  }
-
-  if(!hasUsableData){
-    loader(true,'Assigning rarities…');
-  }
-
-  const boundariesOk=validateAllItemOrder(items);
-
-  if(!boundariesOk){
-    console.warn(
-      'Układ All Items nie przeszedł pełnej walidacji; tracker i tak spróbuje go wyświetlić.'
-    );
-  }
-
-  DATA=classifyAllItemsByOrder(items);
-
-  render();
-  saveDatabase(DATA);
-
-  const counts=Object.fromEntries(
-    Object.entries(DATA).map(([category,list])=>[
-      category,
-      list.length
-    ])
-  );
-
-  const total=Object.values(DATA)
-    .reduce((sum,list)=>sum+list.length,0);
-
-  console.info('Kategorie:',counts);
-  console.info(`Sklasyfikowano lokalnie ${total} itemów`);
-
-  loader(false);
-
-  return DATA;
 }
 
 function render(){
@@ -1576,22 +1528,20 @@ function render(){
   let totalCount=0;
   let ownedCount=0;
 
-  const entries=Object.entries(DATA);
+  const entries=CATEGORY_ORDER.map(category=>[category,DATA[category]||[]]);
 
-  if(entries.length===0){
+  if(entries.every(([,items])=>!items.length)){
     updateStats(0,0);
     return;
   }
 
   for(const [category,items] of entries){
+    if(!items.length) continue;
+
     const section=document.createElement('section');
     section.className='category';
-    const theme=CATEGORY_THEMES[category]||{
-      base:'#888',
-      light:'#bdbdbd',
-      deep:'#444',
-      glow:'rgba(255,255,255,.16)'
-    };
+    section.dataset.category=category;
+    const theme=CATEGORY_THEMES[category]||{base:'#888',light:'#bdbdbd',deep:'#444',glow:'rgba(255,255,255,.16)'};
 
     section.style.setProperty('--cat',theme.base);
     section.style.setProperty('--cat-light',theme.light);
@@ -1600,93 +1550,63 @@ function render(){
 
     const header=document.createElement('div');
     header.className='category-header';
-
     const isCollapsed=!!collapsedCategories[category];
-
-    if(isCollapsed){
-      header.classList.add('collapsed');
-    }
+    if(isCollapsed) header.classList.add('collapsed');
 
     const h2=document.createElement('h2');
     h2.append(document.createTextNode(category+' '));
-
     const countSpan=document.createElement('span');
     countSpan.textContent=`(${items.length})`;
     h2.append(countSpan);
 
     const right=document.createElement('div');
     right.className='category-right';
-
     const progress=document.createElement('span');
     progress.className='cat-progress';
-
     const chev=document.createElement('span');
     chev.className='chev';
     chev.textContent='▼';
-
     right.append(progress,chev);
     header.append(h2,right);
 
     const grid=document.createElement('div');
     grid.className='items-grid';
-
-    if(isCollapsed){
-      grid.classList.add('collapsed');
-    }
+    if(isCollapsed) grid.classList.add('collapsed');
 
     let catOwned=0;
     let visibleCount=0;
 
     for(const item of items){
       totalCount++;
-
       const key=itemKey(category,item);
       const legacyKey=`${category}::${item.name}`;
-      const isOwned=!!owned[key] || !!owned[legacyKey];
+      const isOwned=!!owned[key]||!!owned[legacyKey];
 
-      if(isOwned){
-        ownedCount++;
-        catOwned++;
-      }
+      if(isOwned){ownedCount++;catOwned++;}
 
-      const matchesSearch=
-        !searchTerm ||
-        item.name.toLowerCase().includes(searchTerm);
-
-      const matchesFilter=
-        currentFilter==='all' ||
-        (currentFilter==='owned' && isOwned) ||
-        (currentFilter==='missing' && !isOwned);
-
-      const visible=matchesSearch && matchesFilter;
+      const matchesSearch=!searchTerm||item.name.toLowerCase().includes(searchTerm);
+      const matchesFilter=currentFilter==='all'||(currentFilter==='owned'&&isOwned)||(currentFilter==='missing'&&!isOwned);
+      const visible=matchesSearch&&matchesFilter;
       if(visible) visibleCount++;
 
       const card=document.createElement('article');
-      card.className=
-        'item-card' +
-        (isOwned?' owned':'') +
-        (visible?'':' hidden');
-
+      card.className='item-card'+(isOwned?' owned':'')+(visible?'':' hidden');
       const accent=document.createElement('div');
       accent.className='card-accent';
-
       const media=document.createElement('div');
       media.className='item-media';
-
       const img=document.createElement('img');
       img.alt=item.name;
       img.loading='lazy';
       img.decoding='async';
 
       let failedOnce=false;
-
       img.addEventListener('error',()=>{
         if(failedOnce) return;
         failedOnce=true;
         img.src=placeholderUrl();
         img.classList.add('placeholder-image');
       });
-
       img.src=item.img||placeholderUrl();
       media.append(img);
 
@@ -1696,47 +1616,48 @@ function render(){
 
       const label=document.createElement('label');
       label.className='chk';
-
       const checkbox=document.createElement('input');
       checkbox.type='checkbox';
       checkbox.checked=isOwned;
-
       checkbox.addEventListener('change',()=>{
-        if(checkbox.checked){
-          owned[key]=true;
-        }else{
-          delete owned[key];
-        }
+        const beforeOwned=categoryOwnedCount(category);
+        const wasComplete=items.length>0&&beforeOwned===items.length;
+
+        if(checkbox.checked) owned[key]=true;
+        else delete owned[key];
+
+        const afterOwned=checkbox.checked?beforeOwned+1:Math.max(0,beforeOwned-1);
+        const justCompleted=!wasComplete&&items.length>0&&afterOwned===items.length;
 
         saveOwned();
-        render();
+
+        // Fast path: avoid rebuilding hundreds of cards on every checkbox click.
+        card.classList.toggle('owned',checkbox.checked);
+        progress.textContent=`${afterOwned}/${items.length}`;
+        updateStats(totalItemCount(),ownedTotalCount());
+
+        // Only filtering modes need visibility to be recalculated.
+        if(currentFilter!=='all') render();
+
+        if(justCompleted){
+          requestAnimationFrame(()=>celebrateCategory(category));
+        }
       });
-
       label.append(checkbox,document.createTextNode(' Owned'));
-
       card.append(accent,media,name,label);
       grid.append(card);
     }
 
     progress.textContent=`${catOwned}/${items.length}`;
-
     header.addEventListener('click',()=>{
       const collapsed=header.classList.toggle('collapsed');
       grid.classList.toggle('collapsed',collapsed);
-
       collapsedCategories[category]=collapsed;
       saveUiState();
     });
 
     section.append(header,grid);
-
-    if(
-      visibleCount===0 &&
-      (searchTerm || currentFilter!=='all')
-    ){
-      section.style.display='none';
-    }
-
+    if(visibleCount===0&&(searchTerm||currentFilter!=='all')) section.style.display='none';
     root.append(section);
   }
 
@@ -1744,34 +1665,20 @@ function render(){
 }
 
 function updateStats(total,have){
-  document.getElementById('statTotal').textContent=total;
-  document.getElementById('statOwned').textContent=have;
-  document.getElementById('statMissing').textContent=Math.max(0,total-have);
-
-  const pct=total ? Math.round(have/total*100) : 0;
-
-  document.getElementById('statPercent').textContent=`${pct}%`;
+  const pct=total?Math.round(have/total*100):0;
+  document.getElementById('statOwned').textContent=`${have}/${total}`;
   document.getElementById('progressBar').style.width=`${pct}%`;
+  document.getElementById('progressPercent').textContent=`${pct}%`;
 }
 
 function setFilter(filter){
   currentFilter=filter;
   saveUiState();
-
-  document.querySelectorAll('.filter-btn')
-    .forEach(btn=>btn.classList.remove('active'));
-
-  const id=
-    filter==='all'
-      ? 'btnAll'
-      : filter==='owned'
-        ? 'btnOwned'
-        : 'btnMissing';
-
+  document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active'));
+  const id=filter==='all'?'btnAll':filter==='owned'?'btnOwned':'btnMissing';
   document.getElementById(id)?.classList.add('active');
   render();
 }
-
 
 function bindControls(){
   const searchBox=document.getElementById('searchBox');
@@ -1781,115 +1688,78 @@ function bindControls(){
 
   if(searchBox){
     searchBox.value=savedUiState.search||'';
-
     searchBox.addEventListener('input',event=>{
-      searchTerm=String(event.target.value||'')
-        .trim()
-        .toLowerCase();
-
+      searchTerm=String(event.target.value||'').trim().toLowerCase();
       saveUiState();
       render();
     });
   }
+  btnAll?.addEventListener('click',()=>setFilter('all'));
+  btnOwned?.addEventListener('click',()=>setFilter('owned'));
+  btnMissing?.addEventListener('click',()=>setFilter('missing'));
 
-  if(btnAll){
-    btnAll.addEventListener('click',()=>{
-      setFilter('all');
-    });
-  }
-
-  if(btnOwned){
-    btnOwned.addEventListener('click',()=>{
-      setFilter('owned');
-    });
-  }
-
-  if(btnMissing){
-    btnMissing.addEventListener('click',()=>{
-      setFilter('missing');
-    });
-  }
-
-  document.querySelectorAll('.filter-btn')
-    .forEach(btn=>btn.classList.remove('active'));
-
-  const activeId=
-    currentFilter==='all'
-      ? 'btnAll'
-      : currentFilter==='owned'
-        ? 'btnOwned'
-        : 'btnMissing';
-
+  document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active'));
+  const activeId=currentFilter==='all'?'btnAll':currentFilter==='owned'?'btnOwned':'btnMissing';
   document.getElementById(activeId)?.classList.add('active');
 }
 
 function showFetchError(error){
   const root=document.getElementById('categories');
-
   root.innerHTML=`
     <section class="error-box glass">
-      Nie udało się pobrać danych z MM2 Checker.<br>
-      ${String(error?.message||error||'Nieznany błąd')}
+      Failed to fetch data from the Murder Mystery 2 Wiki.<br>
+      ${String(error?.message||error||'Unknown error')}
     </section>
   `;
-
   updateStats(0,0);
 }
 
 async function start(){
   bindControls();
-
   const cachedDb=getCachedDatabase();
   const overlay=document.getElementById('loadingOverlay');
 
-  if(cachedDb?.data && Object.keys(cachedDb.data).length){
+  if(cachedDb?.data&&Object.keys(cachedDb.data).length){
     DATA=cachedDb.data;
     render();
+    setLoader(false);
 
-    // Cached UI is immediately usable; refresh happens silently.
-    if(overlay){
-      overlay.classList.add('hidden');
-      overlay.setAttribute('aria-busy','false');
+    const age=Date.now()-cachedDb.savedAt;
+    if(age<DB_MAX_AGE){
+      console.info(`Fandom cache is fresh (${Math.round(age/60000)} min old).`);
+      return;
     }
 
     fetchDatabase().catch(error=>{
-      console.warn('Background refresh failed; cache remains active:',error);
+      console.warn('Background Fandom refresh failed; cache remains active:',error);
     });
-
     return;
   }
 
-  // No final DB yet: try parsed All Items cache before the network.
-  const cachedAllItems=getAllItemsCache();
-
-  if(cachedAllItems?.items?.length){
-    DATA=classifyAllItemsByOrder(cachedAllItems.items);
+  const rawCache=getRawCache();
+  if(rawCache?.records?.length){
+    DATA=classifyRecords(rawCache.records);
     render();
-
-    if(overlay){
-      overlay.classList.add('hidden');
-      overlay.setAttribute('aria-busy','false');
-    }
-
     saveDatabase(DATA);
+    setLoader(false);
 
     fetchDatabase().catch(error=>{
-      console.warn('Background refresh failed; All Items cache remains active:',error);
+      console.warn('Background Fandom refresh failed; raw cache remains active:',error);
     });
-
     return;
   }
 
-  // First ever load: spinner is needed.
   try{
     await fetchDatabase();
   }catch(error){
     console.error(error);
+    setLoader(false);
     showFetchError(error);
   }
 }
 
 start();
+
 </script>
 </body>
 </html>
