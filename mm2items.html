@@ -1021,6 +1021,17 @@ function wikiUrl(title){
   return `${FANDOM_WIKI}${encodeURIComponent(String(title||'').replace(/ /g,'_')).replace(/%2F/g,'/')}`;
 }
 
+function normalizeRemoteImageUrl(value){
+  const raw=String(value||'').trim();
+  if(!raw) return '';
+
+  // GitHub Pages is HTTPS, so never leave an HTTP image URL that would be
+  // blocked as mixed content. Fandom/Wikia assets are available over HTTPS.
+  if(raw.startsWith('http://')) return `https://${raw.slice(7)}`;
+  if(raw.startsWith('//')) return `https:${raw}`;
+  return raw;
+}
+
 function setLoader(show,text='Loading collection…'){
   const overlay=document.getElementById('loadingOverlay');
   const label=document.getElementById('loadingText');
@@ -1301,7 +1312,7 @@ function normalizeWeaponPage(page){
     pageid:page.pageid,
     name:title,
     href:page.fullurl||wikiUrl(title),
-    img:page.thumbnail?.source||page.original?.source||'',
+    img:normalizeRemoteImageUrl(page.thumbnail?.source||page.original?.source||''),
     category,
     type
   };
@@ -1316,7 +1327,7 @@ function normalizePetPage(page){
     pageid:page.pageid,
     name:title,
     href:page.fullurl||wikiUrl(title),
-    img:page.thumbnail?.source||page.original?.source||'',
+    img:normalizeRemoteImageUrl(page.thumbnail?.source||page.original?.source||''),
     category:'Pets',
     type:'Pet'
   };
@@ -1599,6 +1610,11 @@ function render(){
       img.alt=item.name;
       img.loading='lazy';
       img.decoding='async';
+      // Fandom/static.wikia can reject hotlinked image requests when the
+      // embedding GitHub Pages URL is sent as Referer. A local file sends no
+      // useful Referer, which is why images worked locally but disappeared
+      // after deployment.
+      img.referrerPolicy='no-referrer';
 
       let failedOnce=false;
       img.addEventListener('error',()=>{
