@@ -495,24 +495,9 @@ body.is-loading .page-shell{
   transition:filter .25s ease,transform .25s ease,opacity .25s ease;
 }
 
-.loading-overlay{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:grid;
-  place-items:center;
-  padding:24px;
-  background:rgba(0,0,0,.48);
-  -webkit-backdrop-filter:blur(10px) saturate(115%);
-  backdrop-filter:blur(10px) saturate(115%);
-  transition:opacity .28s ease,visibility .28s ease;
-}
 
-.loading-overlay.hidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
+
+
 
 .loading-card{
   min-width:min(360px,calc(100vw - 40px));
@@ -532,14 +517,7 @@ body.is-loading .page-shell{
   backdrop-filter:blur(26px) saturate(130%);
 }
 
-.loading-spinner{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:3px solid rgba(255,255,255,.10);
-  border-top-color:rgba(255,255,255,.88);
-  animation:loadingSpin .72s linear infinite;
-}
+
 
 .loading-title{
   font:700 15px/1.2 "Space Grotesk",sans-serif;
@@ -564,20 +542,85 @@ body.is-loading .page-shell{
 }
 
 
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,.035), transparent 34%),
+    rgba(2,2,2,.68);
+  backdrop-filter:blur(18px) saturate(.88);
+  -webkit-backdrop-filter:blur(18px) saturate(.88);
+  transition:opacity .28s ease,visibility .28s ease;
+}
 
+.loading-overlay.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.loading-overlay::before{
+  content:"";
+  position:absolute;
+  width:min(420px,78vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.035), transparent 62%);
+  filter:blur(18px);
+  pointer-events:none;
+}
+
+.loading-spinner{
+  position:relative;
+  z-index:1;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.10);
+  border-top-color:rgba(255,255,255,.95);
+  border-right-color:rgba(255,255,255,.42);
+  animation:mm2-spin .72s cubic-bezier(.65,.05,.36,1) infinite;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.025),
+    0 0 24px rgba(255,255,255,.08);
+}
+
+.loading-spinner::after{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.075);
+}
 
 .loading-text{
-  color:rgba(255,255,255,.62);
-  font:650 12px/1.2 "Manrope",sans-serif;
+  position:absolute;
+  top:calc(50% + 42px);
+  z-index:1;
+  max-width:min(72vw,420px);
+  color:rgba(255,255,255,.66);
+  font:650 12px/1.25 "Manrope",sans-serif;
+  letter-spacing:.02em;
   text-align:center;
+  text-wrap:balance;
+  text-shadow:0 1px 10px rgba(0,0,0,.45);
 }
+
+@keyframes mm2-spin{
+  to{transform:rotate(360deg);}
+}
+
 </style>
 </head>
 
 <body>
 <div id="loadingOverlay" class="loading-overlay" aria-live="polite" aria-busy="true">
     <div class="loading-spinner" aria-hidden="true"></div>
-    <div id="loadingText" class="loading-text">Wczytywanie kolekcji…</div>
+    <div id="loadingText" class="loading-text">Loading collection…</div>
   </div>
 <div class="background-layer" aria-hidden="true"></div>
 
@@ -586,19 +629,19 @@ body.is-loading .page-shell{
     <div class="stats">
       <div class="stat-card">
         <div class="num" id="statTotal">0</div>
-        <div class="lbl">Wszystkie</div>
+        <div class="lbl">All</div>
       </div>
       <div class="stat-card">
         <div class="num" id="statOwned">0</div>
-        <div class="lbl">Mam</div>
+        <div class="lbl">Owned</div>
       </div>
       <div class="stat-card">
         <div class="num" id="statMissing">0</div>
-        <div class="lbl">Brakuje</div>
+        <div class="lbl">Missing</div>
       </div>
       <div class="stat-card">
         <div class="num" id="statPercent">0%</div>
-        <div class="lbl">Postęp</div>
+        <div class="lbl">Progress</div>
       </div>
     </div>
     <div class="progress-wrap">
@@ -606,11 +649,11 @@ body.is-loading .page-shell{
     </div>
   </section>
 <section class="controls glass">
-    <input id="searchBox" type="text" placeholder="Szukaj itemu..." autocomplete="off">
+    <input id="searchBox" type="text" placeholder="Search items..." autocomplete="off">
     <div class="control-buttons">
-      <button id="btnAll" class="filter-btn active">Wszystkie</button>
-      <button id="btnOwned" class="filter-btn">Mam</button>
-      <button id="btnMissing" class="filter-btn">Brakuje</button>
+      <button id="btnAll" class="filter-btn active">All</button>
+      <button id="btnOwned" class="filter-btn">Owned</button>
+      <button id="btnMissing" class="filter-btn">Missing</button>
     </div>
   </section>
 
@@ -1455,7 +1498,7 @@ async function fetchDatabase(){
   const overlay=document.getElementById('loadingOverlay');
   const label=document.getElementById('loadingText');
 
-  function loader(show,text='Wczytywanie kolekcji…'){
+  function loader(show,text='Loading collection…'){
     if(label) label.textContent=text;
 
     if(overlay){
@@ -1468,7 +1511,7 @@ async function fetchDatabase(){
     .some(items=>Array.isArray(items) && items.length);
 
   if(!hasUsableData){
-    loader(true,'Pobieranie itemów…');
+    loader(true,'Fetching items…');
   }
 
   let items=[];
@@ -1487,12 +1530,12 @@ async function fetchDatabase(){
   }
 
   if(!items.length){
-    loader(true,'Nie udało się wczytać kolekcji');
+    loader(true,'Failed to load collection');
     throw new Error('Brak All Items i brak cache.');
   }
 
   if(!hasUsableData){
-    loader(true,'Przypisywanie rzadkości…');
+    loader(true,'Assigning rarities…');
   }
 
   const boundariesOk=validateAllItemOrder(items);
@@ -1669,7 +1712,7 @@ function render(){
         render();
       });
 
-      label.append(checkbox,document.createTextNode(' Mam'));
+      label.append(checkbox,document.createTextNode(' Owned'));
 
       card.append(accent,media,name,label);
       grid.append(card);
