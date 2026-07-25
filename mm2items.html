@@ -1,0 +1,1852 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>MM2 Collection</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#000;
+  --text:#f5f5f5;
+  --muted:#8f8f8f;
+  --border:rgba(255,255,255,.10);
+  --green:#6cff9d;
+
+  --ancients:#ff934f;
+  --vintages:#e8c547;
+  --godlies:#ff4d7a;
+  --legendaries:#4d9fff;
+  --rares:#39cfff;
+  --uncommons:#48d985;
+  --commons:#a6a6a6;
+  --pets:#f066c9;
+  --other:#f2a64a;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  min-height:100%;
+}
+
+body{
+  margin:0;
+  background:#000;
+  color:var(--text);
+  font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+
+.background-layer{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  background:#000;
+}
+
+.background-layer canvas{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.page-shell{
+  position:relative;
+  z-index:1;
+  width:min(1500px,calc(100% - 28px));
+  margin:0 auto;
+  padding:24px 0 44px;
+}
+
+.glass{
+  background:rgba(8,8,8,.36);
+  border:1px solid var(--border);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 16px 44px rgba(0,0,0,.25);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+  backdrop-filter:blur(18px) saturate(125%);
+}
+
+.dashboard{
+  padding:14px;
+  margin-bottom:14px;
+  border-radius:18px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.stat-card{
+  min-height:76px;
+  padding:12px 14px;
+  border-radius:15px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012)),
+    rgba(8,8,8,.34);
+  border:1px solid rgba(255,255,255,.09);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+
+.num{
+  font:700 26px/1 "Space Grotesk",sans-serif;
+  letter-spacing:-.04em;
+}
+
+.lbl{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+
+.progress-wrap{
+  height:10px;
+  margin-top:11px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(10,10,10,.36);
+}
+
+.progress-bar{
+  width:0;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,rgba(255,255,255,.20),rgba(255,255,255,.65),rgba(255,255,255,.28));
+  transition:width .22s ease;
+}
+
+.controls{
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) auto;
+  gap:10px;
+  padding:12px;
+  margin-bottom:16px;
+  border-radius:18px;
+}
+
+#searchBox{
+  width:100%;
+  height:44px;
+  padding:0 15px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  outline:none;
+  background:rgba(10,10,10,.38);
+  color:var(--text);
+  font:500 14px "Manrope",sans-serif;
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+
+#searchBox::placeholder{
+  color:rgba(255,255,255,.40);
+}
+
+#searchBox:focus{
+  border-color:rgba(255,255,255,.20);
+  box-shadow:0 0 0 4px rgba(255,255,255,.025);
+}
+
+.control-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+button{
+  height:42px;
+  padding:0 15px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background:rgba(10,10,10,.38);
+  color:var(--text);
+  font:600 12px "Space Grotesk",sans-serif;
+  cursor:pointer;
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+
+button:hover{
+  background:rgba(20,20,20,.52);
+}
+
+.filter-btn.active{
+  border-color:rgba(255,255,255,.20);
+  background:rgba(25,25,25,.56);
+}
+
+
+
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.category{
+  --cat:#888;
+  --cat-light:#bdbdbd;
+  --cat-deep:#444;
+  --cat-glow:rgba(255,255,255,.18);
+  margin-bottom:16px;
+}
+
+.category-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 18px;
+  cursor:pointer;
+  border-radius:18px 18px 0 0;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.018)),
+    linear-gradient(135deg,
+      color-mix(in srgb,var(--cat-light) 52%,rgba(10,10,10,.18)) 0%,
+      color-mix(in srgb,var(--cat) 42%,rgba(10,10,10,.46)) 46%,
+      color-mix(in srgb,var(--cat-deep) 72%,rgba(8,8,8,.88)) 100%
+    );
+  border:1px solid color-mix(in srgb,var(--cat) 35%,rgba(255,255,255,.10));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 18px 38px rgba(0,0,0,.22),
+    0 0 26px var(--cat-glow);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+  backdrop-filter:blur(18px) saturate(125%);
+}
+
+.category-header.collapsed{
+  border-radius:18px;
+}
+
+.category-header h2{
+  margin:0;
+  color:var(--cat-light);
+  text-shadow:0 0 16px color-mix(in srgb,var(--cat) 35%, transparent);
+  font:700 16px "Space Grotesk",sans-serif;
+  letter-spacing:-.025em;
+}
+
+.category-header h2 span{
+  color:#9b9b9b;
+  font-size:12px;
+  font-weight:500;
+}
+
+.category-right{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.cat-progress{
+  color:color-mix(in srgb,var(--cat) 70%,#fff);
+  font-size:12px;
+  font-weight:700;
+}
+
+.chev{
+  color:#aaa;
+  transition:transform .18s ease;
+}
+
+.category-header.collapsed .chev{
+  transform:rotate(-90deg);
+}
+
+.items-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(205px,1fr));
+  gap:14px;
+  padding:15px;
+  border:1px solid color-mix(in srgb,var(--cat) 18%,rgba(255,255,255,.09));
+  border-top:0;
+  border-radius:0 0 18px 18px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.006)),
+    rgba(6,6,6,.28);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);
+  backdrop-filter:blur(18px) saturate(120%);
+}
+
+.items-grid.collapsed{
+  display:none;
+}
+
+.item-card{
+  position:relative;
+  min-height:235px;
+  padding:18px 14px 15px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  text-align:center;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% -8%, color-mix(in srgb,var(--cat-light) 34%, transparent), transparent 54%),
+    linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.016)),
+    linear-gradient(160deg,
+      color-mix(in srgb,var(--cat) 16%, rgba(10,10,10,.78)) 0%,
+      rgba(7,7,7,.32) 42%,
+      color-mix(in srgb,var(--cat-deep) 22%, rgba(4,4,4,.56)) 100%
+    );
+  border:1px solid color-mix(in srgb,var(--cat) 42%,rgba(255,255,255,.10));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 14px 34px rgba(0,0,0,.22),
+    0 0 22px color-mix(in srgb,var(--cat) 8%, transparent);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);
+  backdrop-filter:blur(18px) saturate(120%);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+
+.item-card:hover{
+  transform:translateY(-3px);
+  border-color:color-mix(in srgb,var(--cat) 62%,#fff 6%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 18px 40px rgba(0,0,0,.26),
+    0 0 24px color-mix(in srgb,var(--cat) 10%,transparent);
+}
+
+.card-accent{
+  position:absolute;
+  top:0;
+  left:15%;
+  right:15%;
+  height:3px;
+  background:linear-gradient(90deg,var(--cat-light),var(--cat),var(--cat-deep));
+  box-shadow:0 0 14px color-mix(in srgb,var(--cat) 70%,transparent);
+}
+
+.item-card.owned{
+  border-color:rgba(108,255,157,.48);
+}
+
+.item-card.owned::after{
+  content:"✓";
+  position:absolute;
+  top:11px;
+  right:11px;
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--green);
+  color:#000;
+  font-size:12px;
+  font-weight:900;
+}
+
+.item-media{
+  position:relative;
+  width:122px;
+  height:122px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(255,255,255,.08), rgba(255,255,255,.025) 42%, transparent 70%),
+    radial-gradient(circle at 50% 110%, color-mix(in srgb,var(--cat) 24%, transparent), transparent 58%);
+}
+
+.item-media::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 50% 25%, color-mix(in srgb,var(--cat-light) 26%, transparent), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,0));
+  filter:blur(10px);
+  opacity:.85;
+  pointer-events:none;
+}
+
+.item-card img{
+  position:relative;
+  z-index:1;
+  width:108px;
+  height:108px;
+  object-fit:contain;
+  background:transparent !important;
+  mix-blend-mode:screen;
+  filter:
+    drop-shadow(0 14px 18px rgba(0,0,0,.35))
+    saturate(1.05)
+    contrast(1.04);
+}
+
+.item-card img.placeholder-image{
+  border-radius:14px;
+  opacity:.72;
+  mix-blend-mode:normal;
+  filter:none;
+}
+
+.item-card .name{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  font:650 13px/1.35 "Space Grotesk",sans-serif;
+  letter-spacing:-.018em;
+}
+
+.chk{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.chk input{
+  width:16px;
+  height:16px;
+  accent-color:var(--green);
+}
+
+.item-card.hidden{
+  display:none;
+}
+
+.error-box{
+  padding:20px;
+  border-radius:18px;
+  color:#bbb;
+  font-size:13px;
+  line-height:1.6;
+}
+
+@media(max-width:720px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .controls{grid-template-columns:1fr}
+}
+
+@media(max-width:500px){
+  .page-shell{
+    width:calc(100% - 16px);
+    padding-top:10px;
+  }
+  .items-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+    padding:9px;
+  }
+  .item-card{min-height:195px}
+  .item-media{
+    width:98px;
+    height:98px;
+  }
+  .item-card img{
+    width:82px;
+    height:82px;
+  }
+}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass,
+  .stat-card,
+  .category-header,
+  .items-grid,
+  .item-card,
+  button,
+  #searchBox{
+    background:rgba(12,12,12,.88);
+  }
+}
+
+/* Fullscreen loading state */
+body.is-loading{
+  overflow:hidden;
+}
+
+body.is-loading .page-shell{
+  filter:blur(10px);
+  transform:scale(.995);
+  pointer-events:none;
+  user-select:none;
+}
+
+.page-shell{
+  transition:filter .25s ease,transform .25s ease,opacity .25s ease;
+}
+
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:rgba(0,0,0,.48);
+  -webkit-backdrop-filter:blur(10px) saturate(115%);
+  backdrop-filter:blur(10px) saturate(115%);
+  transition:opacity .28s ease,visibility .28s ease;
+}
+
+.loading-overlay.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.loading-card{
+  min-width:min(360px,calc(100vw - 40px));
+  padding:28px 30px;
+  display:grid;
+  justify-items:center;
+  gap:15px;
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018)),
+    rgba(8,8,8,.70);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 30px 80px rgba(0,0,0,.55);
+  -webkit-backdrop-filter:blur(26px) saturate(130%);
+  backdrop-filter:blur(26px) saturate(130%);
+}
+
+.loading-spinner{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:3px solid rgba(255,255,255,.10);
+  border-top-color:rgba(255,255,255,.88);
+  animation:loadingSpin .72s linear infinite;
+}
+
+.loading-title{
+  font:700 15px/1.2 "Space Grotesk",sans-serif;
+  letter-spacing:-.02em;
+}
+
+.loading-subtitle{
+  color:rgba(255,255,255,.50);
+  font-size:11px;
+  font-weight:600;
+}
+
+@keyframes loadingSpin{
+  to{transform:rotate(360deg)}
+}
+
+
+
+
+.sync-status.hidden{
+  display:none;
+}
+
+
+
+
+.loading-text{
+  color:rgba(255,255,255,.62);
+  font:650 12px/1.2 "Manrope",sans-serif;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+<div id="loadingOverlay" class="loading-overlay" aria-live="polite" aria-busy="true">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <div id="loadingText" class="loading-text">Wczytywanie kolekcji…</div>
+  </div>
+<div class="background-layer" aria-hidden="true"></div>
+
+<div class="page-shell">
+  <section class="dashboard glass">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="num" id="statTotal">0</div>
+        <div class="lbl">Wszystkie</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="statOwned">0</div>
+        <div class="lbl">Mam</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="statMissing">0</div>
+        <div class="lbl">Brakuje</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="statPercent">0%</div>
+        <div class="lbl">Postęp</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </section>
+<section class="controls glass">
+    <input id="searchBox" type="text" placeholder="Szukaj itemu..." autocomplete="off">
+    <div class="control-buttons">
+      <button id="btnAll" class="filter-btn active">Wszystkie</button>
+      <button id="btnOwned" class="filter-btn">Mam</button>
+      <button id="btnMissing" class="filter-btn">Brakuje</button>
+    </div>
+  </section>
+
+  <main id="categories"></main>
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js';
+
+const host = document.querySelector('.background-layer');
+
+if (host) {
+  try {
+    const renderer = new THREE.WebGLRenderer({
+      alpha:true,
+      antialias:false,
+      powerPreference:'high-performance'
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setClearColor(0x000000,1);
+    host.replaceChildren(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    const geometry = new THREE.PlaneGeometry(2,2);
+
+    const material = new THREE.ShaderMaterial({
+      uniforms:{
+        uTime:{value:0},
+        uResolution:{value:new THREE.Vector2(1,1)}
+      },
+      vertexShader:`
+        void main(){
+          gl_Position=vec4(position,1.0);
+        }
+      `,
+      fragmentShader:`
+        precision highp float;
+        uniform float uTime;
+        uniform vec2 uResolution;
+
+        float hash(vec2 p){
+          p=fract(p*vec2(123.34,345.45));
+          p+=dot(p,p+34.345);
+          return fract(p.x*p.y);
+        }
+
+        float noise(vec2 p){
+          vec2 i=floor(p);
+          vec2 f=fract(p);
+          f=f*f*(3.0-2.0*f);
+
+          float a=hash(i);
+          float b=hash(i+vec2(1.0,0.0));
+          float c=hash(i+vec2(0.0,1.0));
+          float d=hash(i+vec2(1.0,1.0));
+
+          return mix(
+            mix(a,b,f.x),
+            mix(c,d,f.x),
+            f.y
+          );
+        }
+
+        float fbm(vec2 p){
+          float value=0.0;
+          float amp=.55;
+
+          for(int i=0;i<6;i++){
+            value+=amp*noise(p);
+            p=p*2.03+vec2(11.7,7.3);
+            amp*=.50;
+          }
+
+          return value;
+        }
+
+        void main(){
+          vec2 uv=gl_FragCoord.xy/uResolution.xy;
+          vec2 p=uv;
+          p.x*=uResolution.x/max(uResolution.y,1.0);
+
+          float t=uTime;
+
+          float n1=fbm(p*2.3+vec2(t*.045,sin(t*.16)*.08));
+          float n2=fbm(p*3.8+vec2(-t*.026,cos(t*.13)*.10));
+          float n3=fbm(p*1.25+vec2(t*.015,-t*.010));
+
+          float fog=n1*.52+n2*.30+n3*.24;
+          fog=smoothstep(.42,.94,fog);
+
+          float vignette=smoothstep(.98,.20,distance(uv,vec2(.5)));
+          fog*=.55+vignette*.55;
+
+          vec3 smoke=vec3(.30,.32,.35);
+          vec3 color=mix(vec3(0.0),smoke,fog*.88);
+
+          gl_FragColor=vec4(color,1.0);
+        }
+      `
+    });
+
+    scene.add(new THREE.Mesh(geometry,material));
+
+    function resize(){
+      const w=Math.max(innerWidth,1);
+      const h=Math.max(innerHeight,1);
+
+      renderer.setSize(w,h,false);
+      material.uniforms.uResolution.value.set(
+        w*renderer.getPixelRatio(),
+        h*renderer.getPixelRatio()
+      );
+    }
+
+    resize();
+    addEventListener('resize',resize);
+
+    const timer=new THREE.Timer();
+    timer.connect(document);
+
+    renderer.setAnimationLoop((timestamp)=>{
+      timer.update(timestamp);
+      material.uniforms.uTime.value=timer.getElapsed();
+      renderer.render(scene,camera);
+    });
+  } catch(error){
+    console.error('Three.js background:',error);
+  }
+}
+</script>
+
+<script>
+const DB_STORAGE_KEY='mm2checkerDatabaseV20';
+const ALL_ITEMS_CACHE_KEY='mm2checkerAllItemsV1';
+const UI_STATE_KEY='mm2checkerUiStateV1';
+const OWNED_STORAGE_KEY='mm2checkerOwnedV1';
+const DB_MAX_AGE=1000*60*60*12;
+
+const ALL_ITEMS_SOURCE='allitems.html';
+const EXPECTED_ITEM_COUNT=896;
+
+const CATEGORY_SOURCES={
+  "Ancients":"ancients.html",
+  "Vintages":"vintages.html",
+  "Godlies":"godlies.html",
+  "Legendaries":"legendaries.html",
+  "Rares":"rares.html",
+  "Uncommons":"uncommons.html",
+  "Commons":"commons.html",
+  "Pets":"pets.html",
+  "Other":"other.html"
+};
+
+const ALL_ITEMS_CATEGORY_BOUNDARIES=[
+  {category:"Other",       first:"Corrupt"},
+  {category:"Ancients",    first:"Nik's Scythe"},
+  {category:"Vintages",    first:"Ghost"},
+  {category:"Godlies",     first:"C. Traveler's Gun"},
+  {category:"Legendaries", first:"JD"},
+  {category:"Rares",       first:"Cane Knife (2018)"},
+  {category:"Uncommons",   first:"Bones (Knife)"},
+  {category:"Commons",     first:"Glitch1"},
+  {category:"Other",       first:"Mystery Key"},
+  {category:"Pets",        first:"Zombie Dog"}
+];
+
+function classifyAllItemsByOrder(items){
+  const data={};
+
+  for(const category of Object.keys(CATEGORY_SOURCES)){
+    data[category]=[];
+  }
+
+  let boundaryIndex=0;
+  let currentCategory=ALL_ITEMS_CATEGORY_BOUNDARIES[0].category;
+
+  for(let i=0;i<items.length;i++){
+    const item=items[i];
+    const nextBoundary=ALL_ITEMS_CATEGORY_BOUNDARIES[boundaryIndex+1];
+
+    if(
+      nextBoundary &&
+      normalizeKey(item.name)===normalizeKey(nextBoundary.first)
+    ){
+      boundaryIndex++;
+      currentCategory=nextBoundary.category;
+    }
+
+    data[currentCategory].push({
+      id:item.href || item.id || `${currentCategory}:${i}:${normalizeKey(item.name)}`,
+      href:item.href||'',
+      name:item.name,
+      img:item.img||''
+    });
+  }
+
+  return data;
+}
+
+function validateAllItemOrder(items){
+  let from=0;
+
+  for(const boundary of ALL_ITEMS_CATEGORY_BOUNDARIES){
+    let found=-1;
+
+    for(let i=from;i<items.length;i++){
+      if(normalizeKey(items[i].name)===normalizeKey(boundary.first)){
+        found=i;
+        break;
+      }
+    }
+
+    if(found<0){
+      console.warn(
+        `Nie znaleziono granicy ${boundary.category}: ${boundary.first}`
+      );
+      return false;
+    }
+
+    from=found+1;
+  }
+
+  return true;
+}
+
+
+const CATEGORY_THEMES={
+  "Ancients":{
+    base:"#6615FD",
+    light:"#7B36FF",
+    deep:"#4610AD",
+    glow:"rgba(102,21,253,.30)"
+  },
+  "Vintages":{
+    base:"#E5C715",
+    light:"#F3D936",
+    deep:"#9D8810",
+    glow:"rgba(229,199,21,.28)"
+  },
+  "Godlies":{
+    base:"#FF0AB1",
+    light:"#FF43C4",
+    deep:"#A90076",
+    glow:"rgba(255,10,177,.30)"
+  },
+  "Legendaries":{
+    base:"#DB0206",
+    light:"#F3272B",
+    deep:"#8E0104",
+    glow:"rgba(219,2,6,.30)"
+  },
+  "Rares":{
+    base:"#00C715",
+    light:"#29E63B",
+    deep:"#007C0D",
+    glow:"rgba(0,199,21,.28)"
+  },
+  "Uncommons":{
+    base:"#00FFFF",
+    light:"#47FFFF",
+    deep:"#00A5A5",
+    glow:"rgba(0,255,255,.27)"
+  },
+  "Commons":{
+    base:"#696969",
+    light:"#8A8A8A",
+    deep:"#454545",
+    glow:"rgba(105,105,105,.22)"
+  },
+  "Pets":{
+    base:"#d95db7",
+    light:"#ff9ce1",
+    deep:"#7d2b66",
+    glow:"rgba(217,93,183,.28)"
+  },
+  "Other":{
+    base:"#c89a67",
+    light:"#f5cd9e",
+    deep:"#705032",
+    glow:"rgba(200,154,103,.24)"
+  }
+};
+
+let DATA={};
+let owned=loadJson(OWNED_STORAGE_KEY,{});
+
+const savedUiState=loadJson(UI_STATE_KEY,{
+  filter:'all',
+  search:'',
+  collapsed:{}
+});
+
+let currentFilter=['all','owned','missing'].includes(savedUiState.filter)
+  ? savedUiState.filter
+  : 'all';
+
+let searchTerm=String(savedUiState.search||'').toLowerCase();
+
+let collapsedCategories={
+  ...(savedUiState.collapsed||{})
+};
+
+function setLoading(active,text='Pobieranie danych z MM2 Checker…'){
+  const overlay=document.getElementById('loadingOverlay');
+  const subtitle=document.getElementById('loadingSubtitle');
+
+  if(subtitle) subtitle.textContent=text;
+
+  document.body.classList.toggle('is-loading',active);
+
+  if(overlay){
+    overlay.classList.toggle('hidden',!active);
+    overlay.setAttribute('aria-busy',active?'true':'false');
+  }
+}
+
+function loadJson(key,fallback){
+  try{
+    const raw=localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  }catch{
+    return fallback;
+  }
+}
+
+function saveOwned(){
+  localStorage.setItem(OWNED_STORAGE_KEY,JSON.stringify(owned));
+}
+
+function saveUiState(){
+  localStorage.setItem(UI_STATE_KEY,JSON.stringify({
+    filter:currentFilter,
+    search:searchTerm,
+    collapsed:collapsedCategories
+  }));
+}
+
+function saveAllItemsCache(items){
+  try{
+    localStorage.setItem(ALL_ITEMS_CACHE_KEY,JSON.stringify({
+      savedAt:Date.now(),
+      items
+    }));
+  }catch(error){
+    console.warn('All Items cache write failed:',error);
+  }
+}
+
+function getAllItemsCache(){
+  const cache=loadJson(ALL_ITEMS_CACHE_KEY,null);
+
+  if(
+    !cache ||
+    !Array.isArray(cache.items) ||
+    !cache.items.length
+  ){
+    return null;
+  }
+
+  return cache;
+}
+
+function saveDatabase(data){
+  localStorage.setItem(DB_STORAGE_KEY,JSON.stringify({
+    savedAt:Date.now(),
+    data
+  }));
+}
+
+function getCachedDatabase(){
+  const cache=loadJson(DB_STORAGE_KEY,null);
+
+  if(
+    !cache ||
+    !cache.data ||
+    typeof cache.savedAt!=='number'
+  ) return null;
+
+  return cache;
+}
+
+function normalizeName(value){
+  return String(value||'')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function normalizeKey(value){
+  return normalizeName(value)
+    .toLowerCase()
+    .replace(/[’']/g,'')
+    .trim();
+}
+
+function absoluteUrl(value,base){
+  try{
+    return new URL(value,base).href;
+  }catch{
+    return value||'';
+  }
+}
+
+function placeholderUrl(){
+  return 'https://placehold.co/220x220/0b0b0b/666666?text=No+Image';
+}
+
+function itemKey(category,item){
+  return item.href || item.id || `${category}::${item.name}`;
+}
+
+
+async function fetchText(url,timeout=12000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
+
+  try{
+    const response=await fetch(url,{
+      signal:controller.signal,
+      cache:'no-store',
+      headers:{
+        'Accept':'text/plain,text/markdown;q=0.9,*/*;q=0.8'
+      }
+    });
+
+    if(!response.ok){
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return await response.text();
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
+const NAV_LABELS=new Set([
+  'home','trade checker','all items','updates','guide',
+  'ancients','vintages','godlies','legendaries','rares',
+  'uncommons','commons','pets','other','safe trading',
+  'faq','privacy policy','discord','roblox'
+]);
+
+function cleanMarkdownLabel(value){
+  return String(value||'')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g,' ')
+    .replace(/<[^>]+>/g,' ')
+    .replace(/[*_`#]/g,' ')
+    .replace(/^\s*Image\s*\d+\s*:\s*/i,'')
+    .replace(/^\s*Image\s*:\s*/i,'')
+    .replace(/^\s*Image\s*\d+\s*$/i,'')
+    .replace(/^\s*Image\s*$/i,'')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function validItemName(name){
+  if(!name || name.length>90) return false;
+  if(/^image(?:\s*\d+)?$/i.test(name.trim())) return false;
+
+  const key=normalizeKey(name);
+
+  if(!key || NAV_LABELS.has(key)) return false;
+
+  if(
+    /^(main pages|items|extras|search items|site created|copyright)$/i.test(name) ||
+    /mm2 checker/i.test(name)
+  ) return false;
+
+  return true;
+}
+
+function parseCategoryMarkdown(text,sourceUrl,category){
+  const items=[];
+  const seen=new Set();
+
+  function add(rawName,img=''){
+    const name=cleanMarkdownLabel(rawName)
+      .replace(/^Image(?:\s*\d+)?\s*:\s*/i,'')
+      .replace(/\s+/g,' ')
+      .trim();
+    const key=normalizeKey(name);
+
+    if(
+      !key ||
+      !validItemName(name) ||
+      seen.has(key) ||
+      key===normalizeKey(category) ||
+      /^tier(?:\s*\d+)?$/i.test(name) ||
+      /^chroma tier$/i.test(name)
+    ) return;
+
+    seen.add(key);
+    items.push({
+      name,
+      img:img ? absoluteUrl(img,sourceUrl) : ''
+    });
+  }
+
+  if(/<html|<!doctype/i.test(text)){
+    const doc=new DOMParser().parseFromString(text,'text/html');
+
+    for(const node of doc.querySelectorAll('div,li,article,tr')){
+      const value=(node.textContent||'').replace(/\s+/g,' ').trim();
+      const match=value.match(/\|\s*(.{1,100}?)\s+Value\s*-/i);
+
+      if(!match) continue;
+
+      const image=node.querySelector('img');
+      const img=image
+        ? (
+            image.getAttribute('src') ||
+            image.getAttribute('data-src') ||
+            image.getAttribute('data-lazy-src') ||
+            ''
+          )
+        : '';
+
+      add(match[1],img);
+    }
+
+    if(items.length) return items;
+  }
+
+  const imageMap=new Map();
+  let match;
+  const imageRe=/!\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/gi;
+
+  while((match=imageRe.exec(text))){
+    const name=cleanMarkdownLabel(match[1])
+      .replace(/^Image(?:\s*\d+)?\s*:\s*/i,'')
+      .trim();
+
+    if(name) imageMap.set(normalizeKey(name),match[2]);
+  }
+
+  const valueRe=/\|\s*([^\n\r|]{1,100}?)\s+Value\s*-/gi;
+
+  while((match=valueRe.exec(text))){
+    const name=cleanMarkdownLabel(match[1]).trim();
+    add(name,imageMap.get(normalizeKey(name))||'');
+  }
+
+  return items;
+}
+
+function parseAllItemsMarkdown(text,sourceUrl){
+  const items=[];
+  const seenHref=new Set();
+  let fallbackId=0;
+
+  function absoluteHref(value){
+    try{
+      return new URL(value,sourceUrl).href;
+    }catch{
+      return value||'';
+    }
+  }
+
+  function add(rawName,href='',img=''){
+    const name=cleanMarkdownLabel(rawName);
+
+    if(!validItemName(name)) return;
+
+    if(
+      /^image(?:\s*\d+)?$/i.test(name) ||
+      /^(home|trade checker|all items|updates|guide|ancients|vintages|godlies|legendaries|rares|uncommons|commons|pets|other|safe trading|faq|privacy policy)$/i.test(name)
+    ) return;
+
+    const itemHref=href ? absoluteHref(href) : '';
+
+    if(itemHref){
+      if(seenHref.has(itemHref)) return;
+      seenHref.add(itemHref);
+    }
+
+    items.push({
+      id:itemHref || `fallback:${fallbackId++}`,
+      name,
+      href:itemHref,
+      img:img ? absoluteUrl(img,sourceUrl) : ''
+    });
+  }
+
+  /*
+   * RAW HTML path
+   */
+  if(/<html|<!doctype/i.test(text)){
+    const doc=new DOMParser().parseFromString(text,'text/html');
+    const links=[...doc.querySelectorAll('a')];
+
+    const start=links.findIndex(a=>normalizeKey(a.textContent)==='corrupt');
+
+    let end=-1;
+    for(let i=links.length-1;i>=0;i--){
+      if(normalizeKey(links[i].textContent)==='pumpkin (2021)'){
+        end=i;
+        break;
+      }
+    }
+
+    if(start>=0 && end>=start){
+      for(let i=start;i<=end;i++){
+        const a=links[i];
+        const name=normalizeName(a.textContent);
+
+        const imgEl=
+          a.querySelector('img') ||
+          a.closest('div,li,article')?.querySelector('img');
+
+        const img=imgEl
+          ? (
+              imgEl.getAttribute('src') ||
+              imgEl.getAttribute('data-src') ||
+              imgEl.getAttribute('data-lazy-src') ||
+              ''
+            )
+          : '';
+
+        add(name,a.getAttribute('href')||'',img);
+      }
+
+      return items;
+    }
+  }
+
+  /*
+   * Jina Markdown path.
+   * Important: preserve duplicate NAMES. Only duplicate HREFs are collapsed.
+   */
+  const lower=text.toLowerCase();
+
+  // Do not require exact formatting around boundary items.
+  let startIndex=lower.indexOf('corrupt');
+  let endStart=lower.lastIndexOf('pumpkin (2021)');
+
+  if(startIndex<0 || endStart<0 || endStart<=startIndex){
+    // If Reader format changes, parse the whole response but still rely on href identity.
+    startIndex=0;
+    endStart=text.length-'pumpkin (2021)'.length;
+  }
+
+  const region=text.slice(
+    startIndex,
+    Math.min(text.length,endStart+'pumpkin (2021)'.length)
+  );
+
+  const imageByHref=new Map();
+  const imageByName=new Map();
+
+  let match;
+
+  // [![alt](image)](item-url)
+  const imageLinkRe=/\[!\[([^\]]*)\]\(([^)\s]+)\)\]\(([^)\s]+)\)/g;
+  while((match=imageLinkRe.exec(region))){
+    const alt=cleanMarkdownLabel(match[1]);
+    const image=match[2];
+    const href=absoluteHref(match[3]);
+
+    imageByHref.set(href,image);
+
+    if(alt){
+      const key=normalizeKey(alt);
+      if(!imageByName.has(key)) imageByName.set(key,image);
+    }
+  }
+
+  // More permissive: [![alt](image) Label](item-url)
+  const linkedImageLabelRe=/\[!\[([^\]]*)\]\(([^)\s]+)\)\s*([^\]]*?)\]\(([^)\s]+)\)/g;
+  while((match=linkedImageLabelRe.exec(region))){
+    const alt=cleanMarkdownLabel(match[1]);
+    const image=match[2];
+    const label=cleanMarkdownLabel(match[3]) || alt;
+    const href=absoluteHref(match[4]);
+
+    add(label,href,image);
+  }
+
+  // Main source: every markdown link in the bounded inventory region.
+  const linkRe=/\[([^\]]+)\]\(([^)\s]+)\)/g;
+
+  while((match=linkRe.exec(region))){
+    // Skip markdown image syntax.
+    if(/^!/.test(match[1].trim())) continue;
+
+    const name=cleanMarkdownLabel(match[1]);
+    const rawHref=match[2];
+    const href=absoluteHref(rawHref);
+
+    if(
+      /(?:privacy|guide|updates|faq|trade|safe-trading|discord|roblox)/i.test(rawHref)
+    ) continue;
+
+    add(
+      name,
+      rawHref,
+      imageByHref.get(href) ||
+      imageByName.get(normalizeKey(name)) ||
+      ''
+    );
+  }
+
+  return items;
+}
+
+function buildVisibleData(masterItems,assignments,categoryImages){
+  const data={};
+
+  for(const category of Object.keys(CATEGORY_SOURCES)){
+    data[category]=[];
+  }
+
+  for(const item of masterItems){
+    const category=assignments.get(item.identity);
+    if(!category) continue;
+
+    data[category].push({
+      id:item.identity,
+      href:item.href||'',
+      name:item.name,
+      img:item.img || categoryImages.get(`${category}::${normalizeKey(item.name)}`) || ''
+    });
+  }
+
+  return data;
+}
+
+async function fetchAllItems(){
+  const sourceUrl=`https://mm2checker.com/${ALL_ITEMS_SOURCE}`;
+
+  const sources=[
+    {
+      name:'Jina Reader',
+      url:`https://r.jina.ai/https://mm2checker.com/${ALL_ITEMS_SOURCE}`
+    },
+    {
+      name:'AllOrigins',
+      url:`https://api.allorigins.win/raw?url=${encodeURIComponent(sourceUrl)}`
+    }
+  ];
+
+  let bestItems=[];
+  let lastError=null;
+
+  for(const source of sources){
+    try{
+      const text=await fetchText(source.url,18000);
+
+      if(!text || text.length<500){
+        throw new Error(`Odpowiedź za krótka: ${text?.length||0} B`);
+      }
+
+      const items=parseAllItemsMarkdown(text,sourceUrl);
+
+      const uniqueHrefCount=new Set(
+        items.filter(item=>item.href).map(item=>item.href)
+      ).size;
+
+      const uniqueNameCount=new Set(
+        items.map(item=>normalizeKey(item.name))
+      ).size;
+
+      console.info(
+        `${source.name}: ${items.length} rekordów, ` +
+        `${uniqueHrefCount} unikalnych URL, ` +
+        `${uniqueNameCount} unikalnych nazw`
+      );
+
+      if(items.length>bestItems.length){
+        bestItems=items;
+      }
+
+      if(items.length>=EXPECTED_ITEM_COUNT){
+        console.info(`All Items source complete: ${source.name}`);
+
+        const completeItems=items.slice(0,EXPECTED_ITEM_COUNT);
+        saveAllItemsCache(completeItems);
+
+        return completeItems;
+      }
+
+      // Partial data is acceptable now. Keep trying sources silently.
+      console.info(
+        `${source.name}: częściowa baza ${items.length}/${EXPECTED_ITEM_COUNT}`
+      );
+
+    }catch(error){
+      lastError=error;
+      console.warn(`All Items source failed: ${source.name}`,error);
+    }
+  }
+
+  if(bestItems.length){
+    console.warn(
+      `Używam częściowej listy All Items: ${bestItems.length}/${EXPECTED_ITEM_COUNT}`
+    );
+
+    saveAllItemsCache(bestItems);
+    return bestItems;
+  }
+
+  const cachedAllItems=getAllItemsCache();
+
+  if(cachedAllItems?.items?.length){
+    console.warn(
+      `Sieć nie działa — używam cache All Items: ${cachedAllItems.items.length}`
+    );
+
+    return cachedAllItems.items;
+  }
+
+  throw lastError||new Error('Żadne źródło All Items nie zadziałało');
+}
+
+async function fetchCategory(category,file){
+  const sourceUrl=`https://mm2checker.com/${file}`;
+  const readerUrl=`https://r.jina.ai/https://mm2checker.com/${file}`;
+
+  const text=await fetchText(readerUrl,15000);
+
+  if(!text || text.length<100){
+    throw new Error('Reader zwrócił pustą odpowiedź');
+  }
+
+  const items=parseCategoryMarkdown(text,sourceUrl,category);
+
+  if(items.length<2){
+    console.group(`Parser debug: ${category}`);
+    console.log(text.slice(0,5000));
+    console.groupEnd();
+    throw new Error(`Reader parser: ${items.length}`);
+  }
+
+  console.info(`${category}: ${items.length} itemów`);
+  return items;
+}
+
+
+async function fetchDatabase(){
+  const cache=getCachedDatabase()?.data||{};
+
+  const overlay=document.getElementById('loadingOverlay');
+  const label=document.getElementById('loadingText');
+
+  function loader(show,text='Wczytywanie kolekcji…'){
+    if(label) label.textContent=text;
+
+    if(overlay){
+      overlay.classList.toggle('hidden',!show);
+      overlay.setAttribute('aria-busy',show ? 'true' : 'false');
+    }
+  }
+
+  const hasUsableData=Object.values(DATA)
+    .some(items=>Array.isArray(items) && items.length);
+
+  if(!hasUsableData){
+    loader(true,'Pobieranie itemów…');
+  }
+
+  let items=[];
+
+  try{
+    items=await fetchAllItems();
+  }catch(error){
+    console.warn('All Items failed, trying cache',error);
+
+    items=Object.values(cache).flat().map(item=>({
+      id:item.id||'',
+      href:item.href||'',
+      name:item.name,
+      img:item.img||''
+    }));
+  }
+
+  if(!items.length){
+    loader(true,'Nie udało się wczytać kolekcji');
+    throw new Error('Brak All Items i brak cache.');
+  }
+
+  if(!hasUsableData){
+    loader(true,'Przypisywanie rzadkości…');
+  }
+
+  const boundariesOk=validateAllItemOrder(items);
+
+  if(!boundariesOk){
+    console.warn(
+      'Układ All Items nie przeszedł pełnej walidacji; tracker i tak spróbuje go wyświetlić.'
+    );
+  }
+
+  DATA=classifyAllItemsByOrder(items);
+
+  render();
+  saveDatabase(DATA);
+
+  const counts=Object.fromEntries(
+    Object.entries(DATA).map(([category,list])=>[
+      category,
+      list.length
+    ])
+  );
+
+  const total=Object.values(DATA)
+    .reduce((sum,list)=>sum+list.length,0);
+
+  console.info('Kategorie:',counts);
+  console.info(`Sklasyfikowano lokalnie ${total} itemów`);
+
+  loader(false);
+
+  return DATA;
+}
+
+function render(){
+  const root=document.getElementById('categories');
+  root.innerHTML='';
+
+  let totalCount=0;
+  let ownedCount=0;
+
+  const entries=Object.entries(DATA);
+
+  if(entries.length===0){
+    updateStats(0,0);
+    return;
+  }
+
+  for(const [category,items] of entries){
+    const section=document.createElement('section');
+    section.className='category';
+    const theme=CATEGORY_THEMES[category]||{
+      base:'#888',
+      light:'#bdbdbd',
+      deep:'#444',
+      glow:'rgba(255,255,255,.16)'
+    };
+
+    section.style.setProperty('--cat',theme.base);
+    section.style.setProperty('--cat-light',theme.light);
+    section.style.setProperty('--cat-deep',theme.deep);
+    section.style.setProperty('--cat-glow',theme.glow);
+
+    const header=document.createElement('div');
+    header.className='category-header';
+
+    const isCollapsed=!!collapsedCategories[category];
+
+    if(isCollapsed){
+      header.classList.add('collapsed');
+    }
+
+    const h2=document.createElement('h2');
+    h2.append(document.createTextNode(category+' '));
+
+    const countSpan=document.createElement('span');
+    countSpan.textContent=`(${items.length})`;
+    h2.append(countSpan);
+
+    const right=document.createElement('div');
+    right.className='category-right';
+
+    const progress=document.createElement('span');
+    progress.className='cat-progress';
+
+    const chev=document.createElement('span');
+    chev.className='chev';
+    chev.textContent='▼';
+
+    right.append(progress,chev);
+    header.append(h2,right);
+
+    const grid=document.createElement('div');
+    grid.className='items-grid';
+
+    if(isCollapsed){
+      grid.classList.add('collapsed');
+    }
+
+    let catOwned=0;
+    let visibleCount=0;
+
+    for(const item of items){
+      totalCount++;
+
+      const key=itemKey(category,item);
+      const legacyKey=`${category}::${item.name}`;
+      const isOwned=!!owned[key] || !!owned[legacyKey];
+
+      if(isOwned){
+        ownedCount++;
+        catOwned++;
+      }
+
+      const matchesSearch=
+        !searchTerm ||
+        item.name.toLowerCase().includes(searchTerm);
+
+      const matchesFilter=
+        currentFilter==='all' ||
+        (currentFilter==='owned' && isOwned) ||
+        (currentFilter==='missing' && !isOwned);
+
+      const visible=matchesSearch && matchesFilter;
+      if(visible) visibleCount++;
+
+      const card=document.createElement('article');
+      card.className=
+        'item-card' +
+        (isOwned?' owned':'') +
+        (visible?'':' hidden');
+
+      const accent=document.createElement('div');
+      accent.className='card-accent';
+
+      const media=document.createElement('div');
+      media.className='item-media';
+
+      const img=document.createElement('img');
+      img.alt=item.name;
+      img.loading='lazy';
+      img.decoding='async';
+
+      let failedOnce=false;
+
+      img.addEventListener('error',()=>{
+        if(failedOnce) return;
+        failedOnce=true;
+        img.src=placeholderUrl();
+        img.classList.add('placeholder-image');
+      });
+
+      img.src=item.img||placeholderUrl();
+      media.append(img);
+
+      const name=document.createElement('div');
+      name.className='name';
+      name.textContent=item.name;
+
+      const label=document.createElement('label');
+      label.className='chk';
+
+      const checkbox=document.createElement('input');
+      checkbox.type='checkbox';
+      checkbox.checked=isOwned;
+
+      checkbox.addEventListener('change',()=>{
+        if(checkbox.checked){
+          owned[key]=true;
+        }else{
+          delete owned[key];
+        }
+
+        saveOwned();
+        render();
+      });
+
+      label.append(checkbox,document.createTextNode(' Mam'));
+
+      card.append(accent,media,name,label);
+      grid.append(card);
+    }
+
+    progress.textContent=`${catOwned}/${items.length}`;
+
+    header.addEventListener('click',()=>{
+      const collapsed=header.classList.toggle('collapsed');
+      grid.classList.toggle('collapsed',collapsed);
+
+      collapsedCategories[category]=collapsed;
+      saveUiState();
+    });
+
+    section.append(header,grid);
+
+    if(
+      visibleCount===0 &&
+      (searchTerm || currentFilter!=='all')
+    ){
+      section.style.display='none';
+    }
+
+    root.append(section);
+  }
+
+  updateStats(totalCount,ownedCount);
+}
+
+function updateStats(total,have){
+  document.getElementById('statTotal').textContent=total;
+  document.getElementById('statOwned').textContent=have;
+  document.getElementById('statMissing').textContent=Math.max(0,total-have);
+
+  const pct=total ? Math.round(have/total*100) : 0;
+
+  document.getElementById('statPercent').textContent=`${pct}%`;
+  document.getElementById('progressBar').style.width=`${pct}%`;
+}
+
+function setFilter(filter){
+  currentFilter=filter;
+  saveUiState();
+
+  document.querySelectorAll('.filter-btn')
+    .forEach(btn=>btn.classList.remove('active'));
+
+  const id=
+    filter==='all'
+      ? 'btnAll'
+      : filter==='owned'
+        ? 'btnOwned'
+        : 'btnMissing';
+
+  document.getElementById(id)?.classList.add('active');
+  render();
+}
+
+
+function bindControls(){
+  const searchBox=document.getElementById('searchBox');
+  const btnAll=document.getElementById('btnAll');
+  const btnOwned=document.getElementById('btnOwned');
+  const btnMissing=document.getElementById('btnMissing');
+
+  if(searchBox){
+    searchBox.value=savedUiState.search||'';
+
+    searchBox.addEventListener('input',event=>{
+      searchTerm=String(event.target.value||'')
+        .trim()
+        .toLowerCase();
+
+      saveUiState();
+      render();
+    });
+  }
+
+  if(btnAll){
+    btnAll.addEventListener('click',()=>{
+      setFilter('all');
+    });
+  }
+
+  if(btnOwned){
+    btnOwned.addEventListener('click',()=>{
+      setFilter('owned');
+    });
+  }
+
+  if(btnMissing){
+    btnMissing.addEventListener('click',()=>{
+      setFilter('missing');
+    });
+  }
+
+  document.querySelectorAll('.filter-btn')
+    .forEach(btn=>btn.classList.remove('active'));
+
+  const activeId=
+    currentFilter==='all'
+      ? 'btnAll'
+      : currentFilter==='owned'
+        ? 'btnOwned'
+        : 'btnMissing';
+
+  document.getElementById(activeId)?.classList.add('active');
+}
+
+function showFetchError(error){
+  const root=document.getElementById('categories');
+
+  root.innerHTML=`
+    <section class="error-box glass">
+      Nie udało się pobrać danych z MM2 Checker.<br>
+      ${String(error?.message||error||'Nieznany błąd')}
+    </section>
+  `;
+
+  updateStats(0,0);
+}
+
+async function start(){
+  bindControls();
+
+  const cachedDb=getCachedDatabase();
+  const overlay=document.getElementById('loadingOverlay');
+
+  if(cachedDb?.data && Object.keys(cachedDb.data).length){
+    DATA=cachedDb.data;
+    render();
+
+    // Cached UI is immediately usable; refresh happens silently.
+    if(overlay){
+      overlay.classList.add('hidden');
+      overlay.setAttribute('aria-busy','false');
+    }
+
+    fetchDatabase().catch(error=>{
+      console.warn('Background refresh failed; cache remains active:',error);
+    });
+
+    return;
+  }
+
+  // No final DB yet: try parsed All Items cache before the network.
+  const cachedAllItems=getAllItemsCache();
+
+  if(cachedAllItems?.items?.length){
+    DATA=classifyAllItemsByOrder(cachedAllItems.items);
+    render();
+
+    if(overlay){
+      overlay.classList.add('hidden');
+      overlay.setAttribute('aria-busy','false');
+    }
+
+    saveDatabase(DATA);
+
+    fetchDatabase().catch(error=>{
+      console.warn('Background refresh failed; All Items cache remains active:',error);
+    });
+
+    return;
+  }
+
+  // First ever load: spinner is needed.
+  try{
+    await fetchDatabase();
+  }catch(error){
+    console.error(error);
+    showFetchError(error);
+  }
+}
+
+start();
+</script>
+</body>
+</html>
