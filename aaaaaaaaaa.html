@@ -1,0 +1,886 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Perfekt 3 Kapitel 4 Powtórka</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column of exercise sheets, each headed by its textbook page reference; progress strip pinned under the title. */
+:root {
+  --bg: #f1f3f9;
+  --surface: #ffffff;
+  --ink: #151a30;
+  --muted: #5b627c;
+  --line: #d8dcea;
+  --accent: #2237c8;
+  --accent-ink: #ffffff;
+  --mark: #ffd84a;
+  --good: #11784a;
+  --good-bg: #dcf3e7;
+  --bad: #b3261e;
+  --bad-bg: #fbe3e0;
+  --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1121; --surface: #171b33; --ink: #eceffb; --muted: #9ba3c4; --line: #2a3053;
+    --accent: #93a3ff; --accent-ink: #0e1121; --mark: #ffd84a;
+    --good: #55d492; --good-bg: #123626; --bad: #ff8d84; --bad-bg: #3d1a1b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1121; --surface: #171b33; --ink: #eceffb; --muted: #9ba3c4; --line: #2a3053;
+  --accent: #93a3ff; --accent-ink: #0e1121; --mark: #ffd84a;
+  --good: #55d492; --good-bg: #123626; --bad: #ff8d84; --bad-bg: #3d1a1b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+header h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(2rem, 7vw, 3rem); line-height: 1.02; margin: 0 0 8px; letter-spacing: -0.02em; text-wrap: balance; }
+header h1 span { background: linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 92%, transparent 92%); }
+header p { margin: 0; color: var(--muted); max-width: 52ch; }
+.progress { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; display: flex; align-items: center; gap: 12px; font-family: var(--f-mono); font-size: 0.85rem; }
+.bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.ref { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+section h2 { font-family: var(--f-display); font-size: 1.45rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.task { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.task b { color: var(--ink); font-weight: 600; }
+.items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.item { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.item:first-child { border-top: 0; padding-top: 0; }
+.sent { font-size: 1.05rem; overflow-wrap: anywhere; }
+.pl { color: var(--muted); font-size: 0.88rem; }
+input.blank {
+  font: inherit; font-weight: 600; color: var(--ink); background: transparent;
+  border: 0; border-bottom: 2px solid var(--accent); width: 5.5em; max-width: 100%;
+  text-align: center; padding: 0 2px; border-radius: 0;
+}
+input.blank:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+input.blank.ok { border-bottom-color: var(--good); background: var(--good-bg); color: var(--good); }
+input.blank.no { border-bottom-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.fb { font-size: 0.9rem; min-height: 1.2em; }
+.fb.ok { color: var(--good); }
+.fb.no { color: var(--bad); }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: inherit; cursor: pointer; }
+.opt { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; padding: 8px 14px; font-weight: 500; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt.ok { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+.opt.no { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.btn { border: 0; background: var(--accent); color: var(--accent-ink); border-radius: 8px; padding: 9px 16px; font-weight: 600; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; }
+.q { font-weight: 600; }
+textarea { font: inherit; width: 100%; min-height: 4.2em; resize: vertical; background: var(--bg); color: var(--ink); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.model { background: var(--bg); border-left: 4px solid var(--mark); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 0.95rem; }
+.model small { display: block; color: var(--muted); margin-top: 4px; }
+.self { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.9rem; color: var(--muted); }
+.self .opt.on { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+.self .opt.off { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+.tip { background: var(--bg); border-radius: 8px; padding: 12px 14px; font-size: 0.92rem; }
+.tip ul { margin: 6px 0 0; padding-left: 1.2em; }
+.tip code { font-family: var(--f-mono); font-size: 0.88em; }
+.bonus-label { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.chip { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 6px 14px; font-weight: 500; }
+.chip:hover { border-color: var(--accent); }
+.chip.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.vgroup { display: flex; flex-direction: column; gap: 6px; }
+.vlabel { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.vcard { border: 1.5px solid var(--line); border-radius: 10px; padding: 18px 16px; min-height: 9.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; text-align: center; background: var(--bg); }
+.vfront { font-family: var(--f-display); font-weight: 600; font-size: clamp(1.35rem, 5vw, 1.8rem); line-height: 1.2; overflow-wrap: anywhere; }
+.vback { font-size: 1.15rem; padding: 4px 10px; background: linear-gradient(transparent 55%, var(--mark) 55%); overflow-wrap: anywhere; }
+.vscore { font-family: var(--f-mono); font-size: 0.85rem; color: var(--muted); }
+#v-area { display: flex; flex-direction: column; gap: 12px; }
+.sel { font: inherit; background: var(--bg); color: var(--ink); border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 10px; max-width: 100%; align-self: flex-start; }
+.sel:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+.sel.ok { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+.sel.no { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+input.blank.wide { display: block; width: 100%; text-align: left; margin-top: 4px; padding: 4px 2px; }
+.extitle { font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; line-height: 1.12; text-wrap: balance; }
+.exres { font-family: var(--f-mono); font-size: 0.9rem; padding: 10px 12px; background: var(--bg); border-left: 4px solid var(--mark); border-radius: 0 8px 8px 0; }
+#ex-area { display: flex; flex-direction: column; gap: 14px; }
+.ans { font: inherit; width: 100%; background: var(--bg); color: var(--ink); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.ans:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+footer { color: var(--muted); font-size: 0.85rem; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Kapitel 4: <span>Feiern</span> &amp; Geburtstag</h1>
+    <p>Powtórka z podręcznika Perfekt 3. Jedno zadanie naraz, losowo z całego rozdziału, albo słownictwo ze str. 35.</p>
+  </header>
+
+  <div class="row" id="tabs"></div>
+
+  <section id="s-ex">
+    <div class="ref">Losowe zadania · str. 30–37</div>
+    <p class="task">Wypełnij zadanie i kliknij <b>Zakończ</b>, żeby zobaczyć odpowiedzi. Potem pojawi się kolejne, z różnych stron książki. <span id="ex-count"></span></p>
+    <div id="ex-area"></div>
+  </section>
+
+  <div class="progress" aria-live="polite" hidden>
+    <span id="pcount">0 / 0</span>
+    <div class="bar"><i id="pbar"></i></div>
+  </div>
+
+  <section id="s-prep" hidden>
+    <div class="ref">Str. 35 · Zadanie 4</div>
+    <h2>Ergänze die Sätze</h2>
+    <p class="task">Uzupełnij zdania przyimkami. Wpisz jedno słowo, np. <b>am</b>, <b>für</b>, <b>über</b>, <b>zu</b>, <b>bei</b>.</p>
+    <ol class="items" id="prep-list"></ol>
+    <div class="row">
+      <button class="btn" id="prep-check" type="button">Sprawdź wszystko</button>
+      <button class="btn ghost" id="prep-reset" type="button">Zacznij od nowa</button>
+    </div>
+    <div class="tip">
+      <b>Zapamiętaj te połączenia</b>
+      <ul>
+        <li><code>einladen zu</code> + Dativ (zapraszać na)</li>
+        <li><code>sich entscheiden für</code> + Akk. · <code>sorgen für</code> + Akk.</li>
+        <li><code>sich freuen über</code> coś, co już jest · <code>sich freuen auf</code> coś, co dopiero będzie</li>
+        <li><code>am</code> + data/dzień (am 10. Mai) · <code>bei</code> + Dativ (u kogoś)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s-fragen" hidden>
+    <div class="ref">Str. 37 · Zadanie 1</div>
+    <h2>Fragen beantworten</h2>
+    <p class="task">Odpowiedz na pytania pełnym zdaniem po niemiecku. Potem porównaj ze wzorem i oceń się sam. Twoja odpowiedź może się różnić, ważne żeby była poprawna.</p>
+    <ol class="items" id="fragen-list"></ol>
+  </section>
+
+  <section id="s-reagieren" hidden>
+    <div class="ref">Str. 37 · Zadanie 2</div>
+    <h2>Auf Deutsch reagieren</h2>
+    <p class="task">Zareaguj po niemiecku na każdą sytuację.</p>
+    <ol class="items" id="reag-list"></ol>
+  </section>
+
+  <section id="s-verb" hidden>
+    <div class="ref">Str. 35 · Zadanie 2 · dodatkowe</div>
+    <h2>Welches Verb passt hier?</h2>
+    <p class="task">Zaznacz czasownik, który pasuje.</p>
+    <ol class="items" id="verb-list"></ol>
+  </section>
+
+  <section id="s-reakt" hidden>
+    <div class="ref">Str. 35 · Zadanie 5 · dodatkowe</div>
+    <h2>Was sagst du? Die richtige Reaktion</h2>
+    <p class="task">Zaznacz właściwą reakcję.</p>
+    <ol class="items" id="reakt-list"></ol>
+  </section>
+
+  <section id="s-vocab" hidden>
+    <div class="ref">Str. 35 · Wort für Wort effektiv</div>
+    <h2>Słownictwo</h2>
+    <p class="task">Wybierz lekcję i tryb. „Zadania” generują nowy zestaw za każdym razem. Wyniki tej sekcji liczą się osobno od paska postępu na górze.</p>
+    <div class="vgroup"><span class="vlabel">Lekcja</span><div class="row" id="v-lek"></div></div>
+    <div class="vgroup"><span class="vlabel">Tryb</span><div class="row" id="v-mode"></div></div>
+    <div class="vgroup" id="v-dirgroup"><span class="vlabel">Kierunek</span><div class="row" id="v-dir"></div></div>
+    <div class="vgroup" id="v-ngroup"><span class="vlabel">Ile w rundzie</span><div class="row" id="v-n"></div></div>
+    <div id="v-area"></div>
+  </section>
+
+  <footer>Perfekt 3, Kapitel 4. Wzory odpowiedzi w zadaniach otwartych są przykładowe.</footer>
+</div>
+
+<script>
+(function () {
+  var prep = [
+    { pre: "Ian ist ", post: " die Feiertage in Deutschland geblieben.", ans: ["über"], pl: "Ian został w Niemczech na święta.", note: "über + Akk. oznacza tu „przez cały okres”: über die Feiertage." },
+    { pre: "Ich lade dich ", post: " meinem Geburtstag ein.", ans: ["zu"], pl: "Zapraszam cię na moje urodziny.", note: "einladen zu + Dativ (zu meinem Geburtstag)." },
+    { pre: "Wir entscheiden uns ", post: " eine Party im Club.", ans: ["für"], pl: "Decydujemy się na imprezę w klubie.", note: "sich entscheiden für + Akkusativ." },
+    { pre: "Martin, sorgst du ", post: " Getränke?", ans: ["für"], pl: "Martin, zadbasz o napoje?", note: "sorgen für + Akkusativ." },
+    { pre: "Wir feiern in diesem Jahr ", post: " mir zu Hause.", ans: ["bei"], pl: "W tym roku świętujemy u mnie w domu.", note: "bei + Dativ znaczy „u kogoś”." },
+    { pre: "Was feiert Maja ", post: " 10. Mai?", ans: ["am"], pl: "Co Maja świętuje 10 maja?", note: "am + data (am 10. Mai)." },
+    { pre: "Ich freue mich ", post: " meine Geburtstagsgeschenke.", ans: ["über"], pl: "Cieszę się z moich prezentów urodzinowych.", note: "sich freuen über + Akk. (coś, co już dostałeś lub masz)." }
+  ];
+  var fragen = [
+    { q: "Was feiert deine Familie im Dezember?", a: "Meine Familie feiert im Dezember Weihnachten und Nikolaus.", pl: "Co twoja rodzina świętuje w grudniu?" },
+    { q: "Wann hast du Geburtstag?", a: "Ich habe am 12. März Geburtstag.", pl: "Kiedy masz urodziny? Użyj swojej daty: am + liczebnik porządkowy + miesiąc." },
+    { q: "Wie feierst du deinen Geburtstag?", a: "Ich feiere meinen Geburtstag mit Freunden bei mir zu Hause.", pl: "Jak świętujesz urodziny?" },
+    { q: "Was schenkst du deinen Freunden am liebsten?", a: "Ich schenke meinen Freunden am liebsten Bücher.", pl: "Co najchętniej dajesz przyjaciołom w prezencie? Uwaga: meinen Freunden to Dativ." },
+    { q: "Wann ist für dich eine Party toll?", a: "Eine Party ist für mich toll, wenn viele Freunde kommen und die Musik gut ist.", pl: "Kiedy impreza jest dla ciebie super? Po „wenn” czasownik idzie na koniec zdania." }
+  ];
+  var reag = [
+    { q: "Poinformuj, kiedy twoi rodzice mają urodziny.", a: "Meine Mutter hat am 5. Mai Geburtstag und mein Vater am 20. August.", pl: "Możesz też: Meine Eltern haben im Mai und im August Geburtstag." },
+    { q: "Zaproś przyjaciół na swoje urodziny.", a: "Ich lade euch zu meinem Geburtstag ein.", pl: "Dodatkowo: Wir feiern am Samstag um 18 Uhr bei mir." },
+    { q: "Złóż koleżance życzenia z okazji urodzin.", a: "Herzlichen Glückwunsch zum Geburtstag! Alles Gute!", pl: "Inne życzenia: Viel Glück und Gesundheit! Lass es dir gutgehen!" },
+    { q: "Wyraź żal, że nie możesz wziąć udziału w imprezie.", a: "Leider kann ich nicht zur Party kommen. Das ist echt schade.", pl: "Albo: Schade, ich habe keine Zeit." },
+    { q: "Zapytaj kolegę, czy dobrze się bawił na przyjęciu.", a: "Hast du dich auf der Party gut amüsiert?", pl: "Albo: Hattest du viel Spaß auf der Party? Albo: Wie war die Party?" }
+  ];
+  var verb = [
+    { s: "Mama, ich habe mich für eine Karaokeparty ___.", o: ["nachgefeiert", "entschieden"], c: 1, note: "sich entscheiden für = zdecydować się na." },
+    { s: "Gina, ___ du dich auf die Party im Bowling Center?", o: ["freust", "sorgst"], c: 0, note: "sich freuen auf = cieszyć się na coś, co dopiero będzie." },
+    { s: "Keine Angst, Klaus! Wir ___ für die Musik auf deiner Grillparty.", o: ["sorgen", "beobachten"], c: 0, note: "sorgen für = zadbać o." },
+    { s: "Nina, ___ mir Bescheid, ob du zu meinem Geburtstag kommst.", o: ["bring", "sag"], c: 1, note: "Bescheid sagen = dać znać, poinformować." },
+    { s: "Katja, können wir deinen Geburtstag an einem anderen Tag ___?", o: ["gutgehen", "nachfeiern"], c: 1, note: "nachfeiern = świętować później, nadrobić świętowanie." }
+  ];
+  var reakt = [
+    { s: "Du gratulierst deiner Freundin zum Geburtstag.", o: ["Lass es dir gutgehen.", "Ich freue mich auf dich."], c: 0, note: "Lass es dir gutgehen = baw się dobrze, wszystkiego dobrego." },
+    { s: "Du weißt nicht, wann die Party anfängt.", o: ["Irgendwie langweilig.", "Keine Ahnung."], c: 1, note: "Keine Ahnung = nie mam pojęcia." },
+    { s: "Du warst auf einer super Party.", o: ["Ich habe mich total amüsiert.", "Ich hatte wenig Spaß."], c: 0, note: "Super Party i wesoła reakcja: sich amüsieren." },
+    { s: "Deine Freundin kann leider nicht kommen.", o: ["Echt schade. Wir feiern noch nach.", "Echt schade. Wir bekommen nichts ab."], c: 0, note: "nachfeiern = świętować później." },
+    { s: "Du bittest deinen Freund um eine Zusage oder Absage.", o: ["Schauen wir mal.", "Sag mir bitte Bescheid."], c: 1, note: "Bescheid sagen = dać odpowiedź." }
+  ];
+
+  var total = prep.length + fragen.length + reag.length + verb.length + reakt.length;
+  var done = {};
+  function mark(id, on) {
+    if (on) done[id] = true; else delete done[id];
+    var n = Object.keys(done).length;
+    document.getElementById("pcount").textContent = n + " / " + total;
+    document.getElementById("pbar").style.width = (n / total * 100) + "%";
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function norm(s) { return s.trim().toLowerCase().replace(/\s+/g, " "); }
+
+  // Przyimki
+  var prepList = document.getElementById("prep-list");
+  var prepRows = prep.map(function (p, i) {
+    var li = el("li", "item");
+    var sent = el("div", "sent");
+    var inp = el("input", "blank");
+    inp.type = "text"; inp.id = "prep-" + i;
+    inp.setAttribute("autocomplete", "off"); inp.setAttribute("autocapitalize", "off");
+    inp.setAttribute("spellcheck", "false"); inp.setAttribute("aria-label", "Luka " + (i + 1));
+    sent.append(document.createTextNode((i + 1) + ". " + p.pre), inp, document.createTextNode(p.post));
+    var pl = el("div", "pl", p.pl);
+    var fb = el("div", "fb");
+    li.append(sent, pl, fb);
+    prepList.appendChild(li);
+    function check() {
+      if (!inp.value.trim()) { inp.className = "blank"; fb.textContent = ""; fb.className = "fb"; mark("p" + i, false); return; }
+      var ok = p.ans.indexOf(norm(inp.value)) !== -1;
+      inp.className = "blank " + (ok ? "ok" : "no");
+      fb.className = "fb " + (ok ? "ok" : "no");
+      fb.textContent = ok ? "Dobrze. " + p.note : "Poprawnie: " + p.ans[0] + ". " + p.note;
+      mark("p" + i, ok);
+    }
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        check();
+        var next = document.getElementById("prep-" + (i + 1));
+        if (next) next.focus();
+      }
+    });
+    return { inp: inp, fb: fb, check: check };
+  });
+  document.getElementById("prep-check").addEventListener("click", function () { prepRows.forEach(function (r) { r.check(); }); });
+  document.getElementById("prep-reset").addEventListener("click", function () {
+    prepRows.forEach(function (r, i) { r.inp.value = ""; r.check(); });
+    prepRows[0].inp.focus();
+  });
+
+  // Zadania otwarte
+  function openItems(listId, data, prefix) {
+    var list = document.getElementById(listId);
+    data.forEach(function (d, i) {
+      var id = prefix + i;
+      var li = el("li", "item");
+      li.appendChild(el("div", "q", (i + 1) + ". " + d.q));
+      var ta = el("textarea"); ta.id = id; ta.rows = 2;
+      ta.setAttribute("aria-label", "Twoja odpowiedź " + (i + 1));
+      ta.placeholder = "Napisz po niemiecku…";
+      li.appendChild(ta);
+      var show = el("button", "btn ghost", "Pokaż przykład");
+      show.type = "button";
+      var box = el("div", "model"); box.hidden = true;
+      var line = el("div", null, d.a);
+      var small = el("small", null, d.pl);
+      box.append(line, small);
+      var self = el("div", "self"); self.hidden = true;
+      var yes = el("button", "opt", "Umiem"); yes.type = "button";
+      var no = el("button", "opt", "Jeszcze nie"); no.type = "button";
+      self.append(document.createTextNode("Moja odpowiedź była poprawna?"), yes, no);
+      show.addEventListener("click", function () {
+        box.hidden = !box.hidden;
+        self.hidden = box.hidden;
+        show.textContent = box.hidden ? "Pokaż przykład" : "Ukryj przykład";
+      });
+      yes.addEventListener("click", function () { yes.classList.add("on"); no.classList.remove("off"); mark(id, true); });
+      no.addEventListener("click", function () { no.classList.add("off"); yes.classList.remove("on"); mark(id, false); });
+      li.append(show, box, self);
+      list.appendChild(li);
+    });
+  }
+  openItems("fragen-list", fragen, "f");
+  openItems("reag-list", reag, "r");
+
+  // Wybór
+  function choiceItems(listId, data, prefix) {
+    var list = document.getElementById(listId);
+    data.forEach(function (d, i) {
+      var id = prefix + i;
+      var li = el("li", "item");
+      li.appendChild(el("div", "sent", (i + 1) + ". " + d.s));
+      var opts = el("div", "opts");
+      var fb = el("div", "fb");
+      var btns = d.o.map(function (t, k) {
+        var b = el("button", "opt", t); b.type = "button";
+        b.addEventListener("click", function () {
+          var ok = k === d.c;
+          btns.forEach(function (x) { x.disabled = true; });
+          b.classList.add(ok ? "ok" : "no");
+          if (!ok) btns[d.c].classList.add("ok");
+          fb.className = "fb " + (ok ? "ok" : "no");
+          fb.textContent = (ok ? "Dobrze. " : "Poprawna odpowiedź: " + d.o[d.c] + ". ") + d.note;
+          mark(id, ok);
+        });
+        opts.appendChild(b);
+        return b;
+      });
+      li.append(opts, fb);
+      list.appendChild(li);
+    });
+  }
+  choiceItems("verb-list", verb, "v");
+  choiceItems("reakt-list", reakt, "x");
+
+  // Słownictwo (str. 35)
+  var V = [
+    [1,"der Feiertag, -e","dzień świąteczny"],[1,"das Fest, -e","święto"],[1,"der Geburtstag, -e","urodziny"],
+    [1,"Heilige Drei Könige","święto Trzech Króli"],[1,"der Hochzeitstag, -e","rocznica ślubu"],[1,"das Neujahr","Nowy Rok"],
+    [1,"der Nikolaustag","mikołajki"],[1,"der / das Silvester","sylwester"],[1,"das Weihnachten","Boże Narodzenie"],
+    [1,"feiern","świętować"],[1,"sich hin|setzen","siadać"],[1,"lachen","śmiać się"],
+    [1,"ganz anders","całkiem inaczej"],[1,"nie mehr","nigdy więcej"],[1,"überhaupt nicht","w ogóle, wcale"],
+    [1,"über die Feiertage","w okresie świątecznym"],[1,"bei der Firma arbeiten","pracować w firmie"],
+    [1,"in die Heimat fliegen","lecieć do kraju ojczystego"],[1,"Urlaub nehmen","brać urlop"],
+    [2,"die Absage, -n","odmowa"],[2,"die Einladung, -en","zaproszenie"],[2,"die Geburtstagsparty, -s","impreza urodzinowa"],
+    [2,"das Geschenk, -e","prezent"],[2,"das Lebensjahr, -e","rok życia"],[2,"die Zusage, -n","przyjęcie (zaproszenia)"],
+    [2,"ein|laden","zapraszać"],[2,"sich entscheiden","decydować się"],[2,"mit|bringen","przynosić ze sobą"],
+    [2,"nach|feiern","świętować w późniejszym terminie"],[2,"sorgen","zadbać"],[2,"wünschen","życzyć"],
+    [2,"Bescheid sagen","powiadomić"],[2,"zum Geburtstag ein|laden","zapraszać na urodziny"],[2,"eine Party machen","organizować imprezę"],
+    [2,"18 (Jahre alt) werden","kończyć 18 lat"],[2,"gute Laune","dobry humor"],[2,"zu dritt","w trójkę, we troje"],
+    [2,"Alles Gute zum Geburtstag!","Wszystkiego najlepszego z okazji urodzin!"],[2,"Zum Geburtstag viel Glück!","Dużo szczęścia z okazji urodzin!"],
+    [2,"Lass es dir gutgehen!","Powodzenia!"],[2,"Herzlichen Glückwunsch!","Serdeczne życzenia!"],
+    [3,"die 3-Stunden-Exkursion, -en","wycieczka trzygodzinna"],[3,"das 4-Gänge-Menü, -s","czterodaniowe menu"],
+    [3,"der Fallschirmsprung","skok ze spadochronem"],[3,"die Farbberatung, -en","doradztwo w doborze kolorów"],
+    [3,"das Geburtstagsgeschenk, -e","prezent urodzinowy"],[3,"die Geschenkidee, -n","pomysł na prezent"],
+    [3,"der Grillkurs, -e","kurs grillowania"],[3,"die Höhle, -n","jaskinia"],[3,"die Höhlenwanderung, -en","wędrówka po jaskiniach"],
+    [3,"die Leihausrüstung, -en","wypożyczony sprzęt"],[3,"der Saunabesuch, -e","wizyta w saunie"],
+    [3,"die Shoppingtour, -en","wyprawa na zakupy"],[3,"das Sicherheitstraining, -s","trening bezpieczeństwa"],
+    [3,"die Stilberatung, -en","doradztwo stylu"],[3,"das Thermalbad","kąpielisko termalne"],
+    [3,"das Traumgeschenk, -e","wymarzony prezent"],[3,"die Wahl, -en","wybór"],[3,"der Warenkorb","koszyk"],
+    [3,"inklusive","wliczone (w cenę)"],[3,"schenken","dawać w prezencie"],[3,"besondere Geschenke","wyjątkowe prezenty"],
+    [3,"gelungene Geschenke","udane prezenty"],[3,"erfahrene Guides","doświadczeni przewodnicy"],
+    [3,"Komplex von Höhlen","kompleks jaskiń"],[3,"unter Anleitung","pod okiem instruktora"],
+    [4,"sich amüsieren","bawić się"],[4,"sich langweilen","nudzić się"],[4,"sich unterhalten","bawić się, rozmawiać"],
+    [4,"nichts ab|bekommen","nic nie dostać"],[4,"sich total freuen","cieszyć się niesamowicie"],
+    [4,"Geschenke bekommen","dostawać prezenty"],[4,"Gäste ein|laden","zapraszać gości"],
+    [4,"sich super unterhalten","bawić się super, rozmawiać"],[4,"Spaß haben","mieć przyjemność"],
+    [4,"Keine Ahnung.","Nie mam pojęcia."],[4,"Echt super!","Naprawdę świetny!"],[4,"Echt schade.","Naprawdę szkoda."],
+    [4,"Ich freue mich schon darauf.","Już się na to cieszę."],[4,"Irgendwie langweilig.","Jakoś nudno."],
+    [4,"So ist das Leben.","Takie jest życie."],[4,"Schauen wir mal.","Zobaczymy."]
+  ];
+  var vs = { lek: 0, mode: "card", dir: "dp", n: 10 };
+
+  // Zdania do uzupełniania: [lekcja, zdanie, poprawne, [złe x3], tłumaczenie]
+  var S = [
+    [1, "Ich ___ meinen Geburtstag mit Freunden.", "feiere", ["lache", "setze", "wünsche"], "Świętuję urodziny z przyjaciółmi."],
+    [1, "Im Dezember habe ich Urlaub ___ und fliege in die Heimat.", "genommen", ["gelacht", "geschenkt", "gesorgt"], "W grudniu wzięłam urlop i lecę do kraju ojczystego."],
+    [2, "Wir ___ dich zu unserer Party ein.", "laden", ["sorgen", "schenken", "werden"], "Zapraszamy cię na naszą imprezę."],
+    [2, "Leider kann ich nicht kommen. Das ist meine ___.", "Absage", ["Zusage", "Höhle", "Wahl"], "Niestety nie mogę przyjść. To moja odmowa."],
+    [2, "Danke für die ___ zu deiner Party!", "Einladung", ["Höhle", "Warenkorb", "Silvester"], "Dzięki za zaproszenie na twoją imprezę!"],
+    [2, "Bitte sag mir ___, ob du kommst.", "Bescheid", ["Ahnung", "Laune", "Wahl"], "Proszę, daj mi znać, czy przyjdziesz."],
+    [2, "Nächstes Jahr ___ ich 18.", "werde", ["habe", "mache", "wünsche"], "W przyszłym roku skończę 18 lat."],
+    [3, "Mein Bruder liebt Abenteuer. Ein Fallschirmsprung ist das perfekte ___.", "Traumgeschenk", ["Warenkorb", "Thermalbad", "Feiertag"], "Mój brat uwielbia przygody. Skok ze spadochronem to idealny wymarzony prezent."],
+    [3, "In der ___ ist es dunkel und kalt.", "Höhle", ["Wahl", "Absage", "Zusage"], "W jaskini jest ciemno i zimno."],
+    [3, "Im ___ liegen alle Sachen, die ich kaufen möchte.", "Warenkorb", ["Thermalbad", "Grillkurs", "Guide"], "W koszyku leżą wszystkie rzeczy, które chcę kupić."],
+    [3, "Ich möchte meiner Mutter einen Saunabesuch ___.", "schenken", ["lachen", "feiern", "bleiben"], "Chcę podarować mamie wizytę w saunie."],
+    [3, "Das Frühstück ist ___.", "inklusive", ["besondere", "gelungene", "erfahrene"], "Śniadanie jest wliczone w cenę."],
+    [3, "Wir klettern unter ___ von erfahrenen Guides.", "Anleitung", ["Wahl", "Absage", "Ahnung"], "Wspinamy się pod okiem doświadczonych przewodników."],
+    [4, "Die Party war total langweilig. Wir haben uns richtig ___.", "gelangweilt", ["amüsiert", "gefreut", "entschieden"], "Impreza była strasznie nudna. Strasznie się nudziliśmy."],
+    [4, "Das Essen war lecker und die Musik super. Wir haben uns total ___.", "amüsiert", ["gelangweilt", "entschieden", "gesetzt"], "Jedzenie było pyszne, a muzyka super. Świetnie się bawiliśmy."],
+    [4, "Wann beginnt die Party? – ___.", "Keine Ahnung", ["Echt super", "Irgendwie langweilig", "Spaß haben"], "Kiedy zaczyna się impreza? – Nie mam pojęcia."],
+    [4, "Die Party ist am Freitag. ___ wir mal, wer kommt.", "Schauen", ["Lassen", "Schenken", "Laden"], "Impreza jest w piątek. Zobaczymy, kto przyjdzie."],
+    [4, "Alle Kuchen waren weg. Ich habe nichts ___.", "abbekommen", ["gefeiert", "gelacht", "gesetzt"], "Wszystkie ciasta zniknęły. Nic nie dostałam."],
+    [4, "Wir ___ uns total auf deine Party.", "freuen", ["langweilen", "setzen", "entscheiden"], "Strasznie cieszymy się na twoją imprezę."],
+    [4, "Karla hat viele Geschenke ___.", "bekommen", ["gelacht", "gesorgt", "abgesagt"], "Karla dostała dużo prezentów."]
+  ];
+  var ORD = ["", "erste", "zweite", "dritte", "vierte", "fünfte", "sechste", "siebte", "achte", "neunte", "zehnte", "elfte", "zwölfte", "dreizehnte", "vierzehnte", "fünfzehnte", "sechzehnte", "siebzehnte", "achtzehnte", "neunzehnte", "zwanzigste", "einundzwanzigste", "zweiundzwanzigste", "dreiundzwanzigste", "vierundzwanzigste", "fünfundzwanzigste", "sechsundzwanzigste", "siebenundzwanzigste", "achtundzwanzigste"];
+  var MON = ["", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  function fold(s) {
+    return s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss")
+      .replace(/ae/g, "a").replace(/oe/g, "o").replace(/ue/g, "u");
+  }
+  function wkey(s) {
+    s = s.split(",")[0].replace(/\|/g, "").replace(/[.!?]+\s*$/, "");
+    s = fold(s).replace(/\s+/g, " ").trim();
+    return s.replace(/^(der|die|das)( \/ (der|die|das))? /, "").replace(/^sich /, "");
+  }
+  function dnorm(s) { return fold(s).replace(/\s+/g, " ").trim().replace(/^am /, ""); }
+  function similar(a, b) { return a === b || a.indexOf(b) !== -1 || b.indexOf(a) !== -1; }
+  var vArea = document.getElementById("v-area");
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function pool() { return V.filter(function (v) { return vs.lek === 0 || v[0] === vs.lek; }); }
+  function chipGroup(boxId, items, key) {
+    var box = document.getElementById(boxId);
+    box.textContent = "";
+    items.forEach(function (it) {
+      var on = vs[key] === it[0];
+      var b = el("button", "chip" + (on ? " on" : ""), it[1]);
+      b.type = "button";
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.addEventListener("click", function () { vs[key] = it[0]; renderVocab(); });
+      box.appendChild(b);
+    });
+  }
+  function side(c, asked) { return asked ? (vs.dir === "dp" ? c[1] : c[2]) : (vs.dir === "dp" ? c[2] : c[1]); }
+  function runCards() {
+    var queue = shuffle(pool()).slice(0, vs.n), total = queue.length, shown = false;
+    function draw() {
+      vArea.textContent = "";
+      if (!queue.length) {
+        vArea.appendChild(el("p", "task", "Koniec talii. Przeszłaś przez " + total + " fiszek."));
+        var r = el("button", "btn", "Jeszcze raz"); r.type = "button";
+        r.addEventListener("click", runCards);
+        vArea.appendChild(r);
+        return;
+      }
+      var c = queue[0];
+      var card = el("div", "vcard");
+      card.appendChild(el("div", "vscore", "Zostało " + queue.length + " z " + total));
+      card.appendChild(el("div", "vfront", side(c, true)));
+      if (shown) card.appendChild(el("div", "vback", side(c, false)));
+      vArea.appendChild(card);
+      var row = el("div", "row");
+      if (!shown) {
+        var f = el("button", "btn", "Odwróć"); f.type = "button";
+        f.addEventListener("click", function () { shown = true; draw(); });
+        row.appendChild(f);
+      } else {
+        var y = el("button", "btn", "Umiem"); y.type = "button";
+        y.addEventListener("click", function () { queue.shift(); shown = false; draw(); });
+        var n = el("button", "btn ghost", "Jeszcze raz"); n.type = "button";
+        n.addEventListener("click", function () { queue.push(queue.shift()); shown = false; draw(); });
+        row.append(y, n);
+      }
+      vArea.appendChild(row);
+    }
+    draw();
+  }
+  function runQuiz() {
+    var p = pool(), score = 0, count = 0, lastIdx = -1;
+    function similar(a, b) { return a === b || a.indexOf(b) !== -1 || b.indexOf(a) !== -1; }
+    function next() {
+      vArea.textContent = "";
+      var idx; do { idx = Math.floor(Math.random() * p.length); } while (idx === lastIdx && p.length > 1);
+      lastIdx = idx;
+      var c = p[idx];
+      var ansField = vs.dir === "dp" ? 2 : 1;
+      var others = shuffle(p.filter(function (x, k) { return k !== idx && !similar(x[ansField], c[ansField]); })).slice(0, 3);
+      var options = shuffle([c].concat(others));
+      vArea.appendChild(el("div", "vscore", "Wynik: " + score + " / " + count));
+      var card = el("div", "vcard");
+      card.appendChild(el("div", "vfront", side(c, true)));
+      vArea.appendChild(card);
+      var box = el("div", "opts");
+      var fb = el("div", "fb");
+      var btns = options.map(function (o) {
+        var b = el("button", "opt", o[ansField]); b.type = "button";
+        b.addEventListener("click", function () {
+          var ok = o === c;
+          count++; if (ok) score++;
+          btns.forEach(function (x, k) { x.disabled = true; if (options[k] === c) x.classList.add("ok"); });
+          if (!ok) b.classList.add("no");
+          fb.className = "fb " + (ok ? "ok" : "no");
+          fb.textContent = ok ? "Dobrze." : "Poprawnie: " + c[ansField];
+          nx.hidden = false;
+          nx.focus();
+          vArea.firstChild.textContent = "Wynik: " + score + " / " + count;
+        });
+        box.appendChild(b);
+        return b;
+      });
+      vArea.append(box, fb);
+      var nx = el("button", "btn", "Dalej"); nx.type = "button"; nx.hidden = true;
+      nx.addEventListener("click", next);
+      vArea.appendChild(nx);
+    }
+    next();
+  }
+  function runGen() {
+    var p = pool(), tasks = [], used = {}, k = 0, score = 0;
+    var gaps = S.filter(function (s) { return vs.lek === 0 || s[0] === vs.lek; });
+    var typable = p.filter(function (v) { return v[1].split(" ").length <= 3; });
+    var types = ["mc", "mc", "mc", "type", "type", "type", "gap", "gap", "gap"];
+    if (vs.lek === 0 || vs.lek === 1) types.push("date");
+    function fresh(arr, tag) {
+      var x, tries = 0;
+      do { x = arr[Math.floor(Math.random() * arr.length)]; tries++; } while (used[tag + x[1]] && tries < 12);
+      used[tag + x[1]] = true;
+      return x;
+    }
+    function mcTask() {
+      var c = fresh(p, "m"), toPl = Math.random() < 0.5, af = toPl ? 2 : 1, qf = toPl ? 1 : 2;
+      var others = shuffle(p.filter(function (x) { return x !== c && !similar(x[af], c[af]); })).slice(0, 3);
+      var opts = shuffle([c].concat(others)).map(function (x) { return x[af]; });
+      return { kind: "mc", label: toPl ? "Wybierz tłumaczenie po polsku" : "Wybierz tłumaczenie po niemiecku", text: c[qf], options: opts, correct: c[af] };
+    }
+    function typeTask() {
+      var c = fresh(typable, "t");
+      return { kind: "type", label: "Napisz po niemiecku (rodzajnik możesz pominąć)", text: c[2], show: c[1], ok: function (s) { return wkey(s) === wkey(c[1]); } };
+    }
+    function gapTask() {
+      var g = fresh(gaps, "g");
+      return { kind: "mc", label: "Uzupełnij lukę", text: g[1], sub: g[4], options: shuffle([g[2]].concat(g[3])), correct: g[2] };
+    }
+    function dateTask() {
+      var d = 1 + Math.floor(Math.random() * 28), m = 1 + Math.floor(Math.random() * 12);
+      var ans = "am " + ORD[d] + "n " + MON[m];
+      return { kind: "type", label: "Wann? Napisz datę słowami, np. am dritten Mai", text: d + "." + m + ".", show: ans, ok: function (s) { return dnorm(s) === dnorm(ans); } };
+    }
+    for (var i = 0; i < vs.n; i++) {
+      var t = types[Math.floor(Math.random() * types.length)];
+      if (t === "gap" && !gaps.length) t = "mc";
+      if (t === "type" && !typable.length) t = "mc";
+      tasks.push(t === "mc" ? mcTask() : t === "type" ? typeTask() : t === "gap" ? gapTask() : dateTask());
+    }
+    function showTask() {
+      vArea.textContent = "";
+      if (k >= tasks.length) {
+        var end = el("div", "vcard");
+        end.appendChild(el("div", "vscore", "Koniec zestawu"));
+        end.appendChild(el("div", "vfront", score + " / " + tasks.length));
+        vArea.appendChild(end);
+        var again = el("button", "btn", "Nowy zestaw"); again.type = "button";
+        again.addEventListener("click", runGen);
+        vArea.appendChild(again);
+        return;
+      }
+      var t = tasks[k];
+      var head = el("div", "vscore", "Zadanie " + (k + 1) + " z " + tasks.length + " · wynik " + score);
+      vArea.appendChild(head);
+      vArea.appendChild(el("div", "vlabel", t.label));
+      var card = el("div", "vcard");
+      card.appendChild(el("div", "vfront", t.text));
+      if (t.sub) card.appendChild(el("div", "pl", t.sub));
+      vArea.appendChild(card);
+      var fb = el("div", "fb");
+      var nx = el("button", "btn", "Dalej"); nx.type = "button"; nx.hidden = true;
+      nx.addEventListener("click", function () { k++; showTask(); });
+      function finish(ok, msg) {
+        if (ok) score++;
+        head.textContent = "Zadanie " + (k + 1) + " z " + tasks.length + " · wynik " + score;
+        fb.className = "fb " + (ok ? "ok" : "no");
+        fb.textContent = msg;
+        nx.textContent = k + 1 >= tasks.length ? "Zobacz wynik" : "Dalej";
+        nx.hidden = false;
+        nx.focus();
+      }
+      if (t.kind === "mc") {
+        var box = el("div", "opts");
+        var btns = t.options.map(function (o) {
+          var b = el("button", "opt", o); b.type = "button";
+          b.addEventListener("click", function () {
+            var ok = o === t.correct;
+            btns.forEach(function (x) { x.disabled = true; if (x.textContent === t.correct) x.classList.add("ok"); });
+            if (!ok) b.classList.add("no");
+            finish(ok, ok ? "Dobrze." : "Poprawnie: " + t.correct);
+          });
+          box.appendChild(b);
+          return b;
+        });
+        vArea.appendChild(box);
+      } else {
+        var inp = el("input", "ans"); inp.type = "text"; inp.id = "gen-ans";
+        inp.setAttribute("autocomplete", "off"); inp.setAttribute("autocapitalize", "off");
+        inp.setAttribute("spellcheck", "false"); inp.setAttribute("aria-label", "Twoja odpowiedź");
+        var chk = el("button", "btn", "Sprawdź"); chk.type = "button";
+        var go = function () {
+          if (!inp.value.trim() || inp.disabled) return;
+          inp.disabled = true; chk.hidden = true;
+          var ok = t.ok(inp.value);
+          finish(ok, ok ? "Dobrze." : "Poprawnie: " + t.show);
+        };
+        chk.addEventListener("click", go);
+        inp.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+        vArea.append(inp, chk);
+        inp.focus();
+      }
+      vArea.append(fb, nx);
+    }
+    showTask();
+  }
+  function renderVocab() {
+    chipGroup("v-lek", [[0, "Wszystkie"], [1, "Lekcja 1 · Święta"], [2, "Lekcja 2 · Impreza"], [3, "Lekcja 3 · Prezenty"], [4, "Lekcja 4 · Na imprezie"]], "lek");
+    chipGroup("v-mode", [["card", "Fiszki"], ["quiz", "Quiz"], ["gen", "Zadania"]], "mode");
+    chipGroup("v-dir", [["dp", "niemiecki → polski"], ["pd", "polski → niemiecki"]], "dir");
+    chipGroup("v-n", [[5, "5"], [10, "10"], [20, "20"]], "n");
+    document.getElementById("v-dirgroup").hidden = vs.mode === "gen";
+    document.getElementById("v-ngroup").hidden = vs.mode === "quiz";
+    if (vs.mode === "card") runCards(); else if (vs.mode === "quiz") runQuiz(); else runGen();
+  }
+  renderVocab();
+
+  // Losowe zadania z podręcznika
+  function nrm(s) { return fold(s).replace(/[.!?]+\s*$/, "").replace(/\s+/g, " ").trim(); }
+  function sel(q, opts, a, note, hint) { return { t: "sel", q: q, opts: opts, a: a, note: note, hint: hint }; }
+  function fill(parts, ans, hint) { return { t: "fill", parts: parts, ans: ans, hint: hint }; }
+  function opn(q, model) { return { t: "open", q: q, model: model }; }
+
+  function dateEx() {
+    var items = [], seen = {};
+    while (items.length < 5) {
+      var d = 1 + Math.floor(Math.random() * 28), m = 1 + Math.floor(Math.random() * 12), k = d + "." + m;
+      if (seen[k]) continue;
+      seen[k] = 1;
+      var full = "am " + ORD[d] + "n " + MON[m];
+      items.push(fill([d + "." + m + ". → ", ""], [[full, full.slice(3)]]));
+    }
+    return { ref: "Str. 36 · Ordnungszahlen: das Datum", title: "Wann? Schreibe das Datum.", task: "Napisz daty słowami po niemiecku, np. 3.5. → am dritten Mai.", items: items };
+  }
+  function gapEx() {
+    return { ref: "Str. 35 · Słownictwo", title: "Uzupełnij luki.", task: "Wybierz słowo, które pasuje do zdania. Pod zdaniem jest tłumaczenie.",
+      items: shuffle(S).slice(0, 6).map(function (s) { return sel(s[1], shuffle([s[2]].concat(s[3])), s[2], "", s[4]); }) };
+  }
+  function matchEx() {
+    var pick = shuffle(V).slice(0, 6), opts = shuffle(pick.map(function (v) { return v[2]; }));
+    return { ref: "Str. 35 · Słownictwo", title: "Dopasuj tłumaczenia.", task: "Do każdego niemieckiego słowa wybierz polskie tłumaczenie.",
+      items: pick.map(function (v) { return sel(v[1], opts, v[2]); }) };
+  }
+
+  var EX = [
+    { ref: "Str. 30 · Zadanie 2", title: "Welches Datum passt? Ordne zu.", task: "Dopasuj daty do świąt.", items: (function () {
+      var o = ["der erste Mai", "der sechste Januar", "der sechsundzwanzigste Mai", "der vierundzwanzigste Dezember", "der sechste Dezember"];
+      return [sel("Tag der Arbeit", o, o[0]), sel("Heilige Drei Könige", o, o[1]), sel("Muttertag in Polen", o, o[2]), sel("Heiligabend", o, o[3]), sel("Nikolaustag", o, o[4])];
+    })() },
+    { ref: "Str. 30 · Zadanie 3", title: "An welchen Tagen gibt es die Feiertage?", task: "Napisz, kiedy przypadają święta. Użyj: … ist am + data w celowniku (am ersten Mai).", items: [
+      opn("Tag der Arbeit", "Der Tag der Arbeit ist am ersten Mai."),
+      opn("Heilige Drei Könige", "Heilige Drei Könige ist am sechsten Januar."),
+      opn("Muttertag in Polen", "Der Muttertag in Polen ist am sechsundzwanzigsten Mai."),
+      opn("Heiligabend", "Heiligabend ist am vierundzwanzigsten Dezember."),
+      opn("Nikolaustag", "Der Nikolaustag ist am sechsten Dezember.")] },
+    { ref: "Str. 31 · Zadanie 1", title: "Welches Verb passt hier?", task: "Wybierz wirst, bist albo hast.", items: (function () {
+      var o = ["wirst", "bist", "hast"];
+      return [sel("Wie alt ___ du jetzt gerade?", o, "bist"), sel("Wie alt ___ du dieses Jahr?", o, "wirst"), sel("Wann ___ du 18?", o, "wirst"), sel("Wann ___ du deinen Geburtstag?", o, "hast")];
+    })() },
+    { ref: "Str. 31 · Zadanie 2", title: "Wann und wo / wohin?", task: "Uzupełnij fragmenty zaproszeń pełnym zdaniem.", items: [
+      opn("Wir treffen uns … (Freitag, 13.05. • Grillplatz)", "Wir treffen uns am Freitag, 13.05., auf dem Grillplatz."),
+      opn("Wir feiern … (der Bunkerclub • Samstag)", "Wir feiern am Samstag im Bunkerclub."),
+      opn("Ich lade dich … ein. (die Pizzeria • 14.06.)", "Ich lade dich am 14. Juni in die Pizzeria ein.")] },
+    { ref: "Str. 31 · Zadanie 3", title: "Zusage (Z) oder Absage (A)?", task: "Zdecyduj, czy rozmówca przyjmuje zaproszenie, czy nie.", items: (function () {
+      var o = ["Zusage", "Absage"];
+      return [sel("Sehen wir uns am Samstag? – Leider können wir nicht kommen.", o, "Absage"),
+        sel("Ich lade dich zu meinem Geburtstag ein. – Das ist total nett von dir, aber ich habe schon was vor.", o, "Absage"),
+        sel("Kommst du zu Klaus? – Klar, ich komme gern!", o, "Zusage"),
+        sel("Habt ihr meine Einladung bekommen? – Ja, und wir freuen uns schon auf die Party.", o, "Zusage")];
+    })() },
+    { ref: "Str. 31 · Zadanie 4", title: "Formuliere die Geburtstagswünsche richtig.", task: "Uzupełnij życzenia urodzinowe.", items: (function () {
+      var o = ["zum Geburtstag", "Glückwunsch", "lass es dir gutgehen", "Glück"];
+      return [sel("Zum Geburtstag viel ___!", o, "Glück"), sel("Herzlichen ___!", o, "Glückwunsch"), sel("Feier schön und ___!", o, "lass es dir gutgehen"), sel("Alles Gute ___!", o, "zum Geburtstag")];
+    })() },
+    { ref: "Str. 31 · Zadanie 5", title: "Ergänze die Einladung auf FB.", task: "Uzupełnij zaproszenie na Facebooku wyrażeniami.", items: (function () {
+      var o = ["meinen Geburtstag", "alle", "da passen viele rein", "Los geht's", "eure eigene Playlist mitbringen", "Ich freue mich"];
+      return [sel("Bald feiere ich ___.", o, o[0]), sel("Ich lade euch ___ ein.", o, o[1]), sel("Wir haben einen großen Garten und ___!", o, o[2]),
+        sel("___ ab 19 Uhr.", o, o[3]), sel("Ihr könnt natürlich ___.", o, o[4]), sel("___ schon auf euch!", o, o[5])];
+    })() },
+    { ref: "Str. 32 · Zadanie 1", title: "Geschenkideen. Was passt zusammen?", task: "Utwórz rzeczowniki złożone. Wybierz drugą część wyrazu.", items: (function () {
+      var o = ["-tour", "-wanderung", "-kurs", "-besuch", "-beratung", "-sprung", "-geschenk"];
+      return [sel("Shopping-", o, "-tour", "Shoppingtour."), sel("Höhlen-", o, "-wanderung", "Höhlenwanderung."), sel("Grill-", o, "-kurs", "Grillkurs."),
+        sel("Sauna-", o, "-besuch", "Saunabesuch."), sel("Stil-", o, "-beratung", "Stilberatung."), sel("Fallschirm-", o, "-sprung", "Fallschirmsprung."), sel("Traum-", o, "-geschenk", "Traumgeschenk.")];
+    })() },
+    { ref: "Str. 32 · Zadanie 3", title: "Was ist hier richtig?", task: "Wybierz właściwą kolejność dopełnień.", items: [
+      sel("Zum Geburtstag schenke ich …", ["meiner Mutter ein Buch.", "ein Buch meiner Mutter."], "meiner Mutter ein Buch.", "Osoba (Dativ) stoi przed rzeczą (Akkusativ)."),
+      sel("Zum Geburtstag kaufen wir …", ["einen Ball Amelie.", "Amelie einen Ball."], "Amelie einen Ball.", "Osoba (Dativ) stoi przed rzeczą (Akkusativ)."),
+      sel("Zum Hochzeitstag schenken wir …", ["unseren Eltern einen Fallschirmsprung.", "einen Fallschirmsprung unseren Eltern."], "unseren Eltern einen Fallschirmsprung.", "Osoba (Dativ) stoi przed rzeczą (Akkusativ)."),
+      sel("Hast du …", ["ein Computerspiel deinem Bruder geschenkt?", "deinem Bruder ein Computerspiel geschenkt?"], "deinem Bruder ein Computerspiel geschenkt?", "Osoba (Dativ) stoi przed rzeczą (Akkusativ).")] },
+    { ref: "Str. 32 · Zadanie 4", title: "Klaus braucht Geschenkideen.", task: "Dopasuj propozycje prezentów do osób.", items: (function () {
+      var o = ["ein Aufenthalt im SPA-Hotel", "eine Stilberatung", "ein Ticket für die Berlinale", "eine Höhlenwanderung", "ein Grillkurs"];
+      return [sel("Die Oma von Klaus will ein paar Tage nur für sich haben und relaxen.", o, o[0]),
+        sel("Sein Bruder Jan mag Extremsportarten.", o, o[3]),
+        sel("Seine Schwester Nina macht oft Partys und kocht gern für ihre Freunde.", o, o[4]),
+        sel("Die Cousine von Klaus, Nadine, sieht sich gerne Filme an.", o, o[2]),
+        sel("Und seine Freundin Julia mag modische Kleidung.", o, o[1])];
+    })() },
+    { ref: "Str. 32 · Zadanie 5", title: "Was hat Klaus ihnen allen zum Geburtstag geschenkt?", task: "Napisz zdania, co Klaus podarował każdej osobie (zadanie 4). Zacznij: Ich habe … geschenkt.", items: [
+      opn("Oma", "Ich habe meiner Oma einen Aufenthalt im SPA-Hotel geschenkt."),
+      opn("Bruder Jan", "Ich habe meinem Bruder eine Höhlenwanderung geschenkt."),
+      opn("Schwester Nina", "Ich habe meiner Schwester einen Grillkurs geschenkt."),
+      opn("Cousine Nadine", "Ich habe meiner Cousine ein Ticket für die Berlinale geschenkt."),
+      opn("Freundin Julia", "Ich habe meiner Freundin eine Stilberatung geschenkt.")] },
+    { ref: "Str. 32 · Zadanie 6", title: "Ergänze den Dialog.", task: "Napisz kwestie rozmowy Marie i Bena zgodnie z poleceniami.", items: [
+      opn("Marie proponuje kupienie czegoś wspólnie.", "Wollen wir zusammen ein Geschenk kaufen?"),
+      opn("Ben zgadza się i pyta o pomysł na prezent.", "Ja, gute Idee. Hast du schon eine Idee?"),
+      opn("Marie proponuje kupić Danielowi ładowarkę i pyta Bena o opinię.", "Wir könnten ihm ein Ladegerät kaufen. Was denkst du?"),
+      opn("Ben: Vielleicht … ? (bilet na koncert)", "Vielleicht schenken wir ihm auch ein Konzertticket?"),
+      opn("Ben podaje miejsce i godzinę spotkania.", "Wir treffen uns um 15 Uhr vor dem Kino.")] },
+    { ref: "Str. 33 · Zadanie 3", title: "Nach der Party. Ergänze die Minidialoge.", task: "Wpisz zaimek zwrotny i imiesłów (Perfekt) czasownika w nawiasie.", items: [
+      fill(["War Miriam auch auf der Grillparty? – Ja, sie hat ", " sehr gut ", " (sich amüsieren)."], [["sich"], ["amüsiert"]]),
+      fill(["Warum hat ", " Nina nicht über die Geschenke ", " (sich freuen)? – Sie haben ihr nicht gefallen."], [["sich"], ["gefreut"]]),
+      fill(["Du hast viel Zeit mit Jonas verbracht. – Ja, wir haben ", " über die Sommerferien ", " (sich unterhalten)."], [["uns"], ["unterhalten"]]),
+      fill(["War es auf der Party interessant? – Nun ja, wir haben ", " leider etwas ", " (sich langweilen)."], [["uns"], ["gelangweilt"]])] },
+    { ref: "Str. 34 · Zadanie 1", title: "Geschenke, die man nicht kaufen kann!", task: "Dopasuj tytuł do akapitu. Jeden tytuł nie pasuje do żadnego akapitu.", items: (function () {
+      var o = ["Eine besondere Hilfeleistung verschenken", "Ein leckeres Essen kochen", "Ein persönliches Kochbuch machen", "Etwas beibringen, was man selbst gut kann", "Gemeinsame Zeit verschenken"];
+      return [sel("Akapit 1: Gutschein für Tierbetreuung, wenn Freunde im Urlaub sind.", o, o[0]),
+        sel("Akapit 2: Gutscheine für ein gemeinsames Frühstück, Kochabende oder Ausflüge.", o, o[4]),
+        sel("Akapit 3: Du machst gute Fotos oder kannst programmieren und zeigst es einem Freund.", o, o[3]),
+        sel("Akapit 4: Rezepte von Mama und Oma in einem handgeschriebenen Buch.", o, o[2])];
+    })() },
+    { ref: "Str. 35 · Zadanie 1", title: "Um welche Feste und Feiertage geht es?", task: "Uzupełnij kartki z życzeniami nazwą uroczystości.", items: [
+      fill(["40 Jahre sind Sie nun schon glücklich verheiratet. Wir wünschen Euch nur das Beste zu Eurem ", "!"], [["Hochzeitstag"]]),
+      fill(["365 Tage Glück, Erfolg und Gesundheit – das sind meine Wünsche für das neue ", "."], [["Lebensjahr"]]),
+      fill(["Wir wünschen Euch fröhliche ", " und ein glückliches neues Jahr!"], [["Weihnachten"]]),
+      fill(["Du bist nun endlich volljährig. Wir wünschen Dir einen tollen ", "!"], [["Geburtstag"]])] },
+    { ref: "Str. 35 · Zadanie 2", title: "Welches Verb passt hier?", task: "Zaznacz czasownik, który pasuje.", items: verb.map(function (v) { return sel(v.s, v.o, v.o[v.c], v.note); }) },
+    { ref: "Str. 35 · Zadanie 3", title: "Ergänze die Einladung von Sabine.", task: "Uzupełnij zaproszenie wyrazami: Bescheid, werden, Laune, Absage, freuen, Geschenk, feiern. Użyj właściwej formy.", items: [
+      fill(["Ich ", " 18 und möchte an diesem besonderen Tag mit Euch eine Party im Bowling Center ", "."], [["werde"], ["feiern"]]),
+      fill(["Für super Musik und gute ", " garantiere ich!"], [["Laune"]]),
+      fill(["Ich freue mich über alle ", "!"], [["Geschenke", "Geschenk"]]),
+      fill(["Bitte sag mir bis 1. Oktober ", ", ob du kommen kannst."], [["Bescheid"]]),
+      fill(["Zusagen oder ", " telefonisch unter 0177/4523488."], [["Absagen", "Absage"]]),
+      fill(["Ich ", " mich riesig auf Dich!"], [["freue"]])] },
+    { ref: "Str. 35 · Zadanie 4", title: "Ergänze die Sätze.", task: "Uzupełnij zdania przyimkami.", items: prep.map(function (p) { return fill([p.pre, p.post], [p.ans], p.pl); }) },
+    { ref: "Str. 35 · Zadanie 5", title: "Was sagst du? Markiere die richtige Reaktion.", task: "Zaznacz właściwą reakcję.", items: reakt.map(function (v) { return sel(v.s, v.o, v.o[v.c], v.note); }) },
+    { ref: "Str. 37 · Zadanie 1", title: "Fragen beantworten", task: "Odpowiedz na pytania pełnymi zdaniami. Poniżej zobaczysz przykładowe odpowiedzi.", items: fragen.map(function (f) { return opn(f.q, f.a); }) },
+    { ref: "Str. 37 · Zadanie 2", title: "Auf Deutsch reagieren", task: "Zareaguj po niemiecku na każdą sytuację.", items: reag.map(function (r) { return opn(r.q, r.a); }) },
+    { ref: "Str. 37 · Zadanie 4", title: "Von einer Geburtstagsparty erzählen", task: "Opowiedz o przyjęciu urodzinowym w 5–6 zdaniach (użyj Perfekt).", items: [
+      opn("Wie war die Party?", "Letzten Samstag war ich auf der Geburtstagsparty von meiner Freundin Anna. Wir haben bei ihr zu Hause gefeiert. Viele Gäste sind gekommen und wir haben leckeren Kuchen gegessen. Ich habe mich total amüsiert, weil die Musik super war. Ich habe ihr ein Buch geschenkt und sie hat sich sehr darüber gefreut.")] },
+    { ref: "Str. 37 · Zadanie 5", title: "Eine Einladung schreiben", task: "Za miesiąc masz 18. urodziny. Napisz zaproszenie: powód, termin i miejsce, kto zadba o muzykę, radość z wizyty gości.", items: [
+      opn("Einladung an Freunde", "Hallo Leute, nächsten Monat werde ich 18! Ich lade euch herzlich zu meiner Geburtstagsparty ein. Wir feiern am 14. November um 18 Uhr bei mir zu Hause. Für die Musik sorgt mein Bruder. Bitte sagt mir bis zum 5. November Bescheid. Ich freue mich schon sehr auf euch! Bis bald!")] },
+    dateEx, gapEx, matchEx
+  ];
+
+  var exArea = document.getElementById("ex-area");
+  var exDeck = [], exLast = -1, exDone = 0;
+  function pickEx() {
+    if (!exDeck.length) {
+      exDeck = shuffle(EX.map(function (_, i) { return i; }));
+      if (exDeck[0] === exLast && exDeck.length > 1) exDeck.push(exDeck.shift());
+    }
+    exLast = exDeck.shift();
+    var e = EX[exLast];
+    return typeof e === "function" ? e() : e;
+  }
+  function showEx(scroll) {
+    var ex = pickEx();
+    exArea.textContent = "";
+    document.getElementById("ex-count").textContent = exDone ? "Ukończone: " + exDone + "." : "";
+    exArea.appendChild(el("div", "ref", ex.ref));
+    exArea.appendChild(el("div", "extitle", ex.title));
+    exArea.appendChild(el("p", "task", ex.task));
+    var list = el("ol", "items"), revealers = [];
+    ex.items.forEach(function (it, idx) {
+      var li = el("li", "item"), fb = el("div", "fb");
+      if (it.t === "sel") {
+        li.appendChild(el("div", "sent", (idx + 1) + ". " + it.q));
+        if (it.hint) li.appendChild(el("div", "pl", it.hint));
+        var s = el("select", "sel"); s.id = "ex-s" + idx;
+        var o0 = el("option", null, "wybierz…"); o0.value = ""; s.appendChild(o0);
+        it.opts.forEach(function (t) { var o = el("option", null, t); o.value = t; s.appendChild(o); });
+        li.append(s, fb);
+        revealers.push(function () {
+          s.disabled = true;
+          var ok = s.value === it.a;
+          s.classList.add(ok ? "ok" : "no");
+          fb.className = "fb " + (ok ? "ok" : "no");
+          fb.textContent = (ok ? "Dobrze." : "Poprawnie: " + it.a + ".") + (it.note ? " " + it.note : "");
+          return [ok ? 1 : 0, 1];
+        });
+      } else if (it.t === "fill") {
+        var sent = el("div", "sent"), inps = [];
+        sent.appendChild(document.createTextNode((idx + 1) + ". " + it.parts[0]));
+        for (var b = 0; b < it.ans.length; b++) {
+          var inp = el("input", "blank"); inp.type = "text"; inp.id = "ex-i" + idx + "-" + b;
+          inp.setAttribute("autocomplete", "off"); inp.setAttribute("autocapitalize", "off");
+          inp.setAttribute("spellcheck", "false"); inp.setAttribute("aria-label", "Luka " + (b + 1) + " w zdaniu " + (idx + 1));
+          var longest = Math.max.apply(null, it.ans[b].map(function (x) { return x.length; }));
+          if (longest > 14) inp.className = "blank wide"; else inp.style.width = (longest + 3) + "ch";
+          inps.push(inp);
+          sent.append(inp, document.createTextNode(it.parts[b + 1]));
+        }
+        li.appendChild(sent);
+        if (it.hint) li.appendChild(el("div", "pl", it.hint));
+        li.appendChild(fb);
+        revealers.push(function () {
+          var good = 0;
+          inps.forEach(function (inp, b) {
+            inp.disabled = true;
+            var ok = it.ans[b].some(function (a) { return nrm(a) === nrm(inp.value); });
+            inp.classList.add(ok ? "ok" : "no");
+            if (ok) good++;
+          });
+          var all = good === inps.length;
+          fb.className = "fb " + (all ? "ok" : "no");
+          fb.textContent = all ? "Dobrze." : "Poprawnie: " + it.ans.map(function (a) { return a[0]; }).join(", ");
+          return [good, inps.length];
+        });
+      } else {
+        li.appendChild(el("div", "q", (idx + 1) + ". " + it.q));
+        var ta = el("textarea"); ta.id = "ex-t" + idx; ta.rows = it.model.length > 120 ? 5 : 2;
+        ta.placeholder = "Napisz po niemiecku…";
+        var box = el("div", "model"); box.hidden = true;
+        box.appendChild(el("div", null, it.model));
+        box.appendChild(el("small", null, "Przykładowa odpowiedź. Twoja może się różnić."));
+        li.append(ta, box);
+        revealers.push(function () { ta.disabled = true; box.hidden = false; return [0, 0]; });
+      }
+      list.appendChild(li);
+    });
+    exArea.appendChild(list);
+    var hasOpen = ex.items.some(function (i) { return i.t === "open"; });
+    var res = el("div", "exres"); res.hidden = true;
+    var row = el("div", "row");
+    var fin = el("button", "btn", "Zakończ"); fin.type = "button";
+    var skip = el("button", "btn ghost", "Pomiń"); skip.type = "button";
+    var nxt = el("button", "btn", "Następne zadanie"); nxt.type = "button"; nxt.hidden = true;
+    fin.addEventListener("click", function () {
+      var g = 0, t = 0;
+      revealers.forEach(function (r) { var x = r(); g += x[0]; t += x[1]; });
+      res.textContent = t ? "Wynik: " + g + " / " + t + (hasOpen ? ". Odpowiedzi otwarte porównaj ze wzorem." : "") : "Porównaj swoje odpowiedzi ze wzorami.";
+      res.hidden = false; fin.hidden = true; skip.hidden = true; nxt.hidden = false;
+      exDone++;
+      document.getElementById("ex-count").textContent = "Ukończone: " + exDone + ".";
+      nxt.focus();
+    });
+    function again() { showEx(true); }
+    skip.addEventListener("click", again);
+    nxt.addEventListener("click", again);
+    row.append(fin, skip, nxt);
+    exArea.append(res, row);
+    if (scroll) document.getElementById("s-ex").scrollIntoView({ block: "start" });
+  }
+  showEx(false);
+
+  var tabsBox = document.getElementById("tabs"), tabNow = "ex";
+  function drawTabs() {
+    tabsBox.textContent = "";
+    [["ex", "Zadania"], ["vocab", "Słownictwo"]].forEach(function (t) {
+      var b = el("button", "chip" + (tabNow === t[0] ? " on" : ""), t[1]); b.type = "button";
+      b.setAttribute("aria-pressed", tabNow === t[0] ? "true" : "false");
+      b.addEventListener("click", function () { tabNow = t[0]; drawTabs(); });
+      tabsBox.appendChild(b);
+    });
+    document.getElementById("s-ex").hidden = tabNow !== "ex";
+    document.getElementById("s-vocab").hidden = tabNow !== "vocab";
+  }
+  drawTabs();
+
+  mark("_", false);
+})();
+</script>
+
+</body></html>
